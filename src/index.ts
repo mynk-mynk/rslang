@@ -1,3 +1,2 @@
+import './pages/pages.css';
 import './style.css';
-
-// console.log('hi');

@@ -1,0 +1,108 @@
+:root {
+    --color: #181f4a;
+    --ligth-color: #f6f099;
+    --filter: invert(14%) sepia(9%) saturate(7252%) hue-rotate(205deg) brightness(85%) contrast(101%);
+}
+
+@font-face {
+    font-family: 'DynaPuff';
+    src: url(../assets/fonts/DynaPuff/DynaPuff-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Comfortaa';
+    src: url(../assets/fonts/Comfortaa/Comfortaa-Regular.ttf);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DynaPuff';
+    height: 100vh;
+    background: rgb(240, 218, 255);
+    background: linear-gradient(0deg, rgba(240, 218, 255, 1) 0%, rgba(246, 240, 153, 1) 50%, rgba(69, 239, 252, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--color);
+}
+
+header,
+main,
+footer {
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+}
+
+header,
+footer {
+    padding: 20px 40px;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    padding: 0 40px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo {
+    font-family: 'DynaPuff', cursive;
+    font-size: 2rem;
+    color: var(--color);
+}
+
+.authorization-icon {
+    width: 40px;
+    filter: var(--filter);
+}
+
+.footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.github-names {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.rs-logo {
+    width: 80px;
+    filter: var(--filter);
+}
+
+.github-logo {
+    filter: var(--filter);
+}
+
+.btn-like-link {
+    display: inline-block;
+    width: 100px;
+    padding: 10px;
+    margin: 0 10px;
+    border: 2px solid var(--color);
+    border-radius: 10px;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.btn-like-link:hover {
+    background: var(--color);
+    color: var(--ligth-color);
+}
+
+.btn-like-link:active {
+    transform: scale(0.98);
+}
