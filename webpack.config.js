@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// const CopyPlugin = require("copy-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.ts'),
@@ -33,9 +33,6 @@ module.exports = {
     ],
   },
   devtool: 'inline-source-map',
-  // devServer: {
-  //     contentBase: path.resolve(__dirname, './dist'),
-  // },
   resolve: {
     extensions: ['.ts', '.js'],
   },
@@ -43,13 +40,21 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
     }),
+    new HtmlWebpackPlugin({
+      filename: '/pages/team.html',
+      template: path.resolve(__dirname, './src/pages/team/team.html'),
+    }),
+    new HtmlWebpackPlugin({
+      filename: '/pages/about.html',
+      template: path.resolve(__dirname, './src/pages/about/about.html'),
+    }),
     new CleanWebpackPlugin(),
     new ESLintPlugin({ extensions: 'ts' }),
     new webpack.HotModuleReplacementPlugin(),
-    // new CopyPlugin({
-    //   patterns: [
-    //     { from: "src/assets", to: path.resolve(__dirname, './dist/assets') }
-    //   ],
-    // }),
+    new CopyPlugin({
+      patterns: [
+        { from: "src/assets", to: path.resolve(__dirname, './dist/assets') }
+      ],
+    }),
   ],
 };
