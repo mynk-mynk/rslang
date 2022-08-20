@@ -6,17 +6,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: {
-    index: './src/index.ts',
-    audiocall: './src/pages/audiocall/audiocall.ts',
-    authorization: './src/pages/authorization/authorization.ts',
-    sprint: './src/pages/sprint/sprint.ts',
-    statistics: './src/pages/statistics/statistics.ts',
-    team: './src/pages/team/team.ts',
-    textbook: './src/pages/textbook/textbook.ts'
-  },
+  entry: path.resolve(__dirname, './src/index.ts'),
   output: {
-    filename: '[name].bundle.js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, './dist'),
   },
   mode: 'development',
@@ -44,17 +36,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
   },
-  plugins: [].concat(
-    ['audiocall', 'authorization', 'sprint', 'statistics', 'team', 'textbook'].map(page =>
-      new HtmlWebpackPlugin({
-        inject: true,
-        filename: `pages/${page}.html`,
-        template: `src/pages/${page}/${page}.html`,
-        chunks: [page]
-      }),
-    ),
-  
-  [
+  plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
@@ -67,5 +49,4 @@ module.exports = {
       ],
     }),
   ]
-  ),
 };

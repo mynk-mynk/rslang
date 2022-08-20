@@ -1,0 +1,67 @@
+.header-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.authorization-link {
+    display: block;
+    flex-grow: 1;
+    text-align: end;
+    margin-right: 10px;
+}
+
+.burger,
+.burger-line {
+    z-index: 2;
+}
+
+.burger {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    height: 22px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.burger-line,
+.burger:before,
+.burger:after {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    content: "";
+    background-color: var(--color);
+}
+
+.burger-line {
+    top: calc(50% - 1px);
+}
+
+.burger:before {
+    top: 0;
+}
+
+.burger:after {
+    bottom: 0;
+}
+
+.nav-bar {
+    list-style: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    margin: 30px 0;
+}
+
+.nav-bar li {
+    margin: 15px 0;
+}
+
+.home-icon {
+    filter: var(--filter);
+    margin-bottom: 20px !important;
+}
