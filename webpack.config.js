@@ -8,7 +8,6 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
   entry: {
     index: './src/index.ts',
-    about: './src/pages/about/about.ts',
     audiocall: './src/pages/audiocall/audiocall.ts',
     authorization: './src/pages/authorization/authorization.ts',
     sprint: './src/pages/sprint/sprint.ts',
@@ -46,7 +45,7 @@ module.exports = {
     extensions: ['.ts', '.js'],
   },
   plugins: [].concat(
-    ['about', 'audiocall', 'authorization', 'sprint', 'statistics', 'team', 'textbook'].map(page =>
+    ['audiocall', 'authorization', 'sprint', 'statistics', 'team', 'textbook'].map(page =>
       new HtmlWebpackPlugin({
         inject: true,
         filename: `pages/${page}.html`,
