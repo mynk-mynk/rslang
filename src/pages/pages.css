@@ -55,10 +55,24 @@ a {
     color: inherit;
 }
 
+.header-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .logo {
     font-family: 'DynaPuff', cursive;
     font-size: 2rem;
     color: var(--color);
+}
+
+.authorization-link {
+    display: block;
+    flex-grow: 1;
+    text-align: end;
+    margin-right: 10px;
 }
 
 .authorization-icon {

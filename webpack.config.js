@@ -5,10 +5,15 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 
+const pages = ['audiocall', 'authorization', 'index', 'sprint', 'statistics', 'team', 'textbook'];
+
 module.exports = {
-  entry: path.resolve(__dirname, './src/index.ts'),
+  entry: pages.reduce((config, page) => {
+    config[page] = `./src/pages/${page}/${page}.ts`;
+    return config;
+  }, {}),
   output: {
-    filename: 'bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, './dist'),
   },
   mode: 'development',
@@ -36,10 +41,17 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
+  plugins: [].concat(
+    pages.map(
+      (page) =>
+        new HtmlWebpackPlugin({
+          inject: true,
+          template: `src/pages/${page}/${page}.html`,
+          filename: `${page}.html`,
+          chunks: [page],
+        })
+    ),
+  [
     new CleanWebpackPlugin(),
     new ESLintPlugin({ extensions: 'ts' }),
     new webpack.HotModuleReplacementPlugin(),
@@ -49,4 +61,5 @@ module.exports = {
       ],
     }),
   ]
+  ),
 };

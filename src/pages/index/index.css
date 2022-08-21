@@ -1,9 +1,3 @@
-.header-container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
 .main-container {
     font-family: 'Comfortaa';
     margin: auto;
