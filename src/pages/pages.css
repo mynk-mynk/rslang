@@ -2,6 +2,8 @@
     --color: #181f4a;
     --ligth-color: #f6f099;
     --filter: invert(14%) sepia(9%) saturate(7252%) hue-rotate(205deg) brightness(85%) contrast(101%);
+    --font-primary: 'DynaPuff';
+    --font-secondary: 'Comfortaa';
 }
 
 @font-face {
@@ -21,7 +23,7 @@
 }
 
 body {
-    font-family: 'DynaPuff';
+    font-family: var(--font-primary);
     height: 100vh;
     background: rgb(240, 218, 255);
     background: linear-gradient(0deg, rgba(240, 218, 255, 1) 0%, rgba(246, 240, 153, 1) 50%, rgba(69, 239, 252, 1) 100%);
@@ -63,7 +65,7 @@ a {
 }
 
 .logo {
-    font-family: 'DynaPuff', cursive;
+    font-family: var(--font-primary), cursive;
     font-size: 2rem;
     color: var(--color);
 }
@@ -78,6 +80,76 @@ a {
 .authorization-icon {
     width: 40px;
     filter: var(--filter);
+}
+
+.burger,
+.burger-line {
+    z-index: 2;
+}
+
+.burger {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    height: 22px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.burger-line,
+.burger:before,
+.burger:after {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    content: "";
+    background-color: var(--color);
+}
+
+.burger-line {
+    top: calc(50% - 1px);
+}
+
+.burger:before {
+    top: 0;
+}
+
+.burger:after {
+    bottom: 0;
+}
+
+.burger.open {
+    transform: rotate(90deg);
+  }
+
+.nav-bar {
+    opacity: 0%;
+    list-style: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    margin: 30px 0;
+    transition: 0.5s ease-in-out;
+}
+
+.nav-bar.open {
+    opacity: 100%;
+}
+
+.nav-bar li {
+    margin: 15px 0;
+}
+
+.home-icon {
+    filter: var(--filter);
+    margin-bottom: 20px !important;
+}
+
+.main-container {
+  font-family: 'Comfortaa';
+  margin: auto;
+  display: flex;
 }
 
 .footer-container {
@@ -120,3 +192,7 @@ a {
 .btn-like-link:active {
     transform: scale(0.98);
 }
+
+/* @media screen and (max-width: ) {
+  
+} */
