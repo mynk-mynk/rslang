@@ -150,6 +150,7 @@ a {
   font-family: 'Comfortaa';
   margin: auto;
   display: flex;
+  padding: 50px 0;
 }
 
 .footer-container {
