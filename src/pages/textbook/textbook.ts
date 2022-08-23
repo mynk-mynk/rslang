@@ -114,4 +114,4 @@ async function init() {
   wordProps?.addEventListener('click', (e) => chooseWordProp(e.target as HTMLImageElement));
 }
 
-void init();
+init().then((res) => res).catch((e) => e as string);
