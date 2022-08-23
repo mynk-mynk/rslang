@@ -99,7 +99,7 @@
   padding: 20px;
 }
 
-.worrd-properties {
+.word-properties {
   width: 306px;
   z-index: 1;
   position: absolute;
@@ -109,8 +109,19 @@
   align-items: center;
 }
 
-.worrd-properties img {
+.word-properties img,
+.word-properties img.active {
+  transition: 0.1s;
+}
+
+.word-properties img:hover {
   cursor: pointer;
+  transform: scale(1.05);
+  filter: drop-shadow(1px 1px 3px #f06969);
+}
+
+.word-properties img:active {
+  transform: scale(0.95);
 }
 
 .word-container h2 {
@@ -136,7 +147,7 @@
 }
 
 .audio-icon:hover {
-  filter: var(--filter) drop-shadow(1px 1px 3px #e4e713);
+  filter: var(--filter) drop-shadow(1px 1px 3px #f06969);
   transform: scale(1.05);
 }
 

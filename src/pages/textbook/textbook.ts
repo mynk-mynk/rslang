@@ -2,32 +2,46 @@ import '../pages.css';
 import '../pages.ts';
 import './textbook.css';
 
+interface IWord {
+  id: string,
+  group: number,
+  page: number,
+  word: string,
+  image: string,
+  audio: string,
+  audioMeaning: string,
+  audioExample: string,
+  textMeaning: string,
+  textExample: string,
+  transcription: string,
+  wordTranslate: string,
+  textMeaningTranslate: string,
+  textExampleTranslate: string
+}
+
 const difficultyContainer = document.querySelector('.difficulty-container');
 
-function activateLevel(el: HTMLElement) {
+function activateProp(el: HTMLElement, selector: string) {
   if (el) {
-    const btns = difficultyContainer?.querySelectorAll('.difficulty-btn');
-    btns?.forEach((btn) => btn.classList.remove('active'));
+    const elements = document.querySelectorAll(selector);
+    elements?.forEach((element) => element.classList.remove('active'));
     el.classList.add('active');
   }
 }
 
-difficultyContainer?.addEventListener('click', (e) => activateLevel(e.target as HTMLElement));
+difficultyContainer?.addEventListener('click', (e) => activateProp(e.target as HTMLElement, '.difficulty-btn'));
 
 async function getCard() {
   const url = 'http://localhost:4000/words/5e9f5ee35eb9e72bc21afbf9';
   const res = await fetch(url);
-  const word = await res.json();
-  console.log(word);
-
+  const word = await res.json() as IWord;
   const wordContainer = document.querySelector('.word-container');
   if (wordContainer) {
-    wordContainer.innerHTML = 
-    `<img class="word-img" src="http://localhost:4000/${word.image}" alt="">
+    wordContainer.innerHTML = `<img class="word-img" src="http://localhost:4000/${word.image}" alt="">
     <div class="word-description">
-      <div class="worrd-properties">
-            <img src="../../assets/images/tick.png" alt="Learned" width="40" height="30">
-            <img src="../../assets/images/star.png" alt="Hard" width="40">
+      <div class="word-properties">
+        <img class="word-learned" src="../../assets/images/tick.png" alt="Learned" width="40">
+        <img class="word-hard" src="../../assets/images/star.png" alt="Hard" width="40">
           </div>
         <div class="word">
         <h2>${word.word}</h2>
@@ -53,4 +67,25 @@ async function getCard() {
   }
 }
 
-void getCard();
+function chooseWordProp(el: HTMLImageElement) {
+  const img = el;
+  const learned = document.querySelector<HTMLImageElement>('.word-learned');
+  const hard = document.querySelector<HTMLImageElement>('.word-hard');
+  activateProp(img, '.word-properties img');
+  if (img === learned) {
+    img.src = '../../assets/images/tick-filled.png';
+    if (hard) hard.src = '../../assets/images/star.png';
+  }
+  if (img === hard) {
+    img.src = '../../assets/images/star-filled.png';
+    if (learned) learned.src = '../../assets/images/tick.png';
+  }
+}
+
+async function init() {
+  await getCard();
+  const wordProps = document.querySelector('.word-properties');
+  wordProps?.addEventListener('click', (e) => chooseWordProp(e.target as HTMLImageElement));
+}
+
+void init();
