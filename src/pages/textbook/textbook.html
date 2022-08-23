@@ -28,6 +28,7 @@
   <main>
     <div class="main-container">
       <h1>Учебник</h1>
+
       <div class="difficulty-container">
         <div class="difficulty-btn level1 active">1</div>
         <div class="difficulty-btn level2">2</div>
@@ -68,7 +69,14 @@
         </div> -->
       </div>
 
-      <p>Pagination 1 - 30</p>
+      <div class="pagination-container">
+        <p class="pagination-first disabled"><<</p>
+        <p class="pagination-prev disabled"><</p>
+        <div class="pagination-current"><span id="page-number">1</span> / 30</div>
+        <p class="pagination-next">></p>
+        <p class="pagination-last">>></p>
+      </div>
+
     </div>
   </main>
   <footer>

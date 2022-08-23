@@ -19,6 +19,9 @@ interface IWord {
   textExampleTranslate: string
 }
 
+// TODO - function which change shadow color depending on a difficulty
+// for card-container, word-props, audio-icons and pagination
+
 const difficultyContainer = document.querySelector('.difficulty-container');
 
 function activateProp(el: HTMLElement, selector: string) {
