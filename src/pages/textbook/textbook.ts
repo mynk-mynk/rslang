@@ -67,18 +67,41 @@ async function getCard() {
   }
 }
 
+function toggleProp(el: HTMLElement) {
+  if (el) {
+    el.classList.toggle('active');
+  }
+}
+
+function deactivateWordProp(el: HTMLImageElement) {
+  const img = el;
+  const learned = document.querySelector<HTMLImageElement>('.word-learned');
+  const hard = document.querySelector<HTMLImageElement>('.word-hard');
+  if (img === learned) img.src = '../../assets/images/tick.png';
+  if (img === hard) img.src = '../../assets/images/star.png';
+  img.classList.remove('active');
+}
+
 function chooseWordProp(el: HTMLImageElement) {
   const img = el;
   const learned = document.querySelector<HTMLImageElement>('.word-learned');
   const hard = document.querySelector<HTMLImageElement>('.word-hard');
-  activateProp(img, '.word-properties img');
+  toggleProp(img);
   if (img === learned) {
-    img.src = '../../assets/images/tick-filled.png';
-    if (hard) hard.src = '../../assets/images/star.png';
+    if (img.classList.contains('active')) {
+      img.src = '../../assets/images/tick-filled.png';
+      if (hard) deactivateWordProp(hard);
+    } else {
+      img.src = '../../assets/images/tick.png';
+    }
   }
   if (img === hard) {
-    img.src = '../../assets/images/star-filled.png';
-    if (learned) learned.src = '../../assets/images/tick.png';
+    if (img.classList.contains('active')) {
+      img.src = '../../assets/images/star-filled.png';
+      if (learned) deactivateWordProp(learned);
+    } else {
+      img.src = '../../assets/images/star.png';
+    }
   }
 }
 
