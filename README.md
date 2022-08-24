@@ -10,3 +10,8 @@
 7) controllers - содержит всю логику приложения (файлы-классы по работе с моделями). Можно называть с большой буквы и чтобы не путать с моделями на конце добавлять Controller (например, WordController.ts)
 
 По поводу Observer есть такая статья, чтобы понимать, кто создает события, а кто на них подписывается в структуре MVC: https://medium.com/@patrickackerman/the-observer-pattern-with-vanilla-javascript-8f85ea05eaa8#:~:text=In%20our%20MVC%20implementation%2C%20our,the%20view%20through%20the%20controller.&text=With%20the%20Observer%20pattern%2C%20we,view%20into%20an%20%E2%80%9Cobserver%E2%80%9D.
+
+
+Контроллер - обрабатывает и реагирует на события (действия пользователя), и вносит изменения в модель и в представление.
+
+Хорошая статья с примером MVC: https://bespoyasov.ru/blog/clean-architecture-on-frontend/
