@@ -1,6 +1,6 @@
 :root {
   --color: #181f4a;
-  --ligth-color: #f6f099;
+  --ligth-color: #af8bd0;
   --filter: invert(14%) sepia(9%) saturate(7252%) hue-rotate(205deg) brightness(85%) contrast(101%);
   --font-primary: 'DynaPuff';
   --font-secondary: 'Comfortaa';
@@ -77,7 +77,7 @@ a:hover {
 }
 
 .logo:hover {
-  text-shadow: 1px 1px 3px var(--color);
+  text-shadow: 1px 1px 3px var(--ligth-color);
 }
 
 .logo:active {
@@ -94,6 +94,15 @@ a:hover {
 .authorization-icon {
   width: 40px;
   filter: var(--filter);
+  transition: 0.1s;
+}
+
+.authorization-icon:hover {
+  filter: var(--filter) drop-shadow(1px 1px 2px var(--ligth-color));
+}
+
+.authorization-icon:active {
+  transform: scale(0.97);
 }
 
 .burger,
@@ -179,13 +188,26 @@ a:hover {
   gap: 15px;
 }
 
+.github-names a:hover {
+  text-shadow: 1px 1px 2px var(--ligth-color);
+}
+
+.github-names a:active {
+  transform: scale(0.95);
+}
+
 .rs-logo {
   width: 80px;
   filter: var(--filter);
+  transition: 0.1s;
 }
 
 .github-logo {
   filter: var(--filter);
+}
+
+.rs-logo:hover {
+  filter: var(--filter) drop-shadow(1px 1px 2px var(--ligth-color));
 }
 
 .btn-like-link {
@@ -201,7 +223,7 @@ a:hover {
 
 .btn-like-link:hover {
   background: var(--color);
-  color: #af8bd0;
+  color: var(--ligth-color);
 }
 
 .btn-like-link:active {
