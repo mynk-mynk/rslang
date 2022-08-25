@@ -22,7 +22,7 @@ class App {
 
   start() {
     // add event listener and observer to NavBar links
-    const urlObserver: EventObserver = new EventObserver();
+    const urlObserver = new EventObserver<string>();
     urlObserver.subscribe((url: string) => {
       /*
         TODO:

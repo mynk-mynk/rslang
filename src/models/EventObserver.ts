@@ -1,19 +1,19 @@
-class EventObserver {
-  private observers: Array<(data: string) => void>;
+class EventObserver<T> {
+  private observers: Array<(data: T) => void>;
 
   constructor() {
     this.observers = [];
   }
 
-  subscribe(func: (data: string) => void) {
+  subscribe(func: (data: T) => void) {
     this.observers.push(func);
   }
 
-  unsubscribe(func: () => void) {
+  unsubscribe(func: (data: T) => void) {
     this.observers = this.observers.filter((subs) => subs !== func);
   }
 
-  broadcast(data: string) {
+  broadcast(data: T) {
     this.observers.forEach((subs) => subs(data));
   }
 }
