@@ -49,20 +49,23 @@ async function getCard() {
         <div class="word">
         <h2>${word.word}</h2>
         <p class="word-transcription">${word.transcription}</p>
-        <img src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+        <audio id="audio-word" src="http://localhost:4000/${word.audio}"></audio>
+        <img id="audio-btn-word" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
         <p class="word-translation">${word.wordTranslate}</p>
       </div>
       <div class="word-meaning">
         <p>
         ${word.textMeaning}
-          <img class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+        <img id="audio-btn-meaning" class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+          <audio id="audio-meaning" src="http://localhost:4000/${word.audioMeaning}"></audio>
         </p>
         <p class="meaning-translation">${word.textMeaningTranslate}</p>
       </div>
       <div class="word-example">
         <p>
         ${word.textExample}
-          <img class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+        <img id="audio-btn-example" class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+          <audio id="audio-example" src="http://localhost:4000/${word.audioExample}"></audio>
         </p>
         <p class="example-translation">${word.textExampleTranslate}</p>
       </div>
@@ -108,10 +111,22 @@ function chooseWordProp(el: HTMLImageElement) {
   }
 }
 
+function playAudio(btn: HTMLElement) {
+  if (btn) {
+    const id = btn.id.split('-').reverse()[0];
+    document.querySelector<HTMLAudioElement>(`#audio-${id}`)?.play().then((res) => res).catch((e: Error) => e);
+  }
+}
+
+// TODO: disable audio btns while playing
+
 async function init() {
   await getCard();
   const wordProps = document.querySelector('.word-properties');
   wordProps?.addEventListener('click', (e) => chooseWordProp(e.target as HTMLImageElement));
+  document.querySelectorAll('.audio-icon').forEach((icon) => {
+    icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
+  });
 }
 
 init().then((res) => res).catch((e) => e as string);
