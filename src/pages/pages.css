@@ -2,6 +2,7 @@
   --color: #181f4a;
   --ligth-color: #af8bd0;
   --filter: invert(14%) sepia(9%) saturate(7252%) hue-rotate(205deg) brightness(85%) contrast(101%);
+  --filter-light: invert(87%) sepia(27%) saturate(6724%) hue-rotate(206deg) brightness(88%) contrast(83%);
   --font-primary: 'DynaPuff';
   --font-secondary: 'Comfortaa';
 }

@@ -153,7 +153,6 @@
 }
 
 .audio-icon:active {
-  filter: var(--filter) drop-shadow(1px 1px 3px #e4e713);
   transform: scale(0.95);
 }
 

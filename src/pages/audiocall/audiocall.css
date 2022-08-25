@@ -5,26 +5,101 @@
   align-items: center;
 }
 
+.game-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+  padding-top: 200px;
+}
+
+.word-img {
+  display: none;
+}
+
+.sound-icon,
+.word-img {
+  width: 150px;
+}
+
+.word-description {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  display: flex;
+  align-content: center;
+  gap: 15px;
+}
+
+.word-description {
+  display: flex;
+}
+
+.audio-icon {
+  filter: var(--filter-light);
+  transition: 0.1s;
+}
+
+.audio-icon:hover {
+  cursor: pointer;
+  filter: var(--filter-light);
+  transform: scale(1.05);
+}
+
+.audio-icon:active {
+  transform: scale(0.95);
+}
+
 .btns-container {
   display: flex;
   gap: 50px;
 }
 
-.btns-container p {
+.btns-container div {
+  position: relative;
   user-select: none;
-  font-family: var(--font-primary);
+  font-family: var(--font-secondary);
   font-size: 1.5rem;
   opacity: 80%;
   transition: 0.2s;
 }
 
-.btns-container p:hover {
+.btns-container div.correct-answer,
+.btns-container div.wrong-answer {
+  opacity: 100%;
+  text-shadow: 0 0 1px var(--color);
+  transform: scale(1.05);
+}
+
+.btns-container div:hover {
   cursor: pointer;
   opacity: 100%;
   transform: scale(1.05);
   text-shadow: 0 0 1px var(--color);
 }
 
-.btns-container p:active {
+.btns-container div.correct-answer:hover,
+.btns-container div.wrong-answer:hover {
+  cursor: auto;
+}
+
+.btns-container div.correct-answer:active,
+.btns-container div.wrong-answer:active {
+  transform: scale(1.05);
+}
+
+.btns-container div:active {
   transform: scale(0.95);
 }
+
+.answer-img {
+  display: none;
+  position: absolute;
+  top: -25px;
+  left: calc(50% - 10px);
+}
+
+.answer-img.active {
+  display: block;
+}
+
