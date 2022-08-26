@@ -1,8 +1,76 @@
 .main-container {
+  position: relative;
+  width: 100%;
   height: 100%;
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
+}
+
+.game-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+}
+
+.sprint-timer {
+  position: absolute;
+  right: 100px;
+}
+
+.game-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.current-score {
+  font-family: var(--font-primary);
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.answers {
+  text-align: center;
+}
+
+.correct-answers p {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--color);
+  opacity: 20%;
+  margin: 3px;
+}
+
+.points-per-answer {
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.progress {
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--color);
+}
+
+.word-props {
+  text-align: center;
+  margin: 20px;
+}
+
+.sprint-word {
+  font-family: var(--font-primary);
+  font-size: 1.5rem;
+}
+
+.sprint-translation {
+  font-size: 1.3rem;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 .btns-container {
@@ -17,9 +85,9 @@
   justify-content: center;
   font-family: var(--font-primary);
   font-size: 5rem;
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
   border: 2px solid var(--color);
   opacity: 80%;
   transition: 0.2s;
