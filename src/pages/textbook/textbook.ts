@@ -43,8 +43,8 @@ async function getCard() {
     wordContainer.innerHTML = `<img class="word-img" src="http://localhost:4000/${word.image}" alt="">
     <div class="word-description">
       <div class="word-properties">
-        <img class="word-learned" src="../../assets/images/tick.png" alt="Learned" width="40">
-        <img class="word-hard" src="../../assets/images/star.png" alt="Hard" width="40">
+        <img class="word-learned" src="../../assets/images/textbook/tick.png" alt="Learned" width="40">
+        <img class="word-hard" src="../../assets/images/textbook/star.png" alt="Hard" width="40">
           </div>
         <div class="word">
         <h2>${word.word}</h2>
@@ -83,8 +83,8 @@ function deactivateWordProp(el: HTMLImageElement) {
   const img = el;
   const learned = document.querySelector<HTMLImageElement>('.word-learned');
   const hard = document.querySelector<HTMLImageElement>('.word-hard');
-  if (img === learned) img.src = '../../assets/images/tick.png';
-  if (img === hard) img.src = '../../assets/images/star.png';
+  if (img === learned) img.src = '../../assets/images/textbook/tick.png';
+  if (img === hard) img.src = '../../assets/images/textbook/star.png';
   img.classList.remove('active');
 }
 
@@ -95,18 +95,18 @@ function chooseWordProp(el: HTMLImageElement) {
   toggleProp(img);
   if (img === learned) {
     if (img.classList.contains('active')) {
-      img.src = '../../assets/images/tick-filled.png';
+      img.src = '../../assets/images/textbook/tick-filled.png';
       if (hard) deactivateWordProp(hard);
     } else {
-      img.src = '../../assets/images/tick.png';
+      img.src = '../../assets/images/textbook/tick.png';
     }
   }
   if (img === hard) {
     if (img.classList.contains('active')) {
-      img.src = '../../assets/images/star-filled.png';
+      img.src = '../../assets/images/textbook/star-filled.png';
       if (learned) deactivateWordProp(learned);
     } else {
-      img.src = '../../assets/images/star.png';
+      img.src = '../../assets/images/textbook/star.png';
     }
   }
 }

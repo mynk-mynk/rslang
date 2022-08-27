@@ -111,4 +111,50 @@
   transform: scale(0.95);
 }
 
+.result-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  gap: 30px;
+}
+
+.result-container .audio-icon {
+  filter: var(--filter);
+}
+
+.results-header {
+  align-self: center;
+  font-size: 1.5rem;
+}
+
+.results {
+  display: flex;
+  gap: 50px;
+}
+
+.results-description p {
+  margin: 5px;
+}
+
+.results-accuracy {
+  align-self: center;
+}
+
+.word-list h3 {
+  margin: 10px 0;
+}
+
+.word-list li {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.word-list li span {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
 
