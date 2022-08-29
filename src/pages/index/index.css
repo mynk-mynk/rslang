@@ -4,6 +4,11 @@
     gap: 50px;
 }
 
+.burger,
+.nav-bar {
+  display: none;
+}
+
 .description {
     max-width: 60%;
     min-width: 375px;

@@ -3,6 +3,7 @@
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
+  gap: 50px;
 }
 
 
@@ -72,6 +73,14 @@
   box-shadow: 0 0 10px var(--color);
 }
 
+
+.words-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  flex-grow: 1;
+}
 
 /* Word card */
 
@@ -174,8 +183,9 @@
 .word-meaning p,
 .word-example p {
   position: relative;
-  width: 90%;
+  width: 91%;
   margin: 10px 0;
+  padding-right: 20px;
 }
 
 

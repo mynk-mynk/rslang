@@ -1,3 +1,4 @@
+import { server } from '../../../config';
 import '../pages.css';
 import '../pages.ts';
 import './textbook.css';
@@ -22,6 +23,44 @@ interface IWord {
 // TODO - function which change shadow color depending on a difficulty
 // for card-container, word-props, audio-icons and pagination
 
+class TextbookPage {
+  // words: IWord[];
+
+  // constructor(words: IWord[]) {
+  //   this.words = words;
+  // }
+
+  static draw() {
+    return `<div class="main-container">
+    <h1>Учебник</h1>
+
+    <div class="difficulty-container">
+      <div class="difficulty-btn level1 active">1</div>
+      <div class="difficulty-btn level2">2</div>
+      <div class="difficulty-btn level3">3</div>
+      <div class="difficulty-btn level4">4</div>
+      <div class="difficulty-btn level5">5</div>
+      <div class="difficulty-btn level6">6</div>
+      <div class="difficulty-btn level7">7</div>
+    </div>
+
+    <div class="words-container"></div>
+
+    <div class="pagination-container">
+      <p class="pagination-first disabled"><<</p>
+      <p class="pagination-prev disabled"><</p>
+      <div class="pagination-current"><span id="page-number">1</span> / 30</div>
+      <p class="pagination-next">></p>
+      <p class="pagination-last">>></p>
+    </div>
+
+  </div>`;
+  }
+}
+
+const main: HTMLElement | null = document.querySelector<HTMLElement>('main');
+if (main) main.innerHTML = TextbookPage.draw();
+
 const difficultyContainer = document.querySelector('.difficulty-container');
 
 function activateProp(el: HTMLElement, selector: string) {
@@ -34,43 +73,49 @@ function activateProp(el: HTMLElement, selector: string) {
 
 difficultyContainer?.addEventListener('click', (e) => activateProp(e.target as HTMLElement, '.difficulty-btn'));
 
-async function getCard() {
-  const url = 'http://localhost:4000/words/5e9f5ee35eb9e72bc21afbf9';
+async function getWords(group = 1, page = 1) {
+  const url = server.getLocal() + `words?group=${group}&page=${page}`;
   const res = await fetch(url);
-  const word = await res.json() as IWord;
-  const wordContainer = document.querySelector('.word-container');
-  if (wordContainer) {
-    wordContainer.innerHTML = `<img class="word-img" src="http://localhost:4000/${word.image}" alt="">
-    <div class="word-description">
-      <div class="word-properties">
-        <img class="word-learned" src="../../assets/images/textbook/tick.png" alt="Learned" width="40">
-        <img class="word-hard" src="../../assets/images/textbook/star.png" alt="Hard" width="40">
-          </div>
-        <div class="word">
-        <h2>${word.word}</h2>
-        <p class="word-transcription">${word.transcription}</p>
-        <audio id="audio-word" src="http://localhost:4000/${word.audio}"></audio>
-        <img id="audio-btn-word" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
-        <p class="word-translation">${word.wordTranslate}</p>
-      </div>
-      <div class="word-meaning">
-        <p>
-        ${word.textMeaning}
-        <img id="audio-btn-meaning" class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
-          <audio id="audio-meaning" src="http://localhost:4000/${word.audioMeaning}"></audio>
-        </p>
-        <p class="meaning-translation">${word.textMeaningTranslate}</p>
-      </div>
-      <div class="word-example">
-        <p>
-        ${word.textExample}
-        <img id="audio-btn-example" class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
-          <audio id="audio-example" src="http://localhost:4000/${word.audioExample}"></audio>
-        </p>
-        <p class="example-translation">${word.textExampleTranslate}</p>
-      </div>
-    </div>`;
-  }
+  const words = await res.json() as IWord[];
+  return words;
+}
+
+function drawWordCard(word: IWord) {
+  const wordContainer = document.createElement('div');
+  wordContainer.classList.add('word-container');
+  wordContainer.innerHTML = `<img class="word-img" src="${server.getLocal()}${word.image}" alt="">
+  <div class="word-description">
+    <div class="word-properties">
+      <img class="word-learned" src="../../assets/images/textbook/tick.png" alt="Learned" width="40">
+      <img class="word-hard" src="../../assets/images/textbook/star.png" alt="Hard" width="40">
+        </div>
+      <div class="word">
+      <h2>${word.word}</h2>
+      <p class="word-transcription">${word.transcription}</p>
+      <img id="btn-${word.id}-word" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <audio id="audio-${word.id}-word" src="${server.getLocal()}${word.audio}"></audio>
+      <p class="word-translation">${word.wordTranslate}</p>
+    </div>
+    <div class="word-meaning">
+      <p>
+      ${word.textMeaning}
+      <img id="btn-${word.id}-meaning" class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+        <audio id="audio-${word.id}-meaning" src="${server.getLocal()}${word.audioMeaning}"></audio>
+      </p>
+      <p class="meaning-translation">${word.textMeaningTranslate}</p>
+    </div>
+    <div class="word-example">
+      <p>
+      ${word.textExample}
+      <img id="btn-${word.id}-example" class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+        <audio id="audio-${word.id}-example" src="${server.getLocal()}${word.audioExample}"></audio>
+      </p>
+      <p class="example-translation">${word.textExampleTranslate}</p>
+    </div>
+  </div>`;
+
+  const words = document.querySelector('.words-container');
+  words?.append(wordContainer);
 }
 
 function toggleProp(el: HTMLElement) {
@@ -81,8 +126,9 @@ function toggleProp(el: HTMLElement) {
 
 function deactivateWordProp(el: HTMLImageElement) {
   const img = el;
-  const learned = document.querySelector<HTMLImageElement>('.word-learned');
-  const hard = document.querySelector<HTMLImageElement>('.word-hard');
+  const card = el.closest('.word-container');
+  const learned = card?.querySelector<HTMLImageElement>('.word-learned');
+  const hard = card?.querySelector<HTMLImageElement>('.word-hard');
   if (img === learned) img.src = '../../assets/images/textbook/tick.png';
   if (img === hard) img.src = '../../assets/images/textbook/star.png';
   img.classList.remove('active');
@@ -90,8 +136,9 @@ function deactivateWordProp(el: HTMLImageElement) {
 
 function chooseWordProp(el: HTMLImageElement) {
   const img = el;
-  const learned = document.querySelector<HTMLImageElement>('.word-learned');
-  const hard = document.querySelector<HTMLImageElement>('.word-hard');
+  const card = el.closest('.word-container');
+  const learned = card?.querySelector<HTMLImageElement>('.word-learned');
+  const hard = card?.querySelector<HTMLImageElement>('.word-hard');
   toggleProp(img);
   if (img === learned) {
     if (img.classList.contains('active')) {
@@ -113,17 +160,20 @@ function chooseWordProp(el: HTMLImageElement) {
 
 function playAudio(btn: HTMLElement) {
   if (btn) {
-    const id = btn.id.split('-').reverse()[0];
-    document.querySelector<HTMLAudioElement>(`#audio-${id}`)?.play().then((res) => res).catch((e: Error) => e);
+    const id = btn.id.split('-');
+    document.querySelector<HTMLAudioElement>(`#audio-${id[1]}-${id[2]}`)?.play().then((res) => res).catch((e: Error) => e);
   }
 }
 
 // TODO: disable audio btns while playing
 
 async function init() {
-  await getCard();
-  const wordProps = document.querySelector('.word-properties');
-  wordProps?.addEventListener('click', (e) => chooseWordProp(e.target as HTMLImageElement));
+  const words = await getWords();
+  words.forEach((word) => drawWordCard(word));
+  const wordProps = document.querySelectorAll('.word-properties');
+  wordProps.forEach((container) => {
+    container.addEventListener('click', (e) => chooseWordProp(e.target as HTMLImageElement));
+  });
   document.querySelectorAll('.audio-icon').forEach((icon) => {
     icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
   });

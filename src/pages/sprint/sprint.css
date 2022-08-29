@@ -122,6 +122,11 @@
   filter: var(--filter);
 }
 
+.result-container .audio-icon:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
 .results-header {
   align-self: center;
   font-size: 1.5rem;
