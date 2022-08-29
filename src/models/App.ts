@@ -1,34 +1,48 @@
+import AudiocallController from '../controllers/AudiocallController';
+import ErrorController from '../controllers/ErrorController';
+import IndexController from '../controllers/IndexController';
+import SprintController from '../controllers/SprintController';
+import StatisticsController from '../controllers/StatisticsController';
+import TextbookController from '../controllers/TextbookController';
 import EventObserver from './EventObserver';
 
 class App {
-  private url: string;
+  private _url: string;
 
-  private pages: string[];
+  private page: string;
 
-  private mainContainer: HTMLElement | null;
+  private readonly pages;
 
   constructor() {
-    this.url = window.location.pathname;
-    this.pages = ['', 'textbook', 'sprint', 'audiocall', 'statistics', 'error'];
-    this.mainContainer = document.querySelector('main');
+    this._url = window.location.pathname;
+    this.page = this._url.slice(1) || 'index';
+    this.pages = {
+      index: IndexController,
+      textbook: TextbookController,
+      sprint: SprintController,
+      audiocall: AudiocallController,
+      statistics: StatisticsController,
+      error: ErrorController,
+    };
 
     // add content into main according to link
-    /*
-      TODO:
-        replace "...innerHTML = url" with "...innerHTML = this.getContent(url)"
-    */
-    if (this.mainContainer) this.mainContainer.innerHTML = this.url;
+    this.getContent();
+  }
+
+  get url() {
+    return this._url;
+  }
+
+  set url(value: string) {
+    this._url = value;
+    this.page = this._url.slice(1) || 'index';
   }
 
   start() {
     // add event listener and observer to NavBar links
     const urlObserver = new EventObserver<string>();
-    urlObserver.subscribe((url: string) => {
-      /*
-        TODO:
-          replace "...innerHTML = url" with "...innerHTML = this.getContent(url)"
-      */
-      if (this.mainContainer) this.mainContainer.innerHTML = url;
+    urlObserver.subscribe(() => {
+      this.getContent();
     });
 
     const menuLinks: NodeListOf<HTMLElement> = document.querySelectorAll('.nav-bar li');
@@ -42,22 +56,22 @@ class App {
         }
       });
     });
+
+    // add event listener to browser history buttons
+    window.addEventListener('popstate', () => {
+      this.url = window.location.pathname;
+      urlObserver.broadcast(this.url);
+    });
   }
 
-  /*
-    TODO:
-      function "private getContent() {}"
-        get content from this.url and inner html it into <main>
-            check:
-                    if (this.pages.includes(this.url.substr(1))) {
-                      *return content from this page*
-                    } else {
-                      const currentState = window.history.state;
-                      this.url = '/error';
-                      window.history.replaceState(currentState, 'RS Clone', this.url);
-                      *return content from error page*
-                    }
-  */
+  private getContent() {
+    const controller = this.pages[this.page as keyof typeof this.pages];
+    if (controller) {
+      controller.actionIndex();
+    } else {
+      this.pages.error.actionIndex();
+    }
+  }
 }
 
 export default App;

@@ -7,10 +7,6 @@ class User {
 
   private readonly password: string;
 
-  // private readonly token: IAuth;
-
-  // private words: IWord[];
-
   constructor(private readonly user: IUser) {
     this.name = user.name;
     this.email = user.email;

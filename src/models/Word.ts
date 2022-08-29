@@ -17,13 +17,15 @@ class Word {
 
   static async getWords(page = '', group = '') {
     const pageGroup = page && group ? `?page=${page}&group=${group}` : '';
-    const words = fetch(`${config.api.url}words${pageGroup}`)
+    const url = `${config.api.url}words${pageGroup}`;
+    const words = fetch(url)
       .then((data) => data.json());
     return words;
   }
 
   static async getWord(id: string) {
-    const word = fetch(`${config.api.url}words/${id}`)
+    const url = `${config.api.url}words/${id}`;
+    const word = fetch(url)
       .then((data) => data.json())
       .then((data) => data as IWord)
       .catch((err) => console.log(err));
