@@ -1,18 +1,5 @@
 // import { IWord } from "./Word";
-
-interface IUser {
-  name: string;
-  email: string;
-  password: string;
-}
-
-// interface IAuth{
-//   message: string;
-//   token: string;
-//   refreshToken: string;
-//   userId: string;
-//   name: string;
-// }
+import { IUser } from '../common/interfaces/IUser';
 
 class User {
   private readonly name: string;
