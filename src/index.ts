@@ -1,2 +1,4 @@
-import '../pages.css';
-import './index.css';
+import App from './models/App';
+
+const app: App = new App();
+app.start();

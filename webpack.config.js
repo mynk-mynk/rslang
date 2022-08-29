@@ -21,7 +21,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
@@ -33,25 +33,26 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jp*g|ico)$/i,
-        type: 'asset/resource'
-      }
+        type: 'asset/resource',
+      },
     ],
   },
   devtool: 'inline-source-map',
+  devServer: {
+    historyApiFallback: {
+      rewrites: [
+        // { from: /\/textbook$/, to: '/' },
+      ],
+    },
+  },
   resolve: {
     extensions: ['.ts', '.js'],
   },
-  plugins: [].concat(
-    pages.map(
-      (page) =>
-        new HtmlWebpackPlugin({
-          inject: true,
-          template: `src/pages/${page}/${page}.html`,
-          filename: `${page}.html`,
-          chunks: [page],
-        })
-    ),
-  [
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/index.html'),
+      favicon: './src/assets/icons/favicon.png',
+    }),
     new CleanWebpackPlugin(),
     new ESLintPlugin({ extensions: 'ts' }),
     new webpack.HotModuleReplacementPlugin(),
@@ -60,6 +61,21 @@ module.exports = {
         { from: "src/assets", to: path.resolve(__dirname, './dist/assets') }
       ],
     }),
-  ]
-  ),
+  ],
+
+  // plugins: [].concat(
+  //   pages.map(
+  //     (page) =>
+  //       new HtmlWebpackPlugin({
+  //         inject: true,
+  //         template: `src/pages/${page}/${page}.html`,
+  //         filename: `${page}.html`,
+  //         chunks: [page],
+  //       })
+  //   ),
+  // [
+
+  // ]
+  // ),
 };
+
