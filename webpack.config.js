@@ -16,7 +16,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
@@ -28,20 +28,26 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jp*g|ico)$/i,
-        type: 'asset/resource'
-      }
+        type: 'asset/resource',
+      },
     ],
   },
   devtool: 'inline-source-map',
-  // devServer: {
-  //     contentBase: path.resolve(__dirname, './dist'),
-  // },
+  devServer: {
+    historyApiFallback: {
+      rewrites: [
+        // { from: /\/textbook$/, to: '/' },
+      ],
+    },
+    // contentBase: path.resolve(__dirname, './dist'),
+  },
   resolve: {
     extensions: ['.ts', '.js'],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
+      favicon: './src/assets/icons/favicon.png',
     }),
     new CleanWebpackPlugin(),
     new ESLintPlugin({ extensions: 'ts' }),
