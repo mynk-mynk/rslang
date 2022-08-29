@@ -15,3 +15,11 @@
 Контроллер - обрабатывает и реагирует на события (действия пользователя), и вносит изменения в модель и в представление.
 
 Хорошая статья с примером MVC: https://bespoyasov.ru/blog/clean-architecture-on-frontend/
+
+По работе с моделями:
+WORD
+1. Создать экземпляр класса с данными по одному слову: 
+  С помощью только id: const word = await Word.init('5e9f5ee35eb9e72bc21af4a4');
+  Если есть все параметры передаем их в виде объекта: const word = new Word(params);
+2. Получить все слова со страницы (возвращает промис): Word.getWords().then((data) => console.log(data)).catch((e) => console.log(e));
+USER

@@ -1,4 +1,3 @@
-// import { IWord } from "./Word";
 import { IUser } from '../common/interfaces/IUser';
 
 class User {
