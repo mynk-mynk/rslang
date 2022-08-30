@@ -72,7 +72,7 @@ ul {
 .header-container {
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -91,8 +91,6 @@ ul {
 }
 
 .authorization-link {
-  /* display: block; */
-  flex-grow: 1;
   text-align: end;
   margin-right: 10px;
   border: none;
@@ -121,6 +119,7 @@ ul {
 .burger {
   cursor: pointer;
   display: inline-block;
+  vertical-align: super;
   position: relative;
   width: 30px;
   height: 22px;
@@ -169,6 +168,17 @@ ul {
 
 .nav-bar li {
   margin: 15px 0;
+  transition: 0.2s;
+}
+
+.nav-bar.open li:hover {
+  cursor: pointer;
+  transform: scale(1.06);
+}
+
+.nav-bar.open li:active {
+  cursor: pointer;
+  transform: scale(0.95);
 }
 
 .home-icon {
