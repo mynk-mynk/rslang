@@ -20,6 +20,24 @@ class AudiocallView {
             `;
   }
 
+  static rightIcon() {
+    return `<img
+                    class="answer-img active"
+                    src="../../assets/images/right-icon.png"
+                    alt="Correct-icon"
+                    width="20"
+                    />`;
+  }
+
+  static wrongIcon() {
+    return `<img
+                    class="answer-img active"
+                    src="../../assets/images/wrong-icon.png"
+                    alt="Wrong-icon"
+                    width="20"
+                    />`;
+  }
+
   static renderQuestion(answers: string[]) {
     return `
     <div class="game-container">
@@ -40,24 +58,26 @@ class AudiocallView {
             />
             <p class="current-word-answer">Word</p>
           </div>
-          
+
     <div class="btns-container">
       <div>
-        <button class="answer1 answer-item">1. ${answers[0].toUpperCase()}</button>
+        <button class="answer1 answer-item">1. ${answers[0]}</button>
       </div>
       <div>
-        <button class="answer2 answer-item">2. ${answers[1].toUpperCase()}</button>
+        <button class="answer2 answer-item">2. ${answers[1]}</button>
       </div>
       <div>
-        <button class="answer3 answer-item">3. ${answers[2].toUpperCase()}</button>
+        <button class="answer3 answer-item">3. ${answers[2]}</button>
       </div>
       <div>
-        <button class="answer4 answer-item">4. ${answers[3].toUpperCase()}</button>
+        <button class="answer4 answer-item">4. ${answers[3]}</button>
       </div>
       <div>
-        <button class="answer5 answer-item">5. ${answers[4].toUpperCase()}</button>
+        <button class="answer5 answer-item">5. ${answers[4]}</button>
       </div>
-    </div>`;
+    </div>
+    <button id="btn-next" disabled>Next</button>
+  </div>`;
   }
 }
 
