@@ -29,9 +29,6 @@ class AudiocallController {
 
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
 
-    // const gameContainer = document.querySelector('.game-container');
-    // gameContainer?.classList.add('hidden');
-
     const difficultyContainer = document.querySelector('.difficulty-container');
 
     function activateProp(el: HTMLElement, selector: string) {
@@ -60,7 +57,6 @@ class AudiocallController {
       });
     }
 
-    //!GENERATING ARRAY WITH CURRENT GROUP WORDS
     async function generateWords() {
       const temporaryResult: IWord[] = [];
 
@@ -81,8 +77,6 @@ class AudiocallController {
         (<HTMLAudioElement>document.getElementById(`audio-word-${id}`)).play();
       }
     }
-
-    //!GENERATING RANDOM ARRAY AND INSERTING 1 CORRECT ANSWER
     function wordsRandomizer() {
       data.currentWord = data.wordsArr[Math.floor(Math.random() * 601)];
       const randomWord = function () {
@@ -104,10 +98,8 @@ class AudiocallController {
       );
     }
 
-    //! START BUTTON
     startBtn.onclick = async () => {
       await generateWords();
-      console.log(data.wordsArr);
       wordsRandomizer();
 
       mainContainer.innerHTML = AudiocallView.renderQuestion(
@@ -127,8 +119,6 @@ class AudiocallController {
         playAudio(e.target as HTMLImageElement)
       );
     };
-
-    //! TRACKING ANSWER
     function checkAnswer() {
       (<HTMLDivElement>document.querySelector('.btns-container')).onclick = (
         e: Event
@@ -136,21 +126,17 @@ class AudiocallController {
         nextQuestion();
         buttonPress();
         if ((<HTMLElement>e.target).classList.contains('answer-item')) {
-          //! CHANGING THE IMAGE OF THE ANSWER
           const answerImage = document.querySelector('.sound-icon');
           (<HTMLImageElement>answerImage).src = `${config.api.url}${
             (<IWord>data.currentWord).image
           }`;
-          //! CHANGING DEFAULT WORD TO ANSWER
           (<HTMLParagraphElement>(
             document.querySelector('.current-word-answer')
           )).innerHTML = (<IWord>data.currentWord).word;
-          //! CHECKING IF ANSWER IS CORRECT AND ADDING CORRECT ICON
           if (
             (<HTMLElement>e.target).innerText.slice(3) ===
             (<IWord>data.currentWord).wordTranslate
           ) {
-            //!DISABLING ALL ANSWER BUTTONS
             const answerItems = [
               ...document.getElementsByClassName('answer-item'),
             ];
@@ -162,13 +148,10 @@ class AudiocallController {
               'beforebegin',
               AudiocallView.rightIcon()
             );
-            //!ACTIVATING NEXT BUTTON
             (<HTMLButtonElement>document.getElementById('btn-next')).disabled =
               false;
             data.answerMap.set(<IWord>data.currentWord, 'correct');
-          }
-          //! CONDITIONS WHEN WRONG BUTTON IS CLICKED
-          else {
+          } else {
             const answerItems = [
               ...document.getElementsByClassName('answer-item'),
             ];
@@ -194,8 +177,6 @@ class AudiocallController {
         }
       };
     }
-
-    //! NEXT BUTTON
     function nextQuestion() {
       (<HTMLButtonElement>document.getElementById('btn-next')).onclick = () => {
         if (data.answerMap.size < 4) {
@@ -204,7 +185,6 @@ class AudiocallController {
             data.currentAnswers,
             data.currentWord
           );
-          // TODO - FIX AUDIO CALLING
 
           (<HTMLAudioElement>(
             document.getElementById(`audio-word-${data.currentWord?.word}`)
@@ -217,7 +197,6 @@ class AudiocallController {
           checkAnswer();
           buttonPress();
         } else {
-          //! CLEARING GAME CONTAINER AND SORTING MAPS
           mainContainer.innerHTML = '';
           const mapSort = new Map([...data.answerMap.entries()].sort());
           const mapCorrect = new Map(
@@ -226,7 +205,6 @@ class AudiocallController {
           const mapIncorrect = new Map(
             [...mapSort].filter(([_, v]) => v === 'incorrect')
           );
-          //! GENERATING CORRECT RESULTS
           mainContainer.insertAdjacentHTML(
             'afterbegin',
             AudiocallView.renderResults()
@@ -239,7 +217,6 @@ class AudiocallController {
               AudiocallView.renderCorrectResults(k)
             );
           });
-          // //! GENERATING INCORRECT RESULTS
           mapIncorrect.forEach((_, k) => {
             (<HTMLDivElement>(
               document.querySelector('.incorrect-results')
