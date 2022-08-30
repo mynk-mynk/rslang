@@ -117,6 +117,7 @@ ul {
 }
 
 .burger {
+  z-index: 10;
   cursor: pointer;
   display: inline-block;
   vertical-align: super;
@@ -154,6 +155,7 @@ ul {
 }
 
 .nav-bar {
+  z-index: 10;
   opacity: 0%;
   position: absolute;
   top: 30px;

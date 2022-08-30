@@ -4,8 +4,8 @@ const burgerIcon = findHtmlElement(document, '.burger');
 const navBar = findHtmlElement(document, '.nav-bar');
 
 function toggleBurgerMenu() {
-  burgerIcon?.classList.toggle('open');
-  navBar?.classList.toggle('open');
+  burgerIcon.classList.toggle('open');
+  navBar.classList.toggle('open');
 }
 
-burgerIcon?.addEventListener('click', toggleBurgerMenu);
+burgerIcon.addEventListener('click', toggleBurgerMenu);

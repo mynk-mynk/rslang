@@ -113,35 +113,35 @@ class IndexView {
             <a href="/team" class="btn-like-link">Команда</a>
         </div>
     </div>
-    <div class="start-menu">
-        <a href="/textbook">
+    <ul class="start-menu">
+        <li data-path="/textbook">
             <div class="menu-item">
                 <img src="../../assets/images/textbook.png" alt="Textbook image" class="menu-item-img"
                     width="80">
                 <span class="menu-item-name">Учебник</span>
             </div>
-        </a>
-        <a href="/sprint">
+        </li>
+        <li data-path="/sprint">
             <div class="menu-item">
                 <img src="../../assets/images/sprint.png" alt="Sprint image" class="menu-item-img" width="70">
                 <span class="menu-item-name">Игра "Спринт"</span>
             </div>
-        </a>
-        <a href="/audiocall">
+        </li>
+        <li data-path="/audiocall">
             <div class="menu-item">
                 <img src="../../assets/images/audiocall.png" alt="Audiogame image" class="menu-item-img"
                     width="70">
                 <span class="menu-item-name">Игра "Аудиовызов"</span>
             </div>
-        </a>
-        <a href="/statistics">
+        </li>
+        <li data-path="/statistics">
             <div class="menu-item">
                 <img src="../../assets/images/statistics.png" alt="Statistics image" class="menu-item-img"
                     width="70">
                 <span class="menu-item-name">Статистика</span>
             </div>
-        </a>
-    </div>
+        </li>
+    </ul>
 </div>`;
   }
 }
