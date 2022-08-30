@@ -55,6 +55,8 @@ class App {
 
     // add event listener and observer to NavBar links
     this.setRouterToElements('.nav-bar li');
+    const burgerIcon = findHtmlElement(document, '.burger');
+    burgerIcon.addEventListener('click', App.toggleBurgerMenu.bind(this));
 
     // add event listener to browser history buttons
     window.addEventListener('popstate', () => {
@@ -75,9 +77,6 @@ class App {
         }
       });
     });
-
-    const burgerIcon = findHtmlElement(document, '.burger');
-    burgerIcon.addEventListener('click', App.toggleBurgerMenu.bind(this));
   }
 
   private getContent() {
