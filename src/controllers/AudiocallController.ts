@@ -77,6 +77,7 @@ class AudiocallController {
         (<HTMLAudioElement>document.getElementById(`audio-word-${id}`)).play();
       }
     }
+
     function wordsRandomizer() {
       data.currentWord = data.wordsArr[Math.floor(Math.random() * 601)];
       const randomWord = function () {
@@ -119,6 +120,7 @@ class AudiocallController {
         playAudio(e.target as HTMLImageElement)
       );
     };
+
     function checkAnswer() {
       (<HTMLDivElement>document.querySelector('.btns-container')).onclick = (
         e: Event
