@@ -1,3 +1,3 @@
 import '../pages.css';
-import '../pages.ts';
+import '../pages';
 import './statistics.css';

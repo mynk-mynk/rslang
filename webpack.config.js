@@ -8,12 +8,17 @@ const CopyPlugin = require("copy-webpack-plugin");
 const pages = ['audiocall', 'authorization', 'index', 'sprint', 'statistics', 'team', 'textbook'];
 
 module.exports = {
-  entry: pages.reduce((config, page) => {
-    config[page] = `./src/pages/${page}/${page}.ts`;
-    return config;
-  }, {}),
+  // entry: pages.reduce((config, page) => {
+  //   config[page] = `./src/pages/${page}/${page}.ts`;
+  //   return config;
+  // }, {}),
+  // output: {
+  //   filename: '[name].js',
+  //   path: path.resolve(__dirname, './dist'),
+  // },
+  entry: path.resolve(__dirname, './src/index.ts'),
   output: {
-    filename: '[name].js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, './dist'),
   },
   mode: 'development',

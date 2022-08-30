@@ -1,6 +1,6 @@
 import { server } from '../../../config';
 import '../pages.css';
-import '../pages.ts';
+import '../pages';
 import './textbook.css';
 
 interface IWord {

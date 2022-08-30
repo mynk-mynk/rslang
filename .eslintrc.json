@@ -33,9 +33,9 @@
         "no-debugger": "off",
         "@typescript-eslint/no-explicit-any": "error",
         "linebreak-style": ["error", "windows"],
-        "no-console": "off",
+        // "no-console": "off",
         "no-underscore-dangle": "off",
-        "@typescript-eslint/no-unsafe-call": "off",
+        // "@typescript-eslint/no-unsafe-call": "off",
         "import/extensions": [
             "error",
             "ignorePackages",

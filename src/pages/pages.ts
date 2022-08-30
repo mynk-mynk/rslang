@@ -1,5 +1,7 @@
-const burgerIcon = document.querySelector('.burger');
-const navBar = document.querySelector('.nav-bar');
+import { findHtmlElement } from "../common/utils/utils";
+
+const burgerIcon = findHtmlElement(document, '.burger');
+const navBar = findHtmlElement(document, '.nav-bar');
 
 function toggleBurgerMenu() {
   burgerIcon?.classList.toggle('open');

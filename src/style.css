@@ -1,0 +1,238 @@
+:root {
+  --color: #181f4a;
+  --ligth-color: #af8bd0;
+  --filter: invert(14%) sepia(9%) saturate(7252%) hue-rotate(205deg) brightness(85%) contrast(101%);
+  --filter-light: invert(87%) sepia(27%) saturate(6724%) hue-rotate(206deg) brightness(88%) contrast(83%);
+  --font-primary: 'DynaPuff';
+  --font-secondary: 'Comfortaa';
+}
+
+@font-face {
+  font-family: 'DynaPuff';
+  src: url(./assets/fonts/DynaPuff/DynaPuff-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'Comfortaa';
+  src: url(./assets/fonts/Comfortaa/Comfortaa-Regular.ttf);
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  height: 100vh;
+  background: rgb(240, 218, 255);
+  background: linear-gradient(90deg, rgba(240, 218, 255, 1) 0%, rgba(246, 240, 153, 1) 50%, rgba(69, 239, 252, 1) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: var(--color);
+}
+
+header,
+main,
+footer {
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+}
+
+header,
+footer {
+  padding: 20px 40px;
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  padding: 0 40px;
+}
+
+a {
+  user-select: none;
+  text-decoration: none;
+  color: inherit;
+  transition: 0.1s;
+}
+
+a:hover,
+button:hover {
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+.header-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--font-primary), cursive;
+  font-size: 2rem;
+  color: var(--color);
+}
+
+.logo:hover {
+  text-shadow: 1px 1px 3px var(--ligth-color);
+}
+
+.logo:active {
+  transform: scale(0.99);
+}
+
+.authorization-link {
+  /* display: block; */
+  flex-grow: 1;
+  text-align: end;
+  margin-right: 10px;
+  border: none;
+  background: transparent;
+}
+
+.authorization-icon {
+  width: 40px;
+  filter: var(--filter);
+  transition: 0.1s;
+}
+
+.authorization-icon:hover {
+  filter: var(--filter) drop-shadow(1px 1px 2px var(--ligth-color));
+}
+
+.authorization-icon:active {
+  transform: scale(0.97);
+}
+
+.burger,
+.burger-line {
+  z-index: 2;
+}
+
+.burger {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 22px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.burger-line,
+.burger:before,
+.burger:after {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  content: "";
+  background-color: var(--color);
+}
+
+.burger-line {
+  top: calc(50% - 1px);
+}
+
+.burger:before {
+  top: 0;
+}
+
+.burger:after {
+  bottom: 0;
+}
+
+.burger.open {
+  transform: rotate(90deg);
+}
+
+.nav-bar {
+  opacity: 0%;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  margin: 30px 0;
+  transition: 0.5s ease-in-out;
+}
+
+.nav-bar.open {
+  opacity: 100%;
+}
+
+.nav-bar li {
+  margin: 15px 0;
+}
+
+.home-icon {
+  filter: var(--filter);
+  margin-bottom: 20px !important;
+}
+
+.main-container {
+  font-family: 'Comfortaa';
+  margin: auto;
+  display: flex;
+  padding: 50px 0;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.github-names {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.github-names a:hover {
+  text-shadow: 1px 1px 2px var(--ligth-color);
+}
+
+.github-names a:active {
+  transform: scale(0.95);
+}
+
+.rs-logo {
+  width: 80px;
+  filter: var(--filter);
+  transition: 0.1s;
+}
+
+.github-logo {
+  filter: var(--filter);
+}
+
+.rs-logo:hover {
+  filter: var(--filter) drop-shadow(1px 1px 2px var(--ligth-color));
+}
+
+.btn-like-link {
+  display: inline-block;
+  width: 100px;
+  padding: 10px;
+  margin: 0 10px;
+  border: 2px solid var(--color);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.btn-like-link:hover {
+  background: var(--color);
+  color: var(--ligth-color);
+}
+
+.btn-like-link:active {
+  transform: scale(0.98);
+}

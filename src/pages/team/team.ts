@@ -1,5 +1,5 @@
 import '../pages.css';
-import '../pages.ts';
+import '../pages';
 import './team.css';
 
 class TeamPage {
