@@ -16,7 +16,7 @@ class AudiocallView {
               <div class="difficulty-btn level5">5</div>
               <div class="difficulty-btn level6">6</div>
             </div>
-            <button class="start-btn">START</button>
+            <button class="start-btn" disabled>START</button>
             `;
   }
 
@@ -38,19 +38,24 @@ class AudiocallView {
                     />`;
   }
 
-  static renderQuestion(answers: string[]) {
+  static renderQuestion(answers: string[], word: IWord | null) {
     return `
     <div class="game-container">
           <img
+            
             class="sound-icon"
             src="../../assets/images/sound.png"
             alt="Sound"
           />
+          <audio id="audio-word-${
+            (<IWord>word).word
+          }" src="http://localhost:4000/${(<IWord>word).audio}"></audio>
           <img class="word-img" src="" alt="Word image" width="100" />
 
           <div class="word-description">
             <img
-              id="audio-btn"
+              id="audio-btn-${(<IWord>word).word}"
+              class = "audio-btn-img"
               src="../../assets/svg/audio-speaker.svg"
               alt="Audio"
               class="audio-icon"
@@ -77,6 +82,44 @@ class AudiocallView {
       </div>
     </div>
     <button id="btn-next" disabled>Next</button>
+  </div>`;
+  }
+
+  static renderResults() {
+    return `<div class="result-container">
+              <h2 class="results-header">Ваш результат:</h2>
+
+              <div class="results">
+
+                <div class="results-description">
+
+                    <p>Правильных ответов: 0</p>
+                    <p>Ошибок: 0</p>
+                    <p>Правильных ответов подряд: 0</p>
+                </div>
+
+              <p class="results-accuracy">100%</p>
+
+                <div class="correct-results"></div>
+                <div class="incorrect-results"></div>
+              </div>
+            </div>`;
+  }
+
+  static renderCorrectResults(word: IWord) {
+    return `
+    <div>
+      <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
+      <img id="audio-btn-${word.word}" class = "audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <span class="word-original">${word.word}</span> - <span class="word-translation">${word.wordTranslate}</span>
+    </div>`;
+  }
+
+  static renderIncorrectResults(word: IWord) {
+    return `<div>
+      <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
+      <img id="audio-btn-${word.word}" class = "audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <span class="word-original">${word.word}</span> - <span class="word-translation">${word.wordTranslate}</span>
   </div>`;
   }
 }

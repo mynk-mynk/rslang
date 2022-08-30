@@ -15,9 +15,8 @@ class Word {
     return new Word(params);
   }
 
-  static async getWords(page = '', group = '') {
-    const pageGroup = page && group ? `?page=${page}&group=${group}` : '';
-    const url = `${config.api.url}words${pageGroup}`;
+  static async getWords(page = 0, group = 0) {
+    const url = `${config.api.url}words?page=${page}&group=${group}`;
     const words = fetch(url).then((data) => data.json());
     return words;
   }
