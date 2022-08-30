@@ -83,6 +83,7 @@ ul {
 }
 
 .logo:hover {
+  cursor: pointer;
   text-shadow: 1px 1px 3px var(--ligth-color);
 }
 
@@ -241,6 +242,7 @@ ul {
 }
 
 .btn-like-link:hover {
+  cursor: pointer;
   background: var(--color);
   color: var(--ligth-color);
 }

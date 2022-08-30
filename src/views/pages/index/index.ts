@@ -110,7 +110,7 @@ class IndexView {
             </ul>
         </div>
         <div class="description-btns">
-            <a href="/team" class="btn-like-link">Команда</a>
+            <span data-path="/team" class="btn-like-link">Команда</span>
         </div>
     </div>
     <ul class="start-menu">

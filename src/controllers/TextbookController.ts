@@ -1,5 +1,6 @@
 // import { IObject } from '../common/interfaces/IObject';
 import { findHtmlElement } from '../common/utils/utils';
+// import DifficultyBar from '../views/components/difficulty-bar/difficulty-bar';
 import TextbookView from '../views/pages/textbook/textbook';
 
 class TextbookController {
@@ -10,6 +11,9 @@ class TextbookController {
     // };
     const main = findHtmlElement(document, 'main');
     main.innerHTML = TextbookView.draw();
+
+    // const header = findHtmlElement(document, 'h1');
+    // header.after(DifficultyBar.draw());
   }
 }
 

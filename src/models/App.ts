@@ -15,11 +15,13 @@ class App {
 
   private readonly pages;
 
+  private urlObserver: EventObserver<string>;
+
   constructor() {
     this._url = window.location.pathname;
     this.page = this._url.slice(1) || 'index';
     this.pages = {
-      index: IndexController,
+      index: new IndexController(this),
       team: TeamController,
       textbook: TextbookController,
       sprint: SprintController,
@@ -27,6 +29,7 @@ class App {
       statistics: StatisticsController,
       error: ErrorController,
     };
+    this.urlObserver = new EventObserver<string>();
 
     // add content into main according to link
     this.getContent();
@@ -42,28 +45,35 @@ class App {
   }
 
   start() {
-    // add event listener and observer to NavBar links
-    const urlObserver = new EventObserver<string>();
-    urlObserver.subscribe(() => {
+    this.router();
+  }
+
+  private router() {
+    this.urlObserver.subscribe(() => {
       this.getContent();
     });
 
-    const menuLinks: NodeListOf<HTMLElement> = document.querySelectorAll('.nav-bar li');
+    // add event listener and observer to NavBar links
+    this.setRouterToElements('.nav-bar li');
+
+    // add event listener to browser history buttons
+    window.addEventListener('popstate', () => {
+      this.url = window.location.pathname;
+      this.urlObserver.broadcast(this.url);
+    });
+  }
+
+  setRouterToElements(selector: string) {
+    const menuLinks: NodeListOf<HTMLElement> = document.querySelectorAll(selector);
     menuLinks.forEach((link: HTMLElement) => {
       const { path } = link.dataset;
       link.addEventListener('click', () => {
         if (path) {
           window.history.pushState({ state: path }, 'SyllaBus', path);
           this.url = path;
-          urlObserver.broadcast(this.url);
+          this.urlObserver.broadcast(this.url);
         }
       });
-    });
-
-    // add event listener to browser history buttons
-    window.addEventListener('popstate', () => {
-      this.url = window.location.pathname;
-      urlObserver.broadcast(this.url);
     });
 
     const burgerIcon = findHtmlElement(document, '.burger');
