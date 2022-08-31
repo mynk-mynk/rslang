@@ -1,13 +1,21 @@
-import IndexView from '../views/pages';
+import { findHtmlElement } from '../common/utils/utils';
+import App from '../models/App';
+import IndexView from '../views/pages/index/index';
 
 class IndexController {
-  static actionIndex() {
-    const data = {
-      data1: '0',
-      data2: 'index',
-    };
-    (document.querySelector('main') as HTMLElement).innerHTML =
-      IndexView.draw(data);
+  private app: App;
+
+  constructor(app: App) {
+    this.app = app;
+  }
+
+  actionIndex() {
+    const main = findHtmlElement(document, 'main');
+    main.innerHTML = IndexView.draw();
+
+    this.app.setRouterToElements('.start-menu li');
+    this.app.setRouterToElements('.btn-like-link');
+    this.app.setRouterToElements('.logo');
   }
 }
 

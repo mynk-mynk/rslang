@@ -1,8 +1,11 @@
+import { findHtmlElement } from '../common/utils/utils';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
+// eslint-disable-next-line import/no-cycle
 import IndexController from '../controllers/IndexController';
 import SprintController from '../controllers/SprintController';
 import StatisticsController from '../controllers/StatisticsController';
+import TeamController from '../controllers/TeamController';
 import TextbookController from '../controllers/TextbookController';
 import EventObserver from './EventObserver';
 
@@ -13,17 +16,21 @@ class App {
 
   private readonly pages;
 
+  private urlObserver: EventObserver<string>;
+
   constructor() {
     this._url = window.location.pathname;
     this.page = this._url.slice(1) || 'index';
     this.pages = {
-      index: IndexController,
+      index: new IndexController(this),
+      team: TeamController,
       textbook: TextbookController,
       sprint: SprintController,
       audiocall: AudiocallController,
       statistics: StatisticsController,
       error: ErrorController,
     };
+    this.urlObserver = new EventObserver<string>();
 
     // add content into main according to link
     this.getContent();
@@ -39,29 +46,38 @@ class App {
   }
 
   start() {
-    // add event listener and observer to NavBar links
-    const urlObserver = new EventObserver<string>();
-    urlObserver.subscribe(() => {
+    this.router();
+  }
+
+  private router() {
+    this.urlObserver.subscribe(() => {
       this.getContent();
     });
 
-    const menuLinks: NodeListOf<HTMLElement> =
-      document.querySelectorAll('.nav-bar li');
-    menuLinks.forEach((link: HTMLElement) => {
-      const { path } = link.dataset;
-      link.addEventListener('click', () => {
-        if (path) {
-          window.history.pushState({ state: path }, 'RS Clone', path);
-          this.url = path;
-          urlObserver.broadcast(this.url);
-        }
-      });
-    });
+    // add event listener and observer to NavBar links
+    this.setRouterToElements('.nav-bar li');
+
+    const burgerIcon = findHtmlElement(document, '.burger');
+    burgerIcon.addEventListener('click', App.toggleBurgerMenu.bind(this));
 
     // add event listener to browser history buttons
     window.addEventListener('popstate', () => {
       this.url = window.location.pathname;
-      urlObserver.broadcast(this.url);
+      this.urlObserver.broadcast(this.url);
+    });
+  }
+
+  setRouterToElements(selector: string) {
+    const menuLinks: NodeListOf<HTMLElement> = document.querySelectorAll(selector);
+    menuLinks.forEach((link: HTMLElement) => {
+      const { path } = link.dataset;
+      link.addEventListener('click', () => {
+        if (path) {
+          window.history.pushState({ state: path }, 'SyllaBus', path);
+          this.url = path;
+          this.urlObserver.broadcast(this.url);
+        }
+      });
     });
   }
 
@@ -72,6 +88,13 @@ class App {
     } else {
       this.pages.error.actionIndex();
     }
+  }
+
+  private static toggleBurgerMenu() {
+    const burgerIcon = findHtmlElement(document, '.burger');
+    const navBar = findHtmlElement(document, '.nav-bar');
+    burgerIcon.classList.toggle('open');
+    navBar.classList.toggle('open');
   }
 }
 
