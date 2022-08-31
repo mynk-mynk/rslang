@@ -3,7 +3,7 @@ import { IDataAudio } from '../common/interfaces/IDataAudio';
 import config from '../config';
 import Word from '../models/Word';
 import AudiocallView from '../views/pages/audiocall/audiocall';
-import DifficultyBar from '../views/components/difficulty-bar/difficulty-bar';
+import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 
 class AudiocallController {
   static actionIndex() {
@@ -18,7 +18,7 @@ class AudiocallController {
 
     const mainContainer = <HTMLElement>document.querySelector('main');
 
-    mainContainer.innerHTML = DifficultyBar.draw();
+    mainContainer.innerHTML = renderDifficultyBar();
 
     mainContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());
 
