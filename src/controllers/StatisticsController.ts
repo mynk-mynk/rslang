@@ -1,4 +1,5 @@
 import { findHtmlElement } from '../common/utils/utils';
+import User from '../models/User';
 import StatisticsView from '../views/pages/statistics/statistics';
 
 class StatisticsController {
