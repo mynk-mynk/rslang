@@ -1,20 +1,12 @@
 import { IWord, IWords } from '../common/interfaces/IWord';
+import { IDataAudio } from '../common/interfaces/IDataAudio';
 import config from '../config';
 import Word from '../models/Word';
 import AudiocallView from '../views/pages/audiocall';
 
-type IData = {
-  currentDifficulty: number;
-  data2: string;
-  wordsArr: IWord[];
-  currentWord: IWord | null;
-  currentAnswers: string[];
-  answerMap: Map<IWord, string>;
-};
-
 class AudiocallController {
   static actionIndex() {
-    const data: IData = {
+    const data: IDataAudio = {
       currentDifficulty: 0,
       data2: 'audiocall',
       wordsArr: [],

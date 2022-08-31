@@ -6,7 +6,8 @@ class SprintController {
       data1: '3',
       data2: 'sprint',
     };
-    (document.querySelector('main') as HTMLElement).innerHTML = SprintView.draw(data);
+    (document.querySelector('main') as HTMLElement).innerHTML =
+      SprintView.draw(data);
   }
 }
 

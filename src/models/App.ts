@@ -1,6 +1,5 @@
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
-// eslint-disable-next-line import/no-cycle
 import IndexController from '../controllers/IndexController';
 import SprintController from '../controllers/SprintController';
 import StatisticsController from '../controllers/StatisticsController';
@@ -14,20 +13,17 @@ class App {
 
   private readonly pages;
 
-  private urlObserver: EventObserver<string>;
-
   constructor() {
     this._url = window.location.pathname;
     this.page = this._url.slice(1) || 'index';
     this.pages = {
-      index: new IndexController(this),
+      index: IndexController,
       textbook: TextbookController,
       sprint: SprintController,
       audiocall: AudiocallController,
       statistics: StatisticsController,
       error: ErrorController,
     };
-    this.urlObserver = new EventObserver<string>();
 
     // add content into main according to link
     this.getContent();
@@ -43,36 +39,29 @@ class App {
   }
 
   start() {
-    this.router();
-  }
-
-  private router() {
-    this.urlObserver.subscribe(() => {
+    // add event listener and observer to NavBar links
+    const urlObserver = new EventObserver<string>();
+    urlObserver.subscribe(() => {
       this.getContent();
     });
 
-    // add event listener and observer to NavBar links
-    this.setRouterToElements('.nav-bar li');
-
-    // add event listener to browser history buttons
-    window.addEventListener('popstate', () => {
-      this.url = window.location.pathname;
-      this.urlObserver.broadcast(this.url);
-    });
-  }
-
-  setRouterToElements(selector: string) {
     const menuLinks: NodeListOf<HTMLElement> =
-      document.querySelectorAll(selector);
+      document.querySelectorAll('.nav-bar li');
     menuLinks.forEach((link: HTMLElement) => {
       const { path } = link.dataset;
       link.addEventListener('click', () => {
         if (path) {
-          window.history.pushState({ state: path }, 'SyllaBus', path);
+          window.history.pushState({ state: path }, 'RS Clone', path);
           this.url = path;
-          this.urlObserver.broadcast(this.url);
+          urlObserver.broadcast(this.url);
         }
       });
+    });
+
+    // add event listener to browser history buttons
+    window.addEventListener('popstate', () => {
+      this.url = window.location.pathname;
+      urlObserver.broadcast(this.url);
     });
   }
 
