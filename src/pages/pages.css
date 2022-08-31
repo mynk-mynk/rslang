@@ -34,6 +34,10 @@ body {
   color: var(--color);
 }
 
+body.no-scroll {
+  overflow: hidden;
+}
+
 header,
 main,
 footer {
@@ -60,8 +64,15 @@ a {
   transition: 0.1s;
 }
 
-a:hover {
+a:hover,
+button:hover {
   cursor: pointer;
+}
+
+button,
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 ul {
