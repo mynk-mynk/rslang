@@ -1,74 +1,9 @@
+import './team.css';
+
 class TeamView {
   // static draw(data: IObject<string>)
   static draw() {
-    return `<style>
-    .main-container {
-      height: 100%;
-      justify-content: space-between;
-      flex-direction: column;
-      align-items: center;
-      padding: 0 50px;
-    }
-    
-    .team-container {
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 50px;
-      flex-wrap: wrap;
-      margin: 50px 0;
-    }
-    
-    .card-container {
-      height: fit-content;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 300px;
-      padding: 20px;
-      border: 2px solid var(--color);
-      box-shadow: 0 0 10px var(--color);
-      border-radius: 20px;
-      color: var(--color);
-      opacity: 90%;
-      overflow: hidden;
-    }
-    
-    .card-img {
-      margin-bottom: 20px;
-    }
-    
-    .card-description {
-      text-align: center;
-    }
-    
-    .card-name {
-      font-family: var(--font-primary);
-      font-size: 1.2rem;
-      margin-bottom: 3px;
-    }
-    
-    .card-contribution {
-      margin: 20px 0;
-      text-align: justify;
-    }
-    
-    .card-link {
-      display: inline-block;
-      font-weight: 600;
-    }
-    
-    .card-link:hover {
-      text-shadow: 1px 1px 2px var(--ligth-color);
-    }
-    
-    .card-link:active {
-      transform: scale(0.98);
-    }
-    </style>
-    <div class="main-container">
+    return `<div class="main-container-team">
     <h1>Наша команда</h1>
     <div class="team-container">
       <div class="card-container">

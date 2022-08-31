@@ -1,4 +1,7 @@
-/* .main-container {
+.main-container-audiocall {
+  font-family: 'Comfortaa';
+  margin: auto;
+  display: flex;
   height: 100%;
   flex-direction: column;
   align-items: center;
@@ -21,7 +24,7 @@
   width: 150px;
 }
 
-.word-description {
+.audiocall-word-description {
   font-family: var(--font-primary);
   font-size: 2rem;
   display: flex;
@@ -29,26 +32,25 @@
   gap: 15px;
 }
 
-.word-description {
+.audiocall-word-description {
   display: flex;
 }
 
-.audio-icon {
+.audiocall-audio-icon {
   filter: var(--filter-light);
   transition: 0.1s;
 }
 
-.audio-icon:hover {
+.audiocall-audio-icon:hover {
   cursor: pointer;
-  filter: var(--filter-light);
   transform: scale(1.05);
 }
 
-.audio-icon:active {
+.audiocall-audio-icon:active {
   transform: scale(0.95);
 }
 
-.btns-container {
+.btns-container-audiocall {
   width: 70%;
   display: flex;
   flex-wrap: wrap;
@@ -56,7 +58,7 @@
   gap: 50px;
 }
 
-.btns-container div {
+.btns-container-audiocall div {
   position: relative;
   user-select: none;
   font-family: var(--font-secondary);
@@ -65,31 +67,31 @@
   transition: 0.2s;
 }
 
-.btns-container div.correct-answer,
-.btns-container div.wrong-answer {
+.btns-container-audiocall div.correct-answer,
+.btns-container-audiocall div.wrong-answer {
   opacity: 100%;
   text-shadow: 0 0 1px var(--color);
   transform: scale(1.05);
 }
 
-.btns-container div:hover {
+.btns-container-audiocall div:hover {
   cursor: pointer;
   opacity: 100%;
   transform: scale(1.05);
   text-shadow: 0 0 1px var(--color);
 }
 
-.btns-container div.correct-answer:hover,
-.btns-container div.wrong-answer:hover {
+.btns-container-audiocall div.correct-answer:hover,
+.btns-container-audiocall div.wrong-answer:hover {
   cursor: auto;
 }
 
-.btns-container div.correct-answer:active,
-.btns-container div.wrong-answer:active {
+.btns-container-audiocall div.correct-answer:active,
+.btns-container-audiocall div.wrong-answer:active {
   transform: scale(1.05);
 }
 
-.btns-container div:active {
+.btns-container-audiocall div:active {
   transform: scale(0.95);
 }
 
@@ -111,7 +113,7 @@
   gap: 30px;
 }
 
-.result-container .audio-icon {
+.result-container .audiocall-audio-icon {
   filter: var(--filter);
 }
 
@@ -148,4 +150,4 @@
   font-family: var(--font-primary);
   font-weight: 500;
   font-size: 1.1rem;
-} */
+}
