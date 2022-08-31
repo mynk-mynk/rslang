@@ -102,6 +102,7 @@ ul {
 }
 
 .authorization-link {
+  position: relative;
   text-align: end;
   margin-right: 10px;
   border: none;
@@ -120,6 +121,23 @@ ul {
 
 .authorization-icon:active {
   transform: scale(0.97);
+}
+
+.tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  left: -85px;
+  top: 6px;
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  color: var(--ligth-color);
+  padding: 6px 10px;
+  border: 1px solid var(--ligth-color);
+  border-radius: 5px;
+}
+
+.authorization-link:hover .tooltiptext {
+  visibility: visible;
 }
 
 .burger,
