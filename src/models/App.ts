@@ -1,6 +1,7 @@
 import { findHtmlElement } from '../common/utils/utils';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
+// eslint-disable-next-line import/no-cycle
 import IndexController from '../controllers/IndexController';
 import SprintController from '../controllers/SprintController';
 import StatisticsController from '../controllers/StatisticsController';
@@ -55,6 +56,7 @@ class App {
 
     // add event listener and observer to NavBar links
     this.setRouterToElements('.nav-bar li');
+
     const burgerIcon = findHtmlElement(document, '.burger');
     burgerIcon.addEventListener('click', App.toggleBurgerMenu.bind(this));
 
