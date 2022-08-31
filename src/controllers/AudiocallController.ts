@@ -128,12 +128,8 @@ class AudiocallController {
           (<HTMLParagraphElement>(
             document.querySelector('.current-word-answer')
           )).innerHTML = (<IWord>data.currentWord).word;
-          if (
-            (<HTMLElement>e.target).innerText.slice(3) === (<IWord>data.currentWord).wordTranslate)
-          {
-            (<HTMLButtonElement[]>answerItems).forEach(
-              (el) => el.setAttribute('disabled', 'true'),
-            );
+          if ((<HTMLElement>e.target).innerText.slice(3) === (<IWord>data.currentWord).wordTranslate) {
+            (<HTMLButtonElement[]>answerItems).forEach((el) => el.setAttribute('disabled', 'true'));
             (<HTMLElement>e.target).insertAdjacentHTML(
               'beforebegin',
               AudiocallView.rightIcon(),
