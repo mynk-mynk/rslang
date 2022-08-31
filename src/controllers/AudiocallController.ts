@@ -20,7 +20,7 @@ class AudiocallController {
 
     mainContainer.innerHTML = DifficultyBar.draw();
 
-    mainContainer.insertAdjacentHTML('beforeend',AudiocallView.renderStartBtn())
+    mainContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());
 
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
 
@@ -91,6 +91,7 @@ class AudiocallController {
     }
 
     startBtn.onclick = async () => {
+      startBtn.disabled = true;
       await generateWords();
       wordsRandomizer();
 
@@ -188,7 +189,11 @@ class AudiocallController {
           );
           mainContainer.insertAdjacentHTML(
             'afterbegin',
-            AudiocallView.renderResults(),
+            AudiocallView.renderResults(
+              mapCorrect.size,
+              mapIncorrect.size,
+              mapIncorrect.size === 0 ? 100 : (mapCorrect.size / mapSort.size) * 100,
+            ),
           );
           mapCorrect.forEach((_, k) => {
             (<HTMLDivElement>(
