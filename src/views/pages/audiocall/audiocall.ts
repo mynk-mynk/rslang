@@ -240,13 +240,10 @@ class AudiocallView {
           <img
             
             class="sound-icon"
-            src="../../assets/images/sound.png"
+            src="../../assets/images/audiocall/sound.png"
             alt="Sound"
           />
-          <audio id="audio-word-${
-            (<IWord>word).word
-          }" src="http://localhost:4000/${(<IWord>word).audio}"></audio>
-          <img class="word-img" src="" alt="Word image" width="100" />
+          <audio id="audio-word-${(<IWord>word).word}" src="http://localhost:4000/${(<IWord>word).audio}"></audio>
 
           <div class="word-description">
             <img

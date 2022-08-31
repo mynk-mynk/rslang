@@ -41,7 +41,7 @@ class AudiocallController {
     function buttonPress() {
       document.addEventListener('keypress', (event: KeyboardEvent) => {
         if (event.key === 'Enter') {
-          (<HTMLButtonElement>document.getElementById(`btn-next`)).click();
+          (<HTMLButtonElement>document.getElementById('btn-next')).click();
         } else {
           (<HTMLButtonElement>(
             document.querySelector(`.answer${event.key}`)
@@ -51,13 +51,11 @@ class AudiocallController {
     }
 
     async function generateWords() {
-      const temporaryResult: IWord[] = [];
+      const temporaryResult: IWords[] = [];
 
       for (let i = 0; i < 30; i += 1) {
-        const midRes = await Word.getWords(i, data.currentDifficulty)
-          .then((words) => {
-            return words;
-          })
+        const midRes: IWord[] = await Word.getWords(i, data.currentDifficulty)
+          .then((words) => words)
           .catch((e) => console.log(e));
         temporaryResult.push(midRes.flat());
       }
@@ -73,12 +71,10 @@ class AudiocallController {
 
     function wordsRandomizer() {
       data.currentWord = data.wordsArr[Math.floor(Math.random() * 601)];
-      const randomWord = function () {
-        return data.wordsArr[Math.floor(Math.random() * 601)];
-      };
-      const randomArray: () => string[] = function () {
-        let arr = [];
-        for (let i = 0; i < 5; i++) {
+      const randomWord = () => data.wordsArr[Math.floor(Math.random() * 601)];
+      const randomArray: () => string[] = () => {
+        const arr = [];
+        for (let i = 0; i < 5; i += 1) {
           arr.push(randomWord().wordTranslate);
         }
         return arr;
@@ -88,7 +84,7 @@ class AudiocallController {
       data.currentAnswers.splice(
         Math.floor(Math.random() * 5),
         1,
-        data.currentWord.wordTranslate
+        data.currentWord.wordTranslate,
       );
     }
 
@@ -98,7 +94,7 @@ class AudiocallController {
 
       mainContainer.innerHTML = AudiocallView.renderQuestion(
         data.currentAnswers,
-        data.currentWord
+        data.currentWord,
       );
 
       (<HTMLAudioElement>(
@@ -109,17 +105,18 @@ class AudiocallController {
       buttonPress();
       (<HTMLImageElement>(
         document.querySelector('.audio-btn-img')
-      )).addEventListener('click', (e) =>
-        playAudio(e.target as HTMLImageElement)
-      );
+      )).addEventListener('click', (e) => playAudio(e.target as HTMLImageElement));
     };
 
     function checkAnswer() {
       (<HTMLDivElement>document.querySelector('.btns-container')).onclick = (
-        e: Event
+        e: Event,
       ) => {
         nextQuestion();
         buttonPress();
+        const answerItems = [
+          ...document.getElementsByClassName('answer-item'),
+        ];
         if ((<HTMLElement>e.target).classList.contains('answer-item')) {
           const answerImage = document.querySelector('.sound-icon');
           (<HTMLImageElement>answerImage).src = `${config.api.url}${
@@ -129,44 +126,33 @@ class AudiocallController {
             document.querySelector('.current-word-answer')
           )).innerHTML = (<IWord>data.currentWord).word;
           if (
-            (<HTMLElement>e.target).innerText.slice(3) ===
-            (<IWord>data.currentWord).wordTranslate
-          ) {
-            const answerItems = [
-              ...document.getElementsByClassName('answer-item'),
-            ];
-
+            (<HTMLElement>e.target).innerText.slice(3) === (<IWord>data.currentWord).wordTranslate)
+          {
             (<HTMLButtonElement[]>answerItems).forEach(
-              (el) => (el.disabled = true)
+              (el) => el.setAttribute('disabled', 'true'),
             );
             (<HTMLElement>e.target).insertAdjacentHTML(
               'beforebegin',
-              AudiocallView.rightIcon()
+              AudiocallView.rightIcon(),
             );
-            (<HTMLButtonElement>document.getElementById('btn-next')).disabled =
-              false;
+            (<HTMLButtonElement>document.getElementById('btn-next')).disabled = false;
             data.answerMap.set(<IWord>data.currentWord, 'correct');
           } else {
-            const answerItems = [
-              ...document.getElementsByClassName('answer-item'),
-            ];
             (<HTMLButtonElement[]>answerItems).forEach(
-              (el) => (el.disabled = true)
+              (el) => el.setAttribute('disabled', 'true'),
             );
             (<HTMLButtonElement[]>answerItems).forEach((el) => {
               if (
-                el.innerHTML.slice(3) ===
-                (<IWord>data.currentWord).wordTranslate
+                el.innerHTML.slice(3) === (<IWord>data.currentWord).wordTranslate
               ) {
                 el.insertAdjacentHTML('beforebegin', AudiocallView.rightIcon());
               }
             });
             (<HTMLElement>e.target).insertAdjacentHTML(
               'beforebegin',
-              AudiocallView.wrongIcon()
+              AudiocallView.wrongIcon(),
             );
-            (<HTMLButtonElement>document.getElementById('btn-next')).disabled =
-              false;
+            (<HTMLButtonElement>document.getElementById('btn-next')).disabled = false;
             data.answerMap.set(<IWord>data.currentWord, 'incorrect');
           }
         }
@@ -178,38 +164,36 @@ class AudiocallController {
           wordsRandomizer();
           mainContainer.innerHTML = AudiocallView.renderQuestion(
             data.currentAnswers,
-            data.currentWord
+            data.currentWord,
           );
 
           (<HTMLAudioElement>(
-            document.getElementById(`audio-word-${data.currentWord?.word}`)
+            document.getElementById(`audio-word-${(<IWord>data.currentWord).word}`)
           )).play();
           (<HTMLImageElement>(
             document.querySelector('.audio-btn-img')
-          )).addEventListener('click', (e) =>
-            playAudio(e.target as HTMLImageElement)
-          );
+          )).addEventListener('click', (e) => playAudio(e.target as HTMLImageElement));
           checkAnswer();
           buttonPress();
         } else {
           mainContainer.innerHTML = '';
           const mapSort = new Map([...data.answerMap.entries()].sort());
           const mapCorrect = new Map(
-            [...mapSort].filter(([_, v]) => v === 'correct')
+            [...mapSort].filter(([_, v]) => v === 'correct'),
           );
           const mapIncorrect = new Map(
-            [...mapSort].filter(([_, v]) => v === 'incorrect')
+            [...mapSort].filter(([_, v]) => v === 'incorrect'),
           );
           mainContainer.insertAdjacentHTML(
             'afterbegin',
-            AudiocallView.renderResults()
+            AudiocallView.renderResults(),
           );
           mapCorrect.forEach((_, k) => {
             (<HTMLDivElement>(
               document.querySelector('.correct-results')
             )).insertAdjacentHTML(
               'beforeend',
-              AudiocallView.renderCorrectResults(k)
+              AudiocallView.renderCorrectResults(k),
             );
           });
           mapIncorrect.forEach((_, k) => {
@@ -217,13 +201,11 @@ class AudiocallController {
               document.querySelector('.incorrect-results')
             )).insertAdjacentHTML(
               'beforeend',
-              AudiocallView.renderIncorrectResults(k)
+              AudiocallView.renderIncorrectResults(k),
             );
           });
           document.querySelectorAll('.audio-icon').forEach((icon) => {
-            icon.addEventListener('click', (e) =>
-              playAudio(e.target as HTMLElement)
-            );
+            icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
           });
         }
       };

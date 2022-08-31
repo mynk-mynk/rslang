@@ -25,7 +25,7 @@ class Word {
     const url = `${config.api.url}words/${id}`;
     const word = fetch(url)
       .then((data) => data.json())
-      .then((data) => data as IWord)
+      .then((data: IWord) => data)
       .catch((err) => console.log(err));
     return word;
   }
