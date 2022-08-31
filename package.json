@@ -36,5 +36,8 @@
   "bugs": {
     "url": "https://github.com/mynk-mynk/rslang/issues"
   },
-  "homepage": "https://github.com/mynk-mynk/rslang#readme"
+  "homepage": "https://github.com/mynk-mynk/rslang#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.0"
+  }
 }

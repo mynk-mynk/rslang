@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/no-cycle
+import { findHtmlElement } from '../common/utils/utils';
 import App from '../models/App';
-import IndexView from '../views/pages';
+import IndexView from '../views/pages/index/index';
 
 class IndexController {
   private app: App;
@@ -10,10 +10,12 @@ class IndexController {
   }
 
   actionIndex() {
-    this.app.setRouterToElements('.start-menu li');
+    const main = findHtmlElement(document, 'main');
+    main.innerHTML = IndexView.draw();
 
-    const main: HTMLElement | null = document.querySelector<HTMLElement>('main');
-    if (main) main.innerHTML = IndexView.draw();
+    this.app.setRouterToElements('.start-menu li');
+    this.app.setRouterToElements('.btn-like-link');
+    this.app.setRouterToElements('.logo');
   }
 }
 

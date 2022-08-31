@@ -1,9 +1,11 @@
+import { findHtmlElement } from '../common/utils/utils';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
 // eslint-disable-next-line import/no-cycle
 import IndexController from '../controllers/IndexController';
 import SprintController from '../controllers/SprintController';
 import StatisticsController from '../controllers/StatisticsController';
+import TeamController from '../controllers/TeamController';
 import TextbookController from '../controllers/TextbookController';
 import EventObserver from './EventObserver';
 
@@ -21,6 +23,7 @@ class App {
     this.page = this._url.slice(1) || 'index';
     this.pages = {
       index: new IndexController(this),
+      team: TeamController,
       textbook: TextbookController,
       sprint: SprintController,
       audiocall: AudiocallController,
@@ -54,6 +57,9 @@ class App {
     // add event listener and observer to NavBar links
     this.setRouterToElements('.nav-bar li');
 
+    const burgerIcon = findHtmlElement(document, '.burger');
+    burgerIcon.addEventListener('click', App.toggleBurgerMenu.bind(this));
+
     // add event listener to browser history buttons
     window.addEventListener('popstate', () => {
       this.url = window.location.pathname;
@@ -82,6 +88,13 @@ class App {
     } else {
       this.pages.error.actionIndex();
     }
+  }
+
+  private static toggleBurgerMenu() {
+    const burgerIcon = findHtmlElement(document, '.burger');
+    const navBar = findHtmlElement(document, '.nav-bar');
+    burgerIcon.classList.toggle('open');
+    navBar.classList.toggle('open');
   }
 }
 
