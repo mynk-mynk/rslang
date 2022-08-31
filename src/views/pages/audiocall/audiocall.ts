@@ -216,6 +216,40 @@ class AudiocallView {
   </div>`;
   }
 
+  static renderStartBtn() {
+    return `
+    <style>.start-btn {
+      display: inline-block;
+      width: 100px;
+      padding: 10px;
+      margin: 0 10px;
+      border: 2px solid var(--color);
+      border-radius: 10px;
+      font-size: 0.8rem;
+      transition: 0.2s;
+    }
+    
+    .start-btn:hover {
+      cursor: pointer;
+      background: var(--color);
+      color: var(--ligth-color);
+    }
+    
+    .start-btn:active {
+      transform: scale(0.98);
+    }
+    
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+    }</style>
+    <button class="start-btn" disabled>Start</button>
+    `
+    
+  }
+
   static rightIcon() {
     return `<img
                     class="answer-img active"

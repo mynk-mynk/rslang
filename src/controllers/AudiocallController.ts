@@ -20,6 +20,8 @@ class AudiocallController {
 
     mainContainer.innerHTML = DifficultyBar.draw();
 
+    mainContainer.insertAdjacentHTML('beforeend',AudiocallView.renderStartBtn())
+
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
 
     const difficultyContainer = document.querySelector('.difficulty-container');

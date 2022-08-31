@@ -9,10 +9,8 @@ class DifficultyBar {
     <div class="difficulty-btn level4">4</div>
     <div class="difficulty-btn level5">5</div>
     <div class="difficulty-btn level6">6</div>
-    <div class="difficulty-btn level7">7</div>
-    
-  </div>
-  <button class="start-btn" disabled>Start</button>`;
+    <div class="difficulty-btn level7">7</div> 
+  </div>`;
   }
 }
 
