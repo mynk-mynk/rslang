@@ -18,7 +18,8 @@ class AudiocallController {
 
     const mainContainer = <HTMLElement>document.querySelector('main');
 
-    mainContainer.innerHTML = renderDifficultyBar();
+    mainContainer.innerHTML = ''; 
+    mainContainer.append(renderDifficultyBar());
 
     mainContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());
 

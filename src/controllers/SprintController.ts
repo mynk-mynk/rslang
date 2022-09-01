@@ -23,7 +23,8 @@ class SprintController {
 
     const mainContainer = <HTMLElement>document.querySelector('main');
 
-    mainContainer.innerHTML = renderDifficultyBar();
+    mainContainer.innerHTML = ''; 
+    mainContainer.append(renderDifficultyBar());
 
     mainContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
 
@@ -133,7 +134,6 @@ class SprintController {
       );
       const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
       scoresContainer.innerHTML =  SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
-      
       checkAnswer();
       buttonPress();
     };
@@ -169,7 +169,7 @@ class SprintController {
           data.totalScore,
         );
         const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
-        scoresContainer.innerHTML =  SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
+        scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
         checkAnswer();
       } else {
         mainContainer.innerHTML = '';
