@@ -14,3 +14,5 @@ export interface IWord {
   textMeaningTranslate: string;
   textExampleTranslate: string;
 }
+
+export type IWords = IWord[];
