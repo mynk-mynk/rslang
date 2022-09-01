@@ -2,19 +2,20 @@
 <div class="authorization-block">
   <img class="close-icon" src="../../assets/svg/cross.svg" alt="Close Icon" width="20">
   <h2>LogIn</h2>
-  <form class="login-form auth-form" id="login-form" action="">
-    <input class="authorization-email auth-input" type="email" placeholder="E-mail" autofocus>
-    <input class="authorization-password auth-input" type="password" placeholder="Password">
+  <form class="login-form auth-form" id="login-form">
+    <p class="authorization-error">Error</p>
+    <input class="authorization-email auth-input" name="email" type="email" placeholder="E-mail" autofocus>
+    <input class="authorization-password auth-input" name="password" type="password" placeholder="Password">
   </form>
-  <form class="registration-form auth-form" id="registration-form" action="" style="display:none">
-    <input class="authorization-name auth-input" type="name" placeholder="Name" autofocus>
-    <input class="authorization-email auth-input" type="email" placeholder="E-mail">
-    <input class="authorization-password auth-input" type="password" placeholder="Password">
+  <form class="registration-form auth-form" id="registration-form" style="display:none">
+    <input class="authorization-name auth-input" name="name" type="text" placeholder="Name" autofocus>
+    <input class="authorization-email auth-input" name="email" type="email" placeholder="E-mail">
+    <input class="authorization-password auth-input" name="password" type="password" placeholder="Password">
   </form>
   <div class="authorization-btns">
-      <button class="login-btn btn-like-link" type="submit" form="login-form">Login</button>
+      <button class="login-btn btn-like-link">Login</button>
       <button class="registration-link-btn">Registration</button>
-      <button class="registration-btn btn-like-link" type="submit" form="registration-form" style="display:none">Registration</button>
+      <button class="registration-btn btn-like-link" style="display:none">Registration</button>
       <button class="login-link-btn" style="display:none">Login</button>
     </div>
 </div>

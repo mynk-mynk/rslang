@@ -1,4 +1,5 @@
 import { IHtmlElements } from '../common/interfaces/IHtmlElemets';
+import { IUser } from '../common/interfaces/IUser';
 import { findHtmlElement } from '../common/utils/utils';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
@@ -10,6 +11,7 @@ import TeamController from '../controllers/TeamController';
 import TextbookController from '../controllers/TextbookController';
 import renderAuthorization from '../views/components/authorization/authorization';
 import EventObserver from './EventObserver';
+import User from './User';
 
 class App {
   private _url: string;
@@ -38,6 +40,7 @@ class App {
     this.htmlElemets = {
       body: findHtmlElement(document, 'body'),
       authContainer: findHtmlElement(document, '.authorization-container'),
+      authIcon: findHtmlElement(document, '.authorization-icon'),
     };
 
     // add content into main according to link
@@ -113,7 +116,7 @@ class App {
   }
 
   private closeAuthorizationBlock() {
-    this.htmlElemets.body.style.height = '100vh';
+    this.htmlElemets.body.style.height = '';
     this.htmlElemets.body.style.position = '';
     this.htmlElemets.authContainer.style.display = 'none';
   }
@@ -143,6 +146,7 @@ class App {
   private clearLoginForm() {
     (this.htmlElemets.loginEmail as HTMLInputElement).value = '';
     (this.htmlElemets.loginPassword as HTMLInputElement).value = '';
+    this.htmlElemets.loginError.style.display = 'none';
   }
 
   private clearRegistrationForm() {
@@ -170,6 +174,7 @@ class App {
       registrationName: findHtmlElement(document, '.registration-form .authorization-name'),
       registrationEmail: findHtmlElement(document, '.registration-form .authorization-email'),
       registrationPassword: findHtmlElement(document, '.registration-form .authorization-password'),
+      loginError: findHtmlElement(document, '.authorization-error'),
     });
   }
 
@@ -208,14 +213,29 @@ class App {
 
   private addLoginBtnListener() {
     this.htmlElemets.loginBtn.addEventListener('click', () => {
-      // submit form
-      // if true: reset form data, close form, change icon, add data to localstorage
-      // if false: draw red error
+      const formData = new FormData(this.htmlElemets.loginForm as HTMLFormElement);
+      const userData: IUser = {};
+      formData.forEach((value, key) => {
+        userData[key as keyof IUser] = value as string;
+      });
+      (async () => {
+        const auth: User | null = await User.signin(userData);
+        if (auth) {
+          this.clearLoginForm();
+          this.clearRegistrationForm();
+          this.closeAuthorizationBlock();
+          (this.htmlElemets.authIcon as HTMLImageElement).src = './assets/svg/verified.svg';
+        } else {
+          this.htmlElemets.loginError.style.display = 'block';
+          (this.htmlElemets.loginPassword as HTMLInputElement).value = '';
+        }
+      })();
     });
   }
 
   private addRegistrationBtnListener() {
     this.htmlElemets.registrationBtn.addEventListener('click', () => {
+      console.log(new FormData(this.htmlElemets.registrationForm as HTMLFormElement).values());
       // submit form
       // if true: reset form data, draw message SUCCESS
       // if false: draw red error
