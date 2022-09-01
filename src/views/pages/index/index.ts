@@ -1,103 +1,10 @@
+import './index.css';
 // import { IObject } from '../../../common/interfaces/IObject';
 
 class IndexView {
   // static draw(data: IObject<string>)
   static draw() {
-    return `<style>
-    .header-container {
-      justify-content: space-between;
-    }
-    
-    .authorization-link {
-      display: inline-block;
-      flex-grow: 0;
-    }
-    
-    .main-container {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 50px;
-    }
-    
-    .burger,
-    .nav-bar {
-      display: none;
-    }
-    
-    .description {
-        max-width: 60%;
-        min-width: 375px;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-    
-    .description-img {
-        max-width: 500px;
-        border-radius: 30px;
-        align-self: center;
-    }
-    
-    .description-text {
-        max-width: 500px;
-        text-align: center;
-        line-height: 1.5rem;
-    }
-    
-    .description-text p {
-        margin: 20px;
-    }
-    
-    .description-text ul li {
-        width: 80%;
-        margin: 10px 20px;
-        text-align: left;
-    }
-    
-    .description-btns {
-        text-align: center;
-    }
-    
-    .start-menu {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 30px;
-        padding: 100px 40px;
-    }
-    
-    .menu-item {
-        font-weight: 600;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        gap: 20px;
-        padding: 25px 20px;
-        border: 2px solid var(--color);
-        border-radius: 30px;
-        transition: 0.1s;
-    }
-    
-    .menu-item:hover {
-        cursor: pointer;
-        transform: scale(1.01);
-        box-shadow: 2px 2px 4px var(--color);
-    }
-    
-    .menu-item:active {
-        transform: scale(1);
-    }
-    
-    @media screen and (max-width: 640px) {
-    
-      .main-container {
-        max-width: 80%;
-      }
-    
-    }
-    </style>
-    <div class="main-container">
+    return `<div class="main-container-index">
     <div class="description">
         <img class="description-img" src="../../assets/images/main/bus.png" alt="Bus">
         <div class="description-text">

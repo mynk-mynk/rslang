@@ -1,4 +1,4 @@
-import { findHtmlElement } from '../common/utils/utils';
+import { findHtmlElement, hideBurgerMenu } from '../common/utils/utils';
 import App from '../models/App';
 import IndexView from '../views/pages/index/index';
 
@@ -15,7 +15,8 @@ class IndexController {
 
     this.app.setRouterToElements('.start-menu li');
     this.app.setRouterToElements('.btn-like-link');
-    this.app.setRouterToElements('.logo');
+
+    hideBurgerMenu();
   }
 }
 
