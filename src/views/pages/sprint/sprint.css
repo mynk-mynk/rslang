@@ -1,3 +1,25 @@
+.start-btn {
+  display: inline-block;
+  width: 100px;
+  padding: 10px;
+  margin: 0 10px;
+  border: 2px solid var(--color);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.start-btn:hover {
+  cursor: pointer;
+  background: var(--color);
+  color: var(--ligth-color);
+}
+
+.start-btn:active {
+  transform: scale(0.98);
+}
+
+
 .main-container-sprint {
   position: relative;
   width: 100%;
@@ -8,6 +30,10 @@
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
+}
+
+h1 {
+  font-family: 'Comfortaa';
 }
 
 .game-container {
@@ -174,17 +200,23 @@
   margin: 10px 0;
 }
 
-.word-list li {
+.word-list-item {
   height: 30px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.word-list li span {
+.word-sprint {
   font-family: var(--font-primary);
   font-weight: 500;
   font-size: 1.1rem;
+}
+
+.result-answers-container {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 }
 
 

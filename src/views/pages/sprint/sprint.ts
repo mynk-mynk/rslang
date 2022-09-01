@@ -5,42 +5,7 @@ import { IWord } from '../../../common/interfaces/IWord';
 class SprintView {
   // static draw(data: IObject<string>)
   static draw() {
-    return `<div class="main-container-sprint">
-    <h1>Игра "Спринт"</h1>
-    <div class="game-container">
-      <p>timer 3 2 1 start</p>
-
-      <div class="game-field">
-        <div class="answers">
-          <p class="current-score">350</p>
-          <div class="correct-answers">
-            <p id="1-correct-answer"></p>
-            <p id="2-correct-answer"></p>
-            <p id="3-correct-answer"></p>
-          </div>
-          <p class="points-per-answer">+10 очков за слово</p>
-        </div>
-        <div class="progress">
-          <img src="../../assets/images/sprint/baby.png" alt="Level 1" width="25">
-          <img src="../../assets/images/sprint/toddler.png" alt="Level 2" width="35">
-          <img src="../../assets/images/sprint/teen.png" alt="Level 3" width="45">
-          <img src="../../assets/images/sprint/prof.png" alt="Level 4" width="55">
-        </div>
-        <div class="word-props">
-          <p class="sprint-word">word</p>
-          <p class="sprint-translation">перевод</p>
-          <img class="answer-correct" src="../../assets/images/right-icon.png" alt="Correct icon" width="30">
-          <img class="answer-wrong" src="../../assets/images/wrong-icon.png" alt="Correct icon" width="30">
-        </div>
-        <div class="btns-container">
-          <div class="btn-true">+</div>
-          <div class="btn-false">-</div>
-        </div>
-      </div>
-
-      <div class="sprint-timer">timer for 1 min</div>
-
-    </div>
+    return `
 
     <div class="result-container">
       <h2 class="results-header">Ваш результат:</h2>
@@ -71,73 +36,28 @@ class SprintView {
 
   static renderStartBtn() {
     return `
-    <style>.start-btn {
-      display: inline-block;
-      width: 100px;
-      padding: 10px;
-      margin: 0 10px;
-      border: 2px solid var(--color);
-      border-radius: 10px;
-      font-size: 0.8rem;
-      transition: 0.2s;
-    }
-    
-    .start-btn:hover {
-      cursor: pointer;
-      background: var(--color);
-      color: var(--ligth-color);
-    }
-    
-    .start-btn:active {
-      transform: scale(0.98);
-    }
-    
-    main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-evenly;
-    }</style>
     <button class="start-btn" disabled>Start</button>
     `;
   }
 
   static renderSprintDescription() {
     return `
-    <div class="sprint-description">
-    <h2>Спринт</h2>
-    <div class="rules-container">
-      <p>В игре "Спринт" Ваша задача выбрать правильный перевод к заданному слову.</p>
-      <p>Ответив правильно на 3 вопроса, количество баллов за правильный ответ удваивается.</p> 
-      <p>Изображения человечков показывает текущий множитель.</p>
-    </div>
-    <div>
-      <p>Вы можете отвечать на вопросы с помощью кнопок Вправо и Влево</p>
-      <div class="control-keys">
-        <img src="../../assets/images/sprint/left-arrow.png">
-        <img src="../../assets/images/sprint/right-arrow.png">
+    <div class="main-container-sprint">
+      <h1>Игра "Спринт"</h1>
+      <div class="rules-container">
+        <p>В игре "Спринт" Ваша задача выбрать правильный перевод к заданному слову.</p>
+        <p>Ответив правильно на 3 вопроса, количество баллов за правильный ответ удваивается.</p> 
+        <p>Изображения человечков показывает текущий множитель.</p>
       </div>
-    </div>
-    <h3>Пожалуйста, выберите раздел</h3>
+      <div>
+        <p>Вы можете отвечать на вопросы с помощью кнопок Вправо и Влево</p>
+        <div class="control-keys">
+          <img src="../../assets/images/sprint/left-arrow.png">
+          <img src="../../assets/images/sprint/right-arrow.png">
+        </div>
+      </div>
+      <h3>Пожалуйста, выберите раздел</h3>
     </div>`
-  }
-
-  static rightIcon() {
-    return `<img
-                    class="answer-img active"
-                    src="../../assets/images/right-icon.png"
-                    alt="Correct-icon"
-                    width="20"
-                    />`;
-  }
-
-  static wrongIcon() {
-    return `<img
-                    class="answer-img active"
-                    src="../../assets/images/wrong-icon.png"
-                    alt="Wrong-icon"
-                    width="20"
-                    />`;
   }
 
   static renderScores(currentScore: number, pointPerAnswer: number) {
@@ -200,36 +120,6 @@ class SprintView {
     </div>`;
   }
 
-
-  /* <div class="game-field">
-        <div class="answers">
-          <p class="current-score">350</p>
-          <div class="correct-answers">
-            <p id="1-correct-answer"></p>
-            <p id="2-correct-answer"></p>
-            <p id="3-correct-answer"></p>
-          </div>
-          <p class="points-per-answer">+10 очков за слово</p>
-        </div>
-        <div class="progress">
-          <img src="../../assets/images/sprint/baby.png" alt="Level 1" width="25">
-          <img src="../../assets/images/sprint/toddler.png" alt="Level 2" width="35">
-          <img src="../../assets/images/sprint/teen.png" alt="Level 3" width="45">
-          <img src="../../assets/images/sprint/prof.png" alt="Level 4" width="55">
-        </div>
-        <div class="word-props">
-          <p class="sprint-word">word</p>
-          <p class="sprint-translation">перевод</p>
-          <img class="answer-correct" src="../../assets/images/right-icon.png" alt="Correct icon" width="30">
-          <img class="answer-wrong" src="../../assets/images/wrong-icon.png" alt="Correct icon" width="30">
-        </div>
-        <div class="btns-container">
-          <div class="btn-true">+</div>
-          <div class="btn-false">-</div>
-        </div>
-      </div> */
-
-
   static renderQuestion(word: IWord, translation: IWord, score: number) {
     return `
         <p class="sprint-word">${word.word}</p>
@@ -249,12 +139,12 @@ class SprintView {
   }
 
   static renderResults(correct: number, incorrect: number, accuracy: number) {
-    return `<div class="result-container">
-              <h2 class="results-header">Ваш результат:</h2>
+    return `<div class="main-container-sprint">
+              <div class="result-container">
+                <h2 class="results-header">Ваш результат:</h2>
 
-              <div class="results">
-
-                <div class="results-description">
+                <div class="results">
+                  <div class="results-description">
 
                     <p>Правильных ответов: ${correct}</p>
                     <p>Ошибок: ${incorrect}</p>
@@ -262,27 +152,30 @@ class SprintView {
                 </div>
 
               <p class="results-accuracy">${accuracy}%</p>
-
-                <div class="correct-results"></div>
-                <div class="incorrect-results"></div>
-              </div>
-            </div>`;
+            </div>
+            <div class="result-answers-container">
+              <h3><img src="../../assets/images/right-icon.png" alt="Correct Icon" width="20"> Правильные ответы</h3>
+              <div class="correct-results"></div>
+              <h3><img src="../../assets/images/wrong-icon.png" alt="Incorrect Icon" width="20"> Ошибки</h3>
+              <div class="incorrect-results"></div>
+            </div>
+        </div`;
   }
 
   static renderCorrectResults(word: IWord) {
     return `
-    <div>
+    <div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
-      <img id="audio-btn-${word.word}" class = "audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
-      <span class="word-original">${word.word}</span> - <span class="word-translation">${word.wordTranslate}</span>
+      <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <span class="word-original word-sprint">${word.word}</span>-<span class="word-translation word-sprint">${word.wordTranslate}</span>
     </div>`;
   }
 
   static renderIncorrectResults(word: IWord) {
-    return `<div>
+    return `<div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
-      <img id="audio-btn-${word.word}" class = "audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
-      <span class="word-original">${word.word}</span> - <span class="word-translation">${word.wordTranslate}</span>
+      <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <span class="word-original word-sprint">${word.word}</span>-<span class="word-translation word-sprint">${word.wordTranslate}</span>
   </div>`;
   }
 }

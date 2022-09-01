@@ -22,12 +22,12 @@ class SprintController {
     };
 
     const mainContainer = <HTMLElement>document.querySelector('main');
-
     mainContainer.innerHTML = '';
-    mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription())
-    mainContainer.append(renderDifficultyBar());
 
-    mainContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
+    mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription());
+    const gameContainer = <HTMLElement>document.querySelector('.main-container-sprint')
+    gameContainer.append(renderDifficultyBar());
+    gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
 
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
 
@@ -70,7 +70,7 @@ class SprintController {
     function checkGameEnd() {
       let timerId = setTimeout(function gameEnd() {
         const counter = document.getElementById('timer-container');
-        if (counter?.innerHTML === '0:00') {
+        if (counter?.innerHTML === '0:55') {
           mainContainer.innerHTML = '';
           const mapSort = new Map([...data.answerMap.entries()].sort());
           const mapCorrect = new Map(
@@ -79,13 +79,14 @@ class SprintController {
           const mapIncorrect = new Map(
             [...mapSort].filter(([_, v]) => v === 'incorrect'),
           );
+
           mainContainer.insertAdjacentHTML(
             'afterbegin',
             SprintView.renderResults(
               mapCorrect.size,
               mapIncorrect.size,
-              mapIncorrect.size === 0 ? 100 : (mapCorrect.size / mapSort.size) * 100,
-            ),
+              mapIncorrect.size === 0 ? 100 : +((mapCorrect.size / mapSort.size) * 100).toFixed(0),
+            )
           );
           mapCorrect.forEach((_, k) => {
             (<HTMLDivElement>(
@@ -103,27 +104,26 @@ class SprintController {
               SprintView.renderIncorrectResults(k),
             );
           });
-          document.querySelectorAll('.audio-icon').forEach((icon) => {
+          document.querySelectorAll('.sprint-audio-icon').forEach((icon) => {
             icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
           });
         }
-        timerId = setTimeout(gameEnd, 1000); // (*)
+        timerId = setTimeout(gameEnd, 1000);
       }, 1000);
     }
 
     function buttonPress() {
       document.addEventListener('keypress', (event: KeyboardEvent) => {
         if (event.key === 'a') {
-          (<HTMLButtonElement>document.getElementById('btn-true')).click();
+          (<HTMLDivElement>document.getElementById('btn-true')).click();
         } else if (event.key === 'd') {
-          (<HTMLButtonElement>document.getElementById('btn-false')).click();
+          (<HTMLDivElement>document.getElementById('btn-false')).click();
         }
       });
     }
 
     async function generateWords() {
       const temporaryResult: IWords[] = [];
-
       for (let i = 0; i < 30; i += 1) {
         const midRes: IWord[] = await Word.getWords(i, data.currentDifficulty)
           .then((words) => words)
@@ -145,7 +145,6 @@ class SprintController {
         }
         return arr;
       };
-
       data.currentAnswers = randomArray();
       data.currentAnswers.splice(
         Math.floor(Math.random() * 2),
@@ -201,8 +200,8 @@ class SprintController {
       scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
       checkAnswer();
       buttonPress();
-      // countdown(1);
-      // checkGameEnd();
+      countdown(1);
+      checkGameEnd();
     };
 
     function checkAnswer() {
