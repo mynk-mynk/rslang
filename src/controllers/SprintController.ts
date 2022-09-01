@@ -46,6 +46,73 @@ class SprintController {
       activateProp(e.target as HTMLElement, '.difficulty-btn');
     });
 
+
+    function countdown(minutes: number) {
+      var seconds = 60;
+      let mins = minutes;
+      function tick() { 
+          const counter = document.getElementById("timer-container");
+          const current_minutes = mins-1
+          seconds -= 1;
+          (<HTMLDivElement>counter).innerHTML = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+          if( seconds > 0 ) {
+              setTimeout(tick, 1000);
+              console.log(typeof counter?.innerHTML);
+          } else {
+              if(mins > 1){
+                  countdown(mins - 1);           
+              }
+          }
+      }
+      tick();
+  }
+
+function checkGameEnd() {
+  let timerId = setTimeout(function checkGameEnd() {
+    const counter = document.getElementById("timer-container");
+    if(counter?.innerHTML === '0:00') {
+      console.log('surpris');
+      mainContainer.innerHTML = '';
+        const mapSort = new Map([...data.answerMap.entries()].sort());
+        const mapCorrect = new Map(
+          [...mapSort].filter(([_, v]) => v === 'correct'),
+        );
+        const mapIncorrect = new Map(
+          [...mapSort].filter(([_, v]) => v === 'incorrect'),
+        );
+        mainContainer.insertAdjacentHTML(
+          'afterbegin',
+          SprintView.renderResults(
+            mapCorrect.size,
+            mapIncorrect.size,
+            mapIncorrect.size === 0 ? 100 : (mapCorrect.size / mapSort.size) * 100,
+          ),
+        );
+        mapCorrect.forEach((_, k) => {
+          (<HTMLDivElement>(
+            document.querySelector('.correct-results')
+          )).insertAdjacentHTML(
+            'beforeend',
+            SprintView.renderCorrectResults(k),
+          );
+        });
+        mapIncorrect.forEach((_, k) => {
+          (<HTMLDivElement>(
+            document.querySelector('.incorrect-results')
+          )).insertAdjacentHTML(
+            'beforeend',
+            SprintView.renderIncorrectResults(k),
+          );
+        });
+        document.querySelectorAll('.audio-icon').forEach((icon) => {
+          icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
+        });
+    }
+    timerId = setTimeout(checkGameEnd, 1000); // (*)
+  }, 1000);
+}
+
+
     function buttonPress() {
       document.addEventListener('keypress', (event: KeyboardEvent) => {
         if (event.key === 'a') {
@@ -136,6 +203,9 @@ class SprintController {
       scoresContainer.innerHTML =  SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
       checkAnswer();
       buttonPress();
+      countdown(1);
+      checkGameEnd()
+      // window.setTimeout(checkGameEnd, 1000)
     };
 
     function checkAnswer() {
@@ -160,7 +230,7 @@ class SprintController {
     }
 
     function nextQuestion() {
-      if (data.answerMap.size < 5) {
+      
         wordsRandomizer();
         const questionContainer = <HTMLDivElement>document.querySelector('.questions-container');
         questionContainer.innerHTML = SprintView.renderQuestion(
@@ -171,43 +241,7 @@ class SprintController {
         const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
         scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
         checkAnswer();
-      } else {
-        mainContainer.innerHTML = '';
-        const mapSort = new Map([...data.answerMap.entries()].sort());
-        const mapCorrect = new Map(
-          [...mapSort].filter(([_, v]) => v === 'correct'),
-        );
-        const mapIncorrect = new Map(
-          [...mapSort].filter(([_, v]) => v === 'incorrect'),
-        );
-        mainContainer.insertAdjacentHTML(
-          'afterbegin',
-          SprintView.renderResults(
-            mapCorrect.size,
-            mapIncorrect.size,
-            mapIncorrect.size === 0 ? 100 : (mapCorrect.size / mapSort.size) * 100,
-          ),
-        );
-        mapCorrect.forEach((_, k) => {
-          (<HTMLDivElement>(
-            document.querySelector('.correct-results')
-          )).insertAdjacentHTML(
-            'beforeend',
-            SprintView.renderCorrectResults(k),
-          );
-        });
-        mapIncorrect.forEach((_, k) => {
-          (<HTMLDivElement>(
-            document.querySelector('.incorrect-results')
-          )).insertAdjacentHTML(
-            'beforeend',
-            SprintView.renderIncorrectResults(k),
-          );
-        });
-        document.querySelectorAll('.audio-icon').forEach((icon) => {
-          icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
-        });
-      }
+      
     }
 }
 }

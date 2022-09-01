@@ -160,6 +160,7 @@ class SprintView {
         />
       </div>
     </div>
+    <div id="timer-container"></div>
     <div class="questions-container"></div>`;
   }
 
