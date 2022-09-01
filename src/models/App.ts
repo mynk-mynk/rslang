@@ -1,3 +1,4 @@
+import { IErrorApi } from '../common/interfaces/IErrorApi';
 import { IHtmlElements } from '../common/interfaces/IHtmlElemets';
 import { IUser } from '../common/interfaces/IUser';
 import { findHtmlElement } from '../common/utils/utils';
@@ -136,7 +137,7 @@ class App {
     this.htmlElemets.authBlockHeader.innerHTML = 'Регистрация';
     this.htmlElemets.registrationForm.style.display = 'flex';
     this.htmlElemets.loginForm.style.display = 'none';
-    this.htmlElemets.authBlock.style.height = '370px';
+    this.htmlElemets.authBlock.style.height = '390px';
     this.htmlElemets.loginBtn.style.display = 'none';
     this.htmlElemets.registrationLinkBtn.style.display = 'none';
     this.htmlElemets.registrationBtn.style.display = 'inline-block';
@@ -153,6 +154,8 @@ class App {
     (this.htmlElemets.registrationName as HTMLInputElement).value = '';
     (this.htmlElemets.registrationEmail as HTMLInputElement).value = '';
     (this.htmlElemets.registrationPassword as HTMLInputElement).value = '';
+    this.htmlElemets.registrationSuccess.style.display = 'none';
+    this.htmlElemets.registrationError.style.display = 'none';
   }
 
   private addAuthorizationToHtml() {
@@ -169,12 +172,14 @@ class App {
       loginLinkBtn: findHtmlElement(document, '.login-link-btn'),
       registrationBtn: findHtmlElement(document, '.registration-btn'),
       registrationLinkBtn: findHtmlElement(document, '.registration-link-btn'),
-      loginEmail: findHtmlElement(document, '.login-form .authorization-email'),
-      loginPassword: findHtmlElement(document, '.login-form .authorization-password'),
-      registrationName: findHtmlElement(document, '.registration-form .authorization-name'),
-      registrationEmail: findHtmlElement(document, '.registration-form .authorization-email'),
-      registrationPassword: findHtmlElement(document, '.registration-form .authorization-password'),
+      loginEmail: findHtmlElement(document, '.authorization-email'),
+      loginPassword: findHtmlElement(document, '.authorization-password'),
+      registrationName: findHtmlElement(document, '.registration-name'),
+      registrationEmail: findHtmlElement(document, '.registration-email'),
+      registrationPassword: findHtmlElement(document, '.registration-password'),
       loginError: findHtmlElement(document, '.authorization-error'),
+      registrationError: findHtmlElement(document, '.registration-error'),
+      registrationSuccess: findHtmlElement(document, '.registration-success'),
     });
   }
 
@@ -187,6 +192,9 @@ class App {
   private addBlurClickListener() {
     this.htmlElemets.blur.addEventListener('click', () => {
       this.closeAuthorizationBlock();
+      this.clearLoginForm();
+      this.clearRegistrationForm();
+      this.setLoginForm();
     });
   }
 
@@ -235,10 +243,28 @@ class App {
 
   private addRegistrationBtnListener() {
     this.htmlElemets.registrationBtn.addEventListener('click', () => {
-      console.log(new FormData(this.htmlElemets.registrationForm as HTMLFormElement).values());
-      // submit form
-      // if true: reset form data, draw message SUCCESS
-      // if false: draw red error
+      const formData = new FormData(this.htmlElemets.registrationForm as HTMLFormElement);
+      const userData: IUser = {};
+      formData.forEach((value, key) => {
+        userData[key as keyof IUser] = value as string;
+      });
+      (async () => {
+        const auth: IUser | IErrorApi | null = await User.createUser(userData);
+        if (auth) {
+          if ('error' in auth) {
+            this.htmlElemets.registrationError.style.display = 'block';
+            this.htmlElemets.registrationSuccess.style.display = 'none';
+            this.htmlElemets.registrationError.innerHTML = 'Невозможно зарегистрировать пользователя с такими данными';
+          } else {
+            this.htmlElemets.registrationError.style.display = 'none';
+            this.htmlElemets.registrationSuccess.style.display = 'block';
+          }
+        } else {
+          this.htmlElemets.registrationError.style.display = 'block';
+          this.htmlElemets.registrationSuccess.style.display = 'none';
+          this.htmlElemets.registrationError.innerHTML = 'Пользователь уже зарегистрирован в системе';
+        }
+      })();
     });
   }
 

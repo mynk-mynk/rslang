@@ -65,6 +65,10 @@ export default function renderAuthorization() {
     border-radius: 10px;
     color: var(--color);
   }
+
+  .auth-input:invalid {
+    border: 2px solid red;
+  }
   
   .authorization-btns {
     display: flex;
@@ -104,8 +108,14 @@ export default function renderAuthorization() {
     transform: scale(0.98);
   }
 
-  .authorization-error {
+  .error-msg {
     color: red;
+    display: none;
+    text-align: center;
+  }
+
+  .success-msg {
+    color: green;
     display: none;
     text-align: center;
   }
@@ -115,14 +125,16 @@ export default function renderAuthorization() {
     <img class="close-icon" src="../../assets/svg/cross.svg" alt="Close Icon" width="20">
     <h2>Авторизация</h2>
     <form class="login-form auth-form" id="login-form">
-      <p class="authorization-error">Неверный логин или пароль</p>
+      <p class="authorization-error error-msg">Неверный логин или пароль</p>
       <input class="authorization-email auth-input" name="email" type="email" placeholder="E-mail" autofocus>
-      <input class="authorization-password auth-input" name="password" type="password" placeholder="Пароль">
+      <input class="authorization-password auth-input" name="password" type="password" placeholder="Пароль" minlength="8">
     </form>
     <form class="registration-form auth-form" id="registration-form" style="display:none">
-      <input class="authorization-name auth-input" name="name" type="text" placeholder="Имя" autofocus>
-      <input class="authorization-email auth-input" name="email" type="email" placeholder="E-mail">
-      <input class="authorization-password auth-input" name="password" type="password" placeholder="Пароль">
+      <p class="registration-error error-msg"></p>
+      <p class="registration-success success-msg">Пользователь успешно зарегистрирован!</p>
+      <input class="registration-name auth-input" name="name" type="text" placeholder="Имя" autofocus>
+      <input class="registration-email auth-input" name="email" type="email" placeholder="E-mail">
+      <input class="registration-password auth-input" name="password" type="password" placeholder="Пароль" minlength="8">
     </form>
     <div class="authorization-btns">
         <button class="login-btn btn-like-link">Войти</button>

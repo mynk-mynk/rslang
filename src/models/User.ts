@@ -1,4 +1,5 @@
 import { IAuth } from '../common/interfaces/IAuth';
+import { IErrorApi } from '../common/interfaces/IErrorApi';
 import { IUser } from '../common/interfaces/IUser';
 import config from '../config';
 
@@ -28,7 +29,12 @@ class User {
       },
       body: JSON.stringify(newUser),
     })
-      .then((data) => data.json());
+      .then((data) => data.json())
+      .then((data: IUser | IErrorApi) => data)
+      .catch((err) => {
+        console.log('Error text:', err);
+        return null;
+      });
     return user;
   }
 

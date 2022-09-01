@@ -102,8 +102,14 @@
   transform: scale(0.98);
 }
 
-.authorization-error {
+.error-msg {
   color: red;
+  display: none;
+  text-align: center;
+}
+
+.success-msg {
+  color: green;
   display: none;
   text-align: center;
 }
