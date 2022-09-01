@@ -102,6 +102,26 @@ class SprintView {
     `;
   }
 
+  static renderSprintDescription() {
+    return `
+    <div class="sprint-description">
+    <h2>Спринт</h2>
+    <div class="rules-container">
+      <p>В игре "Спринт" Ваша задача выбрать правильный перевод к заданному слову.</p>
+      <p>Ответив правильно на 3 вопроса, количество баллов за правильный ответ удваивается.</p> 
+      <p>Изображения человечков показывает текущий множитель.</p>
+    </div>
+    <div>
+      <p>Вы можете отвечать на вопросы с помощью кнопок Вправо и Влево</p>
+      <div class="control-keys">
+        <img src="../../assets/images/sprint/left-arrow.png">
+        <img src="../../assets/images/sprint/right-arrow.png">
+      </div>
+    </div>
+    <h3>Пожалуйста, выберите раздел</h3>
+    </div>`
+  }
+
   static rightIcon() {
     return `<img
                     class="answer-img active"
@@ -121,13 +141,25 @@ class SprintView {
   }
 
   static renderScores(currentScore: number, pointPerAnswer: number) {
-    return `<p class="current-score">${currentScore}</p>
-        <p class="points-per-answer">+${pointPerAnswer} очков за слово</p>`;
+    return `
+    
+      <p class="current-score">${currentScore}</p>
+      <div class="correct-answers">
+        <p id="1-correct-answer"></p>
+        <p id="2-correct-answer"></p>
+        <p id="3-correct-answer"></p>
+      </div>
+      <p class="points-per-answer">+${pointPerAnswer} очков за слово</p>
+  `;
   }
 
   static renderGameContainer() {
-    return `<div class="game-field">
-      <div class="scores-container">
+    return `
+    <div class="main-container-sprint">
+    <h1>Игра "Спринт"</h1>
+    <p id="timer-container"></p>
+    <div class="game-field">
+      <div class="answers">
       </div>
       <div class="progress">
         <img
@@ -159,13 +191,47 @@ class SprintView {
         />
       </div>
     </div>
-    <div id="timer-container"></div>
-    <div class="questions-container"></div>`;
+    <div class="word-props"></div>
+    
+    <div class="btns-container">
+        <div id="btn-true" class="btn-true">+</div>
+        <div id="btn-false" class="btn-false">-</div>
+      </div>
+    </div>`;
   }
+
+
+  /* <div class="game-field">
+        <div class="answers">
+          <p class="current-score">350</p>
+          <div class="correct-answers">
+            <p id="1-correct-answer"></p>
+            <p id="2-correct-answer"></p>
+            <p id="3-correct-answer"></p>
+          </div>
+          <p class="points-per-answer">+10 очков за слово</p>
+        </div>
+        <div class="progress">
+          <img src="../../assets/images/sprint/baby.png" alt="Level 1" width="25">
+          <img src="../../assets/images/sprint/toddler.png" alt="Level 2" width="35">
+          <img src="../../assets/images/sprint/teen.png" alt="Level 3" width="45">
+          <img src="../../assets/images/sprint/prof.png" alt="Level 4" width="55">
+        </div>
+        <div class="word-props">
+          <p class="sprint-word">word</p>
+          <p class="sprint-translation">перевод</p>
+          <img class="answer-correct" src="../../assets/images/right-icon.png" alt="Correct icon" width="30">
+          <img class="answer-wrong" src="../../assets/images/wrong-icon.png" alt="Correct icon" width="30">
+        </div>
+        <div class="btns-container">
+          <div class="btn-true">+</div>
+          <div class="btn-false">-</div>
+        </div>
+      </div> */
+
 
   static renderQuestion(word: IWord, translation: IWord, score: number) {
     return `
-      <div class="word-props">
         <p class="sprint-word">${word.word}</p>
         <p class="sprint-translation">${translation.wordTranslate}</p>
         <img
@@ -179,13 +245,7 @@ class SprintView {
           src="../../assets/images/wrong-icon.png"
           alt="Wrong icon"
           width="30"
-        />
-      </div>
-      <div class="btns-container">
-        <button id="btn-true">Верно</button>
-        <button id="btn-false">Неверно</button>
-      </div>
-  </div>`;
+        />`;
   }
 
   static renderResults(correct: number, incorrect: number, accuracy: number) {

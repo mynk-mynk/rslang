@@ -18,6 +18,23 @@
   padding-top: 50px;
 }
 
+.sprint-description {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rules-container {
+  text-align: center;
+}
+
+.control-keys {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .sprint-timer {
   position: absolute;
   right: 100px;
@@ -53,6 +70,7 @@
 .points-per-answer {
   font-size: 1.1rem;
   margin-top: 5px;
+
 }
 
 .progress {

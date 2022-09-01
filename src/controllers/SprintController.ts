@@ -24,6 +24,7 @@ class SprintController {
     const mainContainer = <HTMLElement>document.querySelector('main');
 
     mainContainer.innerHTML = '';
+    mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription())
     mainContainer.append(renderDifficultyBar());
 
     mainContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
@@ -31,6 +32,7 @@ class SprintController {
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
 
     const difficultyContainer = document.querySelector('.difficulty-container');
+    
 
     function activateProp(el: HTMLElement, selector: string) {
       if (el) {
@@ -156,17 +158,19 @@ class SprintController {
     function increaseMultiplier() {
       data.streak += 1;
       data.answerMap.set(<IWord>data.currentWord, 'correct');
-      data.totalScore += data.pointsPerAnswer * data.multiplier;
+      data.totalScore += data.pointsPerAnswer;
       if (data.streak === 3) {
+        data.pointsPerAnswer < 80 ? data.pointsPerAnswer *= 2 : data.pointsPerAnswer = 80;
         data.streak = 0;
         data.multiplier === 4 ? (data.multiplier = 4) : (data.multiplier += 1);
-        (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.display = 'block';
+        (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.display = 'inline-block';
       }
     }
 
     function decreaseMultiplier() {
       data.streak = 0;
       data.answerMap.set(<IWord>data.currentWord, 'incorrect');
+      data.pointsPerAnswer > 10 ? data.pointsPerAnswer /= 2 : data.pointsPerAnswer = 10;
       if (data.multiplier === 1) {
         data.multiplier = 1;
       } else {
@@ -187,18 +191,18 @@ class SprintController {
       await generateWords();
       wordsRandomizer();
       mainContainer.innerHTML = SprintView.renderGameContainer();
-      const questionContainer = <HTMLDivElement>document.querySelector('.questions-container');
+      const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
       questionContainer.innerHTML = SprintView.renderQuestion(
         <IWord>data.currentWord,
         <IWord>data.currentTranslation,
         data.totalScore,
       );
-      const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
+      const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
       scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
       checkAnswer();
       buttonPress();
-      countdown(1);
-      checkGameEnd();
+      // countdown(1);
+      // checkGameEnd();
     };
 
     function checkAnswer() {
@@ -224,13 +228,13 @@ class SprintController {
 
     function nextQuestion() {
       wordsRandomizer();
-      const questionContainer = <HTMLDivElement>document.querySelector('.questions-container');
+      const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
       questionContainer.innerHTML = SprintView.renderQuestion(
         <IWord>data.currentWord,
         <IWord>data.currentTranslation,
         data.totalScore,
       );
-      const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
+      const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
       scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
       checkAnswer();
     }
