@@ -25,6 +25,8 @@ class App {
 
   private readonly htmlElemets: IHtmlElements;
 
+  private _isAuth: boolean;
+
   constructor() {
     this._url = window.location.pathname;
     this.page = this._url.slice(1) || 'index';
@@ -43,6 +45,7 @@ class App {
       authContainer: findHtmlElement(document, '.authorization-container'),
       authIcon: findHtmlElement(document, '.authorization-icon'),
     };
+    this._isAuth = false;
 
     // add content into main according to link
     this.getContent();
@@ -55,6 +58,16 @@ class App {
   set url(value: string) {
     this._url = value;
     this.page = this._url.slice(1) || 'index';
+  }
+
+  get isAuth() {
+    return this._isAuth;
+  }
+
+  set isAuth(value: boolean) {
+    this._isAuth = value;
+    const imgUrl = `./assets/svg/${value ? '' : 'un'}verified.svg`;
+    (this.htmlElemets.authIcon as HTMLImageElement).src = imgUrl;
   }
 
   start() {
@@ -185,7 +198,13 @@ class App {
 
   private addAuthBtnClickListener() {
     this.htmlElemets.authBtn.addEventListener('click', () => {
-      this.openAuthorizationBlock();
+      const token = localStorage.getItem('token');
+      if (token) {
+        localStorage.clear();
+        this.isAuth = false;
+      } else {
+        this.openAuthorizationBlock();
+      }
     });
   }
 
@@ -269,6 +288,7 @@ class App {
   }
 
   private authorization() {
+    this.isAuth = !!localStorage.getItem('token')
     this.addAuthorizationToHtml();
     this.addAuthBtnClickListener();
     this.addBlurClickListener();
