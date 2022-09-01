@@ -1,4 +1,4 @@
-import { findHtmlElement } from '../common/utils/utils';
+import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import AudiocallView from '../views/pages/audiocall/audiocall';
 
 class AudiocallController {
@@ -9,6 +9,8 @@ class AudiocallController {
     // };
     const main = findHtmlElement(document, 'main');
     main.innerHTML = AudiocallView.draw();
+
+    showBurgerMenu();
   }
 }
 

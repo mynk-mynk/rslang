@@ -1,4 +1,4 @@
-import { findHtmlElement } from '../common/utils/utils';
+import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import SprintView from '../views/pages/sprint/sprint';
 
 class SprintController {
@@ -9,6 +9,8 @@ class SprintController {
     // };
     const main = findHtmlElement(document, 'main');
     main.innerHTML = SprintView.draw();
+
+    showBurgerMenu();
   }
 }
 
