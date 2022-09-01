@@ -25,6 +25,7 @@
 
 body {
   font-family: var(--font-primary);
+  height: 100vh;
   background: rgb(240, 218, 255);
   background: linear-gradient(90deg, rgba(240, 218, 255, 1) 0%, rgba(246, 240, 153, 1) 50%, rgba(69, 239, 252, 1) 100%);
   display: flex;

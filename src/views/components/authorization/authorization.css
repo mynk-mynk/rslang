@@ -1,5 +1,5 @@
-.authorization-container {
-  position: absolute;
+.authorization-block {
+  position: fixed;
   width: 450px;
   height: 320px;
   top: calc(50% - 160px);
@@ -45,15 +45,14 @@
   transform: scale(0.95);
 }
 
-.login-form {
+.auth-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
   width: 80%;
 }
 
-.authorization-email,
-.authorization-password {
+.auth-input {
   height: 40px;
   display: block;
   padding: 5px 15px;
@@ -70,7 +69,7 @@
   gap: 15px;
 }
 
-.login-btn {
+.login-btn, .registration-btn {
   font-family: var(--font-secondary);
   font-size: 1rem;
   padding: 10px 15px;
@@ -78,11 +77,11 @@
   background: transparent;
 }
 
-.login-btn:active {
+.login-btn:active, .registration-btn:active {
   transform: scale(0.95);
 }
 
-.regestration-btn {
+.registration-link-btn, .login-link-btn {
   background: transparent;
   border: none;
   color: var(--color);
@@ -91,13 +90,12 @@
   transition: 0.1s;
 }
 
-.regestration-btn:hover {
+.registration-link-btn:hover, .login-link-btn:hover {
   cursor: pointer;
   transform: scale(1.02);
   text-shadow: 2px 2px 3px var(--ligth-color);
 }
 
-.regestration-btn:active {
+.registration-link-btn:active, .login-link-btn:active {
   transform: scale(0.98);
 }
-

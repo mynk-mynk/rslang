@@ -1,9 +1,6 @@
-// Add to the top of main container
-// add class .no-scroll to body (don't forget to remove .no-scroll after closing popup)
-
-export function renderAuthorization() {
+export default function renderAuthorization() {
   return `<style>
-  .authorization-container {
+  .authorization-block {
     position: fixed;
     width: 450px;
     height: 320px;
@@ -50,15 +47,14 @@ export function renderAuthorization() {
     transform: scale(0.95);
   }
   
-  .login-form {
+  .auth-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 80%;
   }
   
-  .authorization-email,
-  .authorization-password {
+  .auth-input {
     height: 40px;
     display: block;
     padding: 5px 15px;
@@ -75,7 +71,7 @@ export function renderAuthorization() {
     gap: 15px;
   }
   
-  .login-btn {
+  .login-btn, .registration-btn {
     font-family: var(--font-secondary);
     font-size: 1rem;
     padding: 10px 15px;
@@ -83,11 +79,11 @@ export function renderAuthorization() {
     background: transparent;
   }
   
-  .login-btn:active {
+  .login-btn:active, .registration-btn:active {
     transform: scale(0.95);
   }
   
-  .regestration-btn {
+  .registration-link-btn, .login-link-btn {
     background: transparent;
     border: none;
     color: var(--color);
@@ -96,27 +92,34 @@ export function renderAuthorization() {
     transition: 0.1s;
   }
   
-  .regestration-btn:hover {
+  .registration-link-btn:hover, .login-link-btn:hover {
     cursor: pointer;
     transform: scale(1.02);
     text-shadow: 2px 2px 3px var(--ligth-color);
   }
   
-  .regestration-btn:active {
+  .registration-link-btn:active, .login-link-btn:active {
     transform: scale(0.98);
   }  
   </style>
   <div class="blur"></div>
-<div class="authorization-container">
-  <img class="close-icon" src="../../assets/svg/cross.svg" alt="Close Icon" width="20">
-  <h2>LogIn</h2>
-  <form class="login-form" action="">
-    <input class="authorization-email" type="email" placeholder="E-mail" autofocus>
-    <input class="authorization-password" type="password" placeholder="Password">
-  </form>
-  <div class="authorization-btns">
-    <button class="login-btn btn-like-link">Login</button>
-    <button class="regestration-btn">Registration</button>
-  </div>
-</div>`;
+  <div class="authorization-block">
+    <img class="close-icon" src="../../assets/svg/cross.svg" alt="Close Icon" width="20">
+    <h2>LogIn</h2>
+    <form class="login-form auth-form" id="login-form" action="">
+      <input class="authorization-email auth-input" type="email" placeholder="E-mail" autofocus>
+      <input class="authorization-password auth-input" type="password" placeholder="Password">
+    </form>
+    <form class="registration-form auth-form" id="registration-form" action="" style="display:none">
+      <input class="authorization-name auth-input" type="name" placeholder="Name" autofocus>
+      <input class="authorization-email auth-input" type="email" placeholder="E-mail">
+      <input class="authorization-password auth-input" type="password" placeholder="Password">
+    </form>
+    <div class="authorization-btns">
+        <button class="login-btn btn-like-link" type="submit" form="login-form">Login</button>
+        <button class="registration-link-btn">Registration</button>
+        <button class="registration-btn btn-like-link" type="submit" form="registration-form" style="display:none">Registration</button>
+        <button class="login-link-btn" style="display:none">Login</button>
+      </div>
+  </div>`;
 }

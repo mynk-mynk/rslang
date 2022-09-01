@@ -1,3 +1,4 @@
+import { IHtmlElements } from '../common/interfaces/IHtmlElemets';
 import { findHtmlElement } from '../common/utils/utils';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
@@ -7,7 +8,7 @@ import SprintController from '../controllers/SprintController';
 import StatisticsController from '../controllers/StatisticsController';
 import TeamController from '../controllers/TeamController';
 import TextbookController from '../controllers/TextbookController';
-import { renderAuthorization } from '../views/components/authorization/authorization';
+import renderAuthorization from '../views/components/authorization/authorization';
 import EventObserver from './EventObserver';
 
 class App {
@@ -18,6 +19,8 @@ class App {
   private readonly pages;
 
   private urlObserver: EventObserver<string>;
+
+  private readonly htmlElemets: IHtmlElements;
 
   constructor() {
     this._url = window.location.pathname;
@@ -32,6 +35,10 @@ class App {
       error: ErrorController,
     };
     this.urlObserver = new EventObserver<string>();
+    this.htmlElemets = {
+      body: findHtmlElement(document, 'body'),
+      authContainer: findHtmlElement(document, '.authorization-container'),
+    };
 
     // add content into main according to link
     this.getContent();
@@ -48,9 +55,7 @@ class App {
 
   start() {
     this.router();
-
-    // add authorization container
-    findHtmlElement(document, '#authorization').innerHTML = renderAuthorization();
+    this.authorization();
   }
 
   private router() {
@@ -99,6 +104,133 @@ class App {
     const navBar = findHtmlElement(document, '.nav-bar');
     burgerIcon.classList.toggle('open');
     navBar.classList.toggle('open');
+  }
+
+  private openAuthorizationBlock() {
+    this.htmlElemets.body.style.height = '100%';
+    this.htmlElemets.body.style.position = 'sticky';
+    this.htmlElemets.authContainer.style.display = 'block';
+  }
+
+  private closeAuthorizationBlock() {
+    this.htmlElemets.body.style.height = '100vh';
+    this.htmlElemets.body.style.position = '';
+    this.htmlElemets.authContainer.style.display = 'none';
+  }
+
+  private setLoginForm() {
+    this.htmlElemets.authBlockHeader.innerHTML = 'Login';
+    this.htmlElemets.registrationForm.style.display = 'none';
+    this.htmlElemets.loginForm.style.display = 'flex';
+    this.htmlElemets.authBlock.style.height = '320px';
+    this.htmlElemets.loginBtn.style.display = 'inline-block';
+    this.htmlElemets.loginLinkBtn.style.display = 'none';
+    this.htmlElemets.registrationBtn.style.display = 'none';
+    this.htmlElemets.registrationLinkBtn.style.display = 'inline-block';
+  }
+
+  private setRegistrationForm() {
+    this.htmlElemets.authBlockHeader.innerHTML = 'Registration';
+    this.htmlElemets.registrationForm.style.display = 'flex';
+    this.htmlElemets.loginForm.style.display = 'none';
+    this.htmlElemets.authBlock.style.height = '370px';
+    this.htmlElemets.loginBtn.style.display = 'none';
+    this.htmlElemets.registrationLinkBtn.style.display = 'none';
+    this.htmlElemets.registrationBtn.style.display = 'inline-block';
+    this.htmlElemets.loginLinkBtn.style.display = 'inline-block';
+  }
+
+  private clearLoginForm() {
+    (this.htmlElemets.loginEmail as HTMLInputElement).value = '';
+    (this.htmlElemets.loginPassword as HTMLInputElement).value = '';
+  }
+
+  private clearRegistrationForm() {
+    (this.htmlElemets.registrationName as HTMLInputElement).value = '';
+    (this.htmlElemets.registrationEmail as HTMLInputElement).value = '';
+    (this.htmlElemets.registrationPassword as HTMLInputElement).value = '';
+  }
+
+  private addAuthorizationToHtml() {
+    this.htmlElemets.authContainer.innerHTML = renderAuthorization();
+    Object.assign(this.htmlElemets, {
+      authBtn: findHtmlElement(document, '.authorization-link'),
+      blur: findHtmlElement(document, '.blur'),
+      closeAuthContainerBtn: findHtmlElement(document, '.close-icon'),
+      authBlockHeader: findHtmlElement(document, '.authorization-block h2'),
+      registrationForm: findHtmlElement(document, '.registration-form'),
+      loginForm: findHtmlElement(document, '.login-form'),
+      authBlock: findHtmlElement(document, '.authorization-block'),
+      loginBtn: findHtmlElement(document, '.login-btn'),
+      loginLinkBtn: findHtmlElement(document, '.login-link-btn'),
+      registrationBtn: findHtmlElement(document, '.registration-btn'),
+      registrationLinkBtn: findHtmlElement(document, '.registration-link-btn'),
+      loginEmail: findHtmlElement(document, '.login-form .authorization-email'),
+      loginPassword: findHtmlElement(document, '.login-form .authorization-password'),
+      registrationName: findHtmlElement(document, '.registration-form .authorization-name'),
+      registrationEmail: findHtmlElement(document, '.registration-form .authorization-email'),
+      registrationPassword: findHtmlElement(document, '.registration-form .authorization-password'),
+    });
+  }
+
+  private addAuthBtnClickListener() {
+    this.htmlElemets.authBtn.addEventListener('click', () => {
+      this.openAuthorizationBlock();
+    });
+  }
+
+  private addBlurClickListener() {
+    this.htmlElemets.blur.addEventListener('click', () => {
+      this.closeAuthorizationBlock();
+    });
+  }
+
+  private addCloseAuthContainerBtnListener() {
+    this.htmlElemets.closeAuthContainerBtn.addEventListener('click', () => {
+      this.closeAuthorizationBlock();
+      this.clearLoginForm();
+      this.clearRegistrationForm();
+      this.setLoginForm();
+    });
+  }
+
+  private addRegistrationLinkBtnListener() {
+    this.htmlElemets.registrationLinkBtn.addEventListener('click', () => {
+      this.setRegistrationForm();
+    });
+  }
+
+  private addLoginLinkBtnListener() {
+    this.htmlElemets.loginLinkBtn.addEventListener('click', () => {
+      this.setLoginForm();
+    });
+  }
+
+  private addLoginBtnListener() {
+    this.htmlElemets.loginBtn.addEventListener('click', () => {
+      // submit form
+      // if true: reset form data, close form, change icon, add data to localstorage
+      // if false: draw red error
+    });
+  }
+
+  private addRegistrationBtnListener() {
+    this.htmlElemets.registrationBtn.addEventListener('click', () => {
+      // submit form
+      // if true: reset form data, draw message SUCCESS
+      // if false: draw red error
+    });
+  }
+
+  private authorization() {
+    this.addAuthorizationToHtml();
+    this.addAuthBtnClickListener();
+    this.addBlurClickListener();
+    this.addCloseAuthContainerBtnListener();
+    this.addRegistrationLinkBtnListener();
+    this.addLoginLinkBtnListener();
+    this.addLoginBtnListener();
+    this.addRegistrationBtnListener();
   }
 }
 
