@@ -357,7 +357,28 @@ class SprintView {
   </div>`;
   }
 
-  static renderResults() {
+  // static renderResults() {
+  //   return `<div class="result-container">
+  //             <h2 class="results-header">Ваш результат:</h2>
+
+  //             <div class="results">
+
+  //               <div class="results-description">
+
+  //                   <p>Правильных ответов: 0</p>
+  //                   <p>Ошибок: 0</p>
+  //                   <p>Правильных ответов подряд: 0</p>
+  //               </div>
+
+  //             <p class="results-accuracy">100%</p>
+
+  //               <div class="correct-results"></div>
+  //               <div class="incorrect-results"></div>
+  //             </div>
+  //           </div>`;
+  // }
+
+  static renderResults(correct: number, incorrect: number, accuracy: number) {
     return `<div class="result-container">
               <h2 class="results-header">Ваш результат:</h2>
 
@@ -365,12 +386,12 @@ class SprintView {
 
                 <div class="results-description">
 
-                    <p>Правильных ответов: 0</p>
-                    <p>Ошибок: 0</p>
+                    <p>Правильных ответов: ${correct}</p>
+                    <p>Ошибок: ${incorrect}</p>
                     <p>Правильных ответов подряд: 0</p>
                 </div>
 
-              <p class="results-accuracy">100%</p>
+              <p class="results-accuracy">${accuracy}%</p>
 
                 <div class="correct-results"></div>
                 <div class="incorrect-results"></div>

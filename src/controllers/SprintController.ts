@@ -113,6 +113,13 @@ class SprintController {
       }
     }
 
+    function playAudio(btn: HTMLElement) {
+      if (btn) {
+        const id = btn.id.split('-').reverse()[0];
+        (<HTMLAudioElement>document.getElementById(`audio-word-${id}`)).play();
+      }
+    }
+
     startBtn.onclick = async () => {
       startBtn.disabled = true;
       await generateWords();
@@ -150,7 +157,7 @@ class SprintController {
     }
 
     function nextQuestion() {
-      if (data.answerMap.size < 15) {
+      if (data.answerMap.size < 5) {
         wordsRandomizer();
         const questionContainer = <HTMLDivElement>document.querySelector('.questions-container');
         questionContainer.innerHTML = SprintView.renderQuestion(
@@ -170,7 +177,11 @@ class SprintController {
         );
         mainContainer.insertAdjacentHTML(
           'afterbegin',
-          SprintView.renderResults(),
+          SprintView.renderResults(
+            mapCorrect.size,
+            mapIncorrect.size,
+            mapIncorrect.size === 0 ? 100 : (mapCorrect.size / mapSort.size) * 100,
+          ),
         );
         mapCorrect.forEach((_, k) => {
           (<HTMLDivElement>(
@@ -187,6 +198,9 @@ class SprintController {
             'beforeend',
             SprintView.renderIncorrectResults(k),
           );
+        });
+        document.querySelectorAll('.audio-icon').forEach((icon) => {
+          icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
         });
       }
     }
