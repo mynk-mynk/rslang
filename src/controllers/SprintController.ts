@@ -124,13 +124,16 @@ class SprintController {
       startBtn.disabled = true;
       await generateWords();
       wordsRandomizer();
-      mainContainer.innerHTML = SprintView.renderGameContainer(data.totalScore);
+      mainContainer.innerHTML = SprintView.renderGameContainer();
       const questionContainer = <HTMLDivElement>document.querySelector('.questions-container');
       questionContainer.innerHTML = SprintView.renderQuestion(
         <IWord>data.currentWord,
         <IWord>data.currentTranslation,
         data.totalScore,
       );
+      const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
+      scoresContainer.innerHTML =  SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
+      
       checkAnswer();
       buttonPress();
     };
@@ -165,6 +168,8 @@ class SprintController {
           <IWord>data.currentTranslation,
           data.totalScore,
         );
+        const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
+        scoresContainer.innerHTML =  SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
         checkAnswer();
       } else {
         mainContainer.innerHTML = '';

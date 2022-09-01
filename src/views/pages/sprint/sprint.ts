@@ -287,20 +287,18 @@ class SprintView {
                     />`;
   }
 
-  static renderGameContainer(score: number) {
+  static renderScores(currentScore: number, pointPerAnswer: number) {
+    return `<p class="current-score">${currentScore}</p>
+        <p class="points-per-answer">+${pointPerAnswer} очков за слово</p>
+      `
+  }
+
+  static renderGameContainer() {
     return `<div class="game-field">
-      <div class="answers">
-        <p class="current-score">${score}</p>
-        <div class="correct-answers">
-          <p id="1-correct-answer"></p>
-          <p id="2-correct-answer"></p>
-          <p id="3-correct-answer"></p>
-        </div>
-        <p class="points-per-answer">+10 очков за слово</p>
+      <div class="scores-container">
       </div>
       <div class="progress">
         <img
-          
           id="level-1"
           src="../../assets/images/sprint/baby.png"
           alt="Level 1"
@@ -356,27 +354,6 @@ class SprintView {
       </div>
   </div>`;
   }
-
-  // static renderResults() {
-  //   return `<div class="result-container">
-  //             <h2 class="results-header">Ваш результат:</h2>
-
-  //             <div class="results">
-
-  //               <div class="results-description">
-
-  //                   <p>Правильных ответов: 0</p>
-  //                   <p>Ошибок: 0</p>
-  //                   <p>Правильных ответов подряд: 0</p>
-  //               </div>
-
-  //             <p class="results-accuracy">100%</p>
-
-  //               <div class="correct-results"></div>
-  //               <div class="incorrect-results"></div>
-  //             </div>
-  //           </div>`;
-  // }
 
   static renderResults(correct: number, incorrect: number, accuracy: number) {
     return `<div class="result-container">
