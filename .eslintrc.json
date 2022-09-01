@@ -30,8 +30,8 @@
   "rules": {
     "no-debugger": "off",
     "@typescript-eslint/no-explicit-any": "error",
-    "linebreak-style": ["error", "windows"],
-    // "no-console": "off",
+    // "linebreak-style": ["error", "windows"],
+    "no-console": "off",
     "import/no-cycle": "off",
     "no-underscore-dangle": "off",
     // "@typescript-eslint/no-unsafe-call": "off",

@@ -4,7 +4,7 @@
 export function renderAuthorization() {
   return `<style>
   .authorization-container {
-    position: absolute;
+    position: fixed;
     width: 450px;
     height: 320px;
     top: calc(50% - 160px);

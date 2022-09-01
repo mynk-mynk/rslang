@@ -7,6 +7,7 @@ import SprintController from '../controllers/SprintController';
 import StatisticsController from '../controllers/StatisticsController';
 import TeamController from '../controllers/TeamController';
 import TextbookController from '../controllers/TextbookController';
+import { renderAuthorization } from '../views/components/authorization/authorization';
 import EventObserver from './EventObserver';
 
 class App {
@@ -47,6 +48,9 @@ class App {
 
   start() {
     this.router();
+
+    // add authorization container
+    findHtmlElement(document, '#authorization').innerHTML = renderAuthorization();
   }
 
   private router() {
