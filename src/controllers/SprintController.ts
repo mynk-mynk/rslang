@@ -23,7 +23,7 @@ class SprintController {
 
     const mainContainer = <HTMLElement>document.querySelector('main');
 
-    mainContainer.innerHTML = ''; 
+    mainContainer.innerHTML = '';
     mainContainer.append(renderDifficultyBar());
 
     mainContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
@@ -46,72 +46,68 @@ class SprintController {
       activateProp(e.target as HTMLElement, '.difficulty-btn');
     });
 
-
     function countdown(minutes: number) {
-      var seconds = 60;
-      let mins = minutes;
-      function tick() { 
-          const counter = document.getElementById("timer-container");
-          const current_minutes = mins-1
-          seconds -= 1;
-          (<HTMLDivElement>counter).innerHTML = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
-          if( seconds > 0 ) {
-              setTimeout(tick, 1000);
-              console.log(typeof counter?.innerHTML);
-          } else {
-              if(mins > 1){
-                  countdown(mins - 1);           
-              }
+      let seconds = 60;
+      const mins = minutes;
+      function tick() {
+        const counter = document.getElementById('timer-container');
+        const currentMinutes = mins - 1;
+        seconds -= 1;
+        (<HTMLDivElement>counter).innerHTML = currentMinutes.toString() + ':' + (seconds < 10 ? '0' : '') + String(seconds);
+        if (seconds > 0) {
+          setTimeout(tick, 1000);
+        } else {
+          if (mins > 1) {
+            countdown(mins - 1);
           }
+        }
       }
       tick();
-  }
-
-function checkGameEnd() {
-  let timerId = setTimeout(function checkGameEnd() {
-    const counter = document.getElementById("timer-container");
-    if(counter?.innerHTML === '0:00') {
-      console.log('surpris');
-      mainContainer.innerHTML = '';
-        const mapSort = new Map([...data.answerMap.entries()].sort());
-        const mapCorrect = new Map(
-          [...mapSort].filter(([_, v]) => v === 'correct'),
-        );
-        const mapIncorrect = new Map(
-          [...mapSort].filter(([_, v]) => v === 'incorrect'),
-        );
-        mainContainer.insertAdjacentHTML(
-          'afterbegin',
-          SprintView.renderResults(
-            mapCorrect.size,
-            mapIncorrect.size,
-            mapIncorrect.size === 0 ? 100 : (mapCorrect.size / mapSort.size) * 100,
-          ),
-        );
-        mapCorrect.forEach((_, k) => {
-          (<HTMLDivElement>(
-            document.querySelector('.correct-results')
-          )).insertAdjacentHTML(
-            'beforeend',
-            SprintView.renderCorrectResults(k),
-          );
-        });
-        mapIncorrect.forEach((_, k) => {
-          (<HTMLDivElement>(
-            document.querySelector('.incorrect-results')
-          )).insertAdjacentHTML(
-            'beforeend',
-            SprintView.renderIncorrectResults(k),
-          );
-        });
-        document.querySelectorAll('.audio-icon').forEach((icon) => {
-          icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
-        });
     }
-    timerId = setTimeout(checkGameEnd, 1000); // (*)
-  }, 1000);
-}
 
+    function checkGameEnd() {
+      let timerId = setTimeout(function gameEnd() {
+        const counter = document.getElementById('timer-container');
+        if (counter?.innerHTML === '0:00') {
+          mainContainer.innerHTML = '';
+          const mapSort = new Map([...data.answerMap.entries()].sort());
+          const mapCorrect = new Map(
+            [...mapSort].filter(([_, v]) => v === 'correct'),
+          );
+          const mapIncorrect = new Map(
+            [...mapSort].filter(([_, v]) => v === 'incorrect'),
+          );
+          mainContainer.insertAdjacentHTML(
+            'afterbegin',
+            SprintView.renderResults(
+              mapCorrect.size,
+              mapIncorrect.size,
+              mapIncorrect.size === 0 ? 100 : (mapCorrect.size / mapSort.size) * 100,
+            ),
+          );
+          mapCorrect.forEach((_, k) => {
+            (<HTMLDivElement>(
+              document.querySelector('.correct-results')
+            )).insertAdjacentHTML(
+              'beforeend',
+              SprintView.renderCorrectResults(k),
+            );
+          });
+          mapIncorrect.forEach((_, k) => {
+            (<HTMLDivElement>(
+              document.querySelector('.incorrect-results')
+            )).insertAdjacentHTML(
+              'beforeend',
+              SprintView.renderIncorrectResults(k),
+            );
+          });
+          document.querySelectorAll('.audio-icon').forEach((icon) => {
+            icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
+          });
+        }
+        timerId = setTimeout(gameEnd, 1000); // (*)
+      }, 1000);
+    }
 
     function buttonPress() {
       document.addEventListener('keypress', (event: KeyboardEvent) => {
@@ -163,9 +159,7 @@ function checkGameEnd() {
       data.totalScore += data.pointsPerAnswer * data.multiplier;
       if (data.streak === 3) {
         data.streak = 0;
-        data.multiplier === 4
-          ? (data.multiplier = 4)
-          : (data.multiplier += 1);
+        data.multiplier === 4 ? (data.multiplier = 4) : (data.multiplier += 1);
         (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.display = 'block';
       }
     }
@@ -200,12 +194,11 @@ function checkGameEnd() {
         data.totalScore,
       );
       const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
-      scoresContainer.innerHTML =  SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
+      scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
       checkAnswer();
       buttonPress();
       countdown(1);
-      checkGameEnd()
-      // window.setTimeout(checkGameEnd, 1000)
+      checkGameEnd();
     };
 
     function checkAnswer() {
@@ -230,20 +223,18 @@ function checkGameEnd() {
     }
 
     function nextQuestion() {
-      
-        wordsRandomizer();
-        const questionContainer = <HTMLDivElement>document.querySelector('.questions-container');
-        questionContainer.innerHTML = SprintView.renderQuestion(
-          <IWord>data.currentWord,
-          <IWord>data.currentTranslation,
-          data.totalScore,
-        );
-        const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
-        scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
-        checkAnswer();
-      
+      wordsRandomizer();
+      const questionContainer = <HTMLDivElement>document.querySelector('.questions-container');
+      questionContainer.innerHTML = SprintView.renderQuestion(
+        <IWord>data.currentWord,
+        <IWord>data.currentTranslation,
+        data.totalScore,
+      );
+      const scoresContainer = <HTMLDivElement>document.querySelector('.scores-container');
+      scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
+      checkAnswer();
     }
-}
+  }
 }
 
 export default SprintController;

@@ -8,7 +8,7 @@ import { renderDifficultyBar } from '../views/components/difficulty-bar/difficul
 
 class AudiocallController {
   static actionIndex() {
-      const data: IDataAudio = {
+    const data: IDataAudio = {
       currentDifficulty: 0,
       data2: 'audiocall',
       wordsArr: [],
@@ -18,10 +18,8 @@ class AudiocallController {
     };
 
     showBurgerMenu();
-    
     const mainContainer = findHtmlElement(document, 'main');
-
-    mainContainer.innerHTML = ''; 
+    mainContainer.innerHTML = '';
     mainContainer.append(renderDifficultyBar());
 
     mainContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());

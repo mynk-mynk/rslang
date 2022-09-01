@@ -122,8 +122,7 @@ class SprintView {
 
   static renderScores(currentScore: number, pointPerAnswer: number) {
     return `<p class="current-score">${currentScore}</p>
-        <p class="points-per-answer">+${pointPerAnswer} очков за слово</p>
-      `
+        <p class="points-per-answer">+${pointPerAnswer} очков за слово</p>`;
   }
 
   static renderGameContainer() {
