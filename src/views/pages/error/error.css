@@ -1,15 +1,17 @@
-/* .main-container {
+.main-container-error {
+  margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  justify-content: center;
   align-items: center;
+  gap: 30px;
   font-family: var(--font-primary);
 }
 
-h1 {
+.main-container-error h1 {
   font-size: 5rem;
 }
 
-p {
+.main-container-error p {
   font-size: 2rem;
-} */
+}

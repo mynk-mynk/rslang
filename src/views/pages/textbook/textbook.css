@@ -1,24 +1,25 @@
-/* .main-container {
-  height: 100%;
+.main-container-textbook {
+  font-family: 'Comfortaa';
+  margin: auto;
+  display: flex;
+  height: 100%; 
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
   gap: 50px;
-} */
+}
 
-
-
-/* .words-container {
+.words-container {
   display: flex;
   justify-content: center;
   gap: 50px;
   flex-wrap: wrap;
   flex-grow: 1;
-} */
+}
 
 /* Word card */
 
-/* .word-container {
+.word-container {
   display: flex;
   flex-direction: column;
   width: 350px;
@@ -120,13 +121,13 @@
   width: 91%;
   margin: 10px 0;
   padding-right: 20px;
-} */
+}
 
 
 
 /* Pagination */
 
-/* .pagination-container {
+.pagination-container {
   font-family: var(--font-primary);
   font-size: 2rem;
   display: flex;
@@ -157,5 +158,4 @@
   color: #8a8b8b;
   text-shadow: none;
   transform: scale(1);
-} */
-
+}

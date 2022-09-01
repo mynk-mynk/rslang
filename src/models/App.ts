@@ -1,4 +1,4 @@
-import { findHtmlElement } from '../common/utils/utils';
+import { closeBurgerMenu, findHtmlElement, toggleBurgerMenu } from '../common/utils/utils';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
 // eslint-disable-next-line import/no-cycle
@@ -56,9 +56,10 @@ class App {
 
     // add event listener and observer to NavBar links
     this.setRouterToElements('.nav-bar li');
+    this.setRouterToElements('.logo');
 
     const burgerIcon = findHtmlElement(document, '.burger');
-    burgerIcon.addEventListener('click', App.toggleBurgerMenu.bind(this));
+    burgerIcon.addEventListener('click', toggleBurgerMenu);
 
     // add event listener to browser history buttons
     window.addEventListener('popstate', () => {
@@ -82,19 +83,13 @@ class App {
   }
 
   private getContent() {
+    closeBurgerMenu();
     const controller = this.pages[this.page as keyof typeof this.pages];
     if (controller) {
       controller.actionIndex();
     } else {
       this.pages.error.actionIndex();
     }
-  }
-
-  private static toggleBurgerMenu() {
-    const burgerIcon = findHtmlElement(document, '.burger');
-    const navBar = findHtmlElement(document, '.nav-bar');
-    burgerIcon.classList.toggle('open');
-    navBar.classList.toggle('open');
   }
 }
 
