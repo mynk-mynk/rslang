@@ -122,10 +122,10 @@ class App {
   }
 
   private setLoginForm() {
-    this.htmlElemets.authBlockHeader.innerHTML = 'Login';
+    this.htmlElemets.authBlockHeader.innerHTML = 'Авторизация';
     this.htmlElemets.registrationForm.style.display = 'none';
     this.htmlElemets.loginForm.style.display = 'flex';
-    this.htmlElemets.authBlock.style.height = '320px';
+    this.htmlElemets.authBlock.style.height = '330px';
     this.htmlElemets.loginBtn.style.display = 'inline-block';
     this.htmlElemets.loginLinkBtn.style.display = 'none';
     this.htmlElemets.registrationBtn.style.display = 'none';
@@ -133,7 +133,7 @@ class App {
   }
 
   private setRegistrationForm() {
-    this.htmlElemets.authBlockHeader.innerHTML = 'Registration';
+    this.htmlElemets.authBlockHeader.innerHTML = 'Регистрация';
     this.htmlElemets.registrationForm.style.display = 'flex';
     this.htmlElemets.loginForm.style.display = 'none';
     this.htmlElemets.authBlock.style.height = '370px';

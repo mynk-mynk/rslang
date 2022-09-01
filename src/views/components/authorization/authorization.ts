@@ -3,7 +3,7 @@ export default function renderAuthorization() {
   .authorization-block {
     position: fixed;
     width: 450px;
-    height: 320px;
+    height: 330px;
     top: calc(50% - 160px);
     left: calc(50% - 225px);
     z-index: 20;
@@ -15,6 +15,7 @@ export default function renderAuthorization() {
     border: 2px solid var(--color);
     border-radius: 30px;
     background: rgba(246, 240, 153, 1);
+    font-family: var(--font-secondary);
     transition: 0.1s;
   }
   
@@ -69,6 +70,7 @@ export default function renderAuthorization() {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    align-items: center;
   }
   
   .login-btn, .registration-btn {
@@ -111,22 +113,22 @@ export default function renderAuthorization() {
   <div class="blur"></div>
   <div class="authorization-block">
     <img class="close-icon" src="../../assets/svg/cross.svg" alt="Close Icon" width="20">
-    <h2>LogIn</h2>
+    <h2>Авторизация</h2>
     <form class="login-form auth-form" id="login-form">
-    <p class="authorization-error">Error</p>
+      <p class="authorization-error">Неверный логин или пароль</p>
       <input class="authorization-email auth-input" name="email" type="email" placeholder="E-mail" autofocus>
-      <input class="authorization-password auth-input" name="password" type="password" placeholder="Password">
+      <input class="authorization-password auth-input" name="password" type="password" placeholder="Пароль">
     </form>
     <form class="registration-form auth-form" id="registration-form" style="display:none">
-      <input class="authorization-name auth-input" name="name" type="text" placeholder="Name" autofocus>
+      <input class="authorization-name auth-input" name="name" type="text" placeholder="Имя" autofocus>
       <input class="authorization-email auth-input" name="email" type="email" placeholder="E-mail">
-      <input class="authorization-password auth-input" name="password" type="password" placeholder="Password">
+      <input class="authorization-password auth-input" name="password" type="password" placeholder="Пароль">
     </form>
     <div class="authorization-btns">
-        <button class="login-btn btn-like-link">Login</button>
-        <button class="registration-link-btn">Registration</button>
-        <button class="registration-btn btn-like-link" style="display:none">Registration</button>
-        <button class="login-link-btn" style="display:none">Login</button>
+        <button class="login-btn btn-like-link">Войти</button>
+        <button class="registration-link-btn">Зарегистрироваться</button>
+        <button class="registration-btn btn-like-link" style="display:none">Регистрация</button>
+        <button class="login-link-btn" style="display:none">Уже есть аккаунт?</button>
       </div>
   </div>`;
 }
