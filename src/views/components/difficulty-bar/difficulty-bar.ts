@@ -74,4 +74,3 @@ export function renderDifficultyBar() {
     <div class="difficulty-btn level7">7</div>
   </div>`;
 }
-
