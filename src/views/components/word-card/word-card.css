@@ -1,0 +1,108 @@
+.word-container {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  border: 2px solid var(--color);
+  box-shadow: 0 0 10px #f06969;
+  border-radius: 20px;
+  color: var(--color);
+  opacity: 90%;
+  overflow: hidden;
+}
+
+.textbook-word-img {
+  height: fit-content;
+  opacity: 80%;
+}
+
+.word-description {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.word-properties {
+  width: 306px;
+  z-index: 1;
+  position: absolute;
+  top: -60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.word-properties img {
+  transition: 0.1s;
+  opacity: 40%;
+}
+
+.word-properties img.active {
+  transition: 0.1s;
+  opacity: 100%;
+}
+
+.word-properties img:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  filter: drop-shadow(1px 1px 3px #f06969);
+}
+
+.word-properties img:active {
+  transform: scale(0.95);
+}
+
+.word-container h2 {
+  margin-bottom: 5px;
+}
+
+.word {
+  position: relative;
+}
+
+.audio-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: -20px;
+  filter: var(--filter);
+  transition: 0.1s;
+}
+
+.word .audio-icon {
+  top: 5px;
+  right: 5px;
+}
+
+.audio-icon:hover {
+  filter: var(--filter) drop-shadow(1px 1px 3px #f06969);
+  transform: scale(1.05);
+}
+
+.audio-icon:active {
+  transform: scale(0.95);
+}
+
+.word-transcription {
+  font-size: 1.2rem;
+}
+
+.word-translation {
+  margin-top: 5px;
+}
+
+.word-meaning,
+.word-example {
+  padding-top: 10px;
+  border-top: 2px solid var(--color);
+  font-size: 0.9rem;
+}
+
+.word-meaning p,
+.word-example p {
+  position: relative;
+  width: 91%;
+  margin: 10px 0;
+  padding-right: 20px;
+}

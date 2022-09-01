@@ -5,6 +5,13 @@
   --filter-light: invert(87%) sepia(27%) saturate(6724%) hue-rotate(206deg) brightness(88%) contrast(83%);
   --font-primary: 'DynaPuff';
   --font-secondary: 'Comfortaa';
+  --diff1-red: #f06969;
+  --diff2-orange: #ec7d3d;
+  --diff3-yellow: #e4e713;
+  --diff4-green: #50a150;
+  --diff5-lightBlue: #69d0f0;
+  --diff6-blue: #4183c0;
+  --diff7-violet: #906bb3;
 }
 
 @font-face {

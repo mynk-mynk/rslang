@@ -12,3 +12,11 @@ export function renderDifficultyBar() {
     <div class="difficulty-btn level7">7</div>`;
   return diffBar;
 }
+
+export function activateProp(el: HTMLElement, selector: string) {
+  if (el) {
+    const elements = document.querySelectorAll(selector);
+    elements?.forEach((element) => element.classList.remove('active'));
+    el.classList.add('active');
+  }
+}

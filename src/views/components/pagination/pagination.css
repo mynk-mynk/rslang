@@ -1,0 +1,32 @@
+.pagination-container {
+  font-family: var(--font-primary);
+  font-size: 2rem;
+  display: flex;
+  gap: 15px;
+}
+
+.pagination-container p {
+  user-select: none;
+  transition: 0.1s;
+}
+
+.pagination-container p:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  text-shadow: 0 0 3px #f06969;
+}
+
+.pagination-container p:active {
+  transform: scale(0.95);
+}
+
+.pagination-container p.disabled {
+  color: #8a8b8b;
+}
+
+.pagination-container p.disabled {
+  cursor: auto;
+  color: #8a8b8b;
+  text-shadow: none;
+  transform: scale(1);
+}
