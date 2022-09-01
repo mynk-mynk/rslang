@@ -1,8 +1,7 @@
 import './textbook.css';
 
-class TextbookView {
-  static drawPage():string {
-    return `<div class="main-container-textbook">
+export function renderTextbookPage(): string {
+  return `<div class="main-container-textbook">
     <h1>Учебник</h1>
     <div class="difficulty-container"></div>
     <div class="words-container"></div>
@@ -16,7 +15,4 @@ class TextbookView {
     </div>
 
   </div>`;
-  }
 }
-
-export default TextbookView;
