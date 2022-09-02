@@ -2,7 +2,7 @@ import Word from '../models/Word';
 import { IWord } from '../common/interfaces/IWord';
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import { activateProp, renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
-import { renderPagination } from '../views/components/pagination/pagination';
+import { disableBtns, renderPagination, setPageNum } from '../views/components/pagination/pagination';
 import { chooseWordProp, renderWordCard, playAudio } from '../views/components/word-card/word-card';
 import { renderTextbookPage } from '../views/pages/textbook/textbook';
 
@@ -15,8 +15,8 @@ interface IDataTextbook {
 class TextbookController {
   static actionIndex() {
     const data: IDataTextbook = {
-      difficulty: 1,
-      pageNum: 1,
+      difficulty: 0,
+      pageNum: 0,
       words: [],
     };
 
@@ -27,7 +27,8 @@ class TextbookController {
 
     const header = findHtmlElement(document, 'h1');
     header.after(renderDifficultyBar());
-    // authorization check (6 or 7 categories)
+    // const hardWords = findHtmlElement(document, '.level7');
+    // hardWords.style.display = App.isAuth ? 'block' : 'none';
     TextbookController.addListenersToDiffBar();
 
     TextbookController.generateWordCards(data.pageNum, data.difficulty)
@@ -35,6 +36,39 @@ class TextbookController {
 
     const mainContainer = findHtmlElement(document, '.main-container-textbook');
     mainContainer.append(renderPagination());
+
+    const pagination = findHtmlElement(document, '.pagination-container');
+    pagination.addEventListener('click', async (e) => {
+      const btn = e.target as HTMLElement;
+      if (btn.classList.contains('disabled')) return;
+
+      const nextPage = findHtmlElement(document, '.pagination-next');
+      const lastPage = findHtmlElement(document, '.pagination-last');
+      const prevPage = findHtmlElement(document, '.pagination-prev');
+      const firstPage = findHtmlElement(document, '.pagination-first');
+
+      if (btn === nextPage) {
+        data.pageNum += 1;
+        data.pageNum = data.pageNum <= 29 ? data.pageNum : 29;
+      }
+
+      if (btn === lastPage) {
+        data.pageNum = 29;
+      }
+
+      if (btn === prevPage) {
+        data.pageNum -= 1;
+        data.pageNum = data.pageNum >= 0 ? data.pageNum : 0;
+      }
+
+      if (btn === firstPage) {
+        data.pageNum = 0;
+      }
+
+      await TextbookController.generateWordCards(data.pageNum, data.difficulty);
+      disableBtns(data.pageNum);
+      setPageNum(data.pageNum + 1);
+    });
   }
 
   static addListenersToDiffBar() {
@@ -44,6 +78,7 @@ class TextbookController {
 
   static async generateWordCards(page: number, difficulty: number) {
     const wordsContainer = findHtmlElement(document, '.words-container');
+    wordsContainer.innerHTML = '';
     const words = await Word.getWords(page, difficulty) as IWord[];
     words.forEach((word) => {
       const card = renderWordCard(word);

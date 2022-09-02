@@ -13,7 +13,7 @@
 .pagination-container p:hover {
   cursor: pointer;
   transform: scale(1.05);
-  text-shadow: 0 0 3px #f06969;
+  text-shadow: 0 0 3px var(--ligth-color);
 }
 
 .pagination-container p:active {

@@ -3,7 +3,7 @@
   flex-direction: column;
   width: 350px;
   border: 2px solid var(--color);
-  box-shadow: 0 0 10px #f06969;
+  box-shadow: 0 0 10px var(--diff1-red);
   border-radius: 20px;
   color: var(--color);
   opacity: 90%;
@@ -46,7 +46,7 @@
 .word-properties img:hover {
   cursor: pointer;
   transform: scale(1.05);
-  filter: drop-shadow(1px 1px 3px #f06969);
+  filter: drop-shadow(1px 1px 3px var(--ligth-color));
 }
 
 .word-properties img:active {
@@ -76,7 +76,7 @@
 }
 
 .audio-icon:hover {
-  filter: var(--filter) drop-shadow(1px 1px 3px #f06969);
+  filter: var(--filter) drop-shadow(1px 1px 3px var(--ligth-color));
   transform: scale(1.05);
 }
 
