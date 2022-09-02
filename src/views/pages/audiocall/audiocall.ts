@@ -92,8 +92,6 @@ class AudiocallView {
       <h1>Игра "Аудиокол"</h1>
       <div class="rules-container">
         <p>В игре "Аудиоколл" Ваша задача выбрать правильный перевод к услышанному слову из 5 предложенных вариантов.</p>
-      </div>
-      <div>
         <p class="controls-description">Вы можете отвечать на вопросы с помощью кнопок "1", "2", "3", "4", "5". Увидеть следующий вопрос можно при помощи клавиши "Enter"</p>
         <div class="control-keys">
           <img src="../../assets/images/audiocall/key-one.png">

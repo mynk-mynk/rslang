@@ -138,6 +138,7 @@ class AudiocallController {
               'beforebegin',
               AudiocallView.rightIcon(),
             );
+            (<HTMLElement>e.target).classList.add('correct-answer');
             (<HTMLButtonElement>document.getElementById('btn-next')).disabled = false;
             data.answerMap.set(<IWord>data.currentWord, 'correct');
           } else {
@@ -149,12 +150,14 @@ class AudiocallController {
                 el.innerHTML.slice(3) === (<IWord>data.currentWord).wordTranslate
               ) {
                 el.insertAdjacentHTML('beforebegin', AudiocallView.rightIcon());
+                (<HTMLElement>el).classList.add('correct-answer');
               }
             });
             (<HTMLElement>e.target).insertAdjacentHTML(
               'beforebegin',
               AudiocallView.wrongIcon(),
             );
+            (<HTMLElement>e.target).classList.add('wrong-answer');
             (<HTMLButtonElement>document.getElementById('btn-next')).disabled = false;
             data.answerMap.set(<IWord>data.currentWord, 'incorrect');
           }

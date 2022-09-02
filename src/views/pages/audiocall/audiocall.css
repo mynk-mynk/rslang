@@ -64,6 +64,10 @@
 
 .rules-container {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 70%;
 }
 
 .controls-description {
@@ -73,7 +77,6 @@
 .control-keys {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .word-img {
@@ -119,17 +122,19 @@
   gap: 50px;
 }
 
+.answer-item {
+  background-color: transparent;
+}
+
 .btns-container-audiocall button {
   position: relative;
   user-select: none;
   font-family: var(--font-secondary);
   font-size: 1.5rem;
-  background-color: rgba(255, 255, 255, 0.2);
   transition: 0.2s;
-  border-radius: 25px;
-  border: 2px solid #000;
+  border: none;
+  background-color: none;
   padding: 0.3em 0.6em;
-  box-shadow: 5px 5px #000;
 }
 
 .btns-container-audiocall button.correct-answer,
@@ -141,6 +146,7 @@
 
 .btns-container-audiocall button:hover {
   cursor: pointer;
+  text-shadow: 0 0 1px var(--color);
   opacity: 100%;
   transform: scale(1.05);
   transition: 0.3s;
@@ -162,6 +168,7 @@
 
 .answer-container-audiocall {
   position: relative;
+
 }
 
 .answer-img {
