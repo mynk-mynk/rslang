@@ -118,12 +118,12 @@ ul {
 
 .authorization-icon {
   width: 40px;
-  filter: var(--filter);
+  /* filter: var(--filter); */
   transition: 0.1s;
 }
 
 .authorization-icon:hover {
-  filter: var(--filter) drop-shadow(1px 1px 2px var(--ligth-color));
+  filter: drop-shadow(1px 1px 2px var(--ligth-color));
 }
 
 .authorization-icon:active {

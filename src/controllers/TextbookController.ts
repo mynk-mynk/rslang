@@ -1,7 +1,7 @@
 import Word from '../models/Word';
 import { IWord } from '../common/interfaces/IWord';
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
-import { activateProp, renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
+import { activateCurrentDifficulty, activateProp, renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 import { disableBtns, renderPagination, setPageNum } from '../views/components/pagination/pagination';
 import {
   chooseWordProp, renderWordCard, playAudio, changeCardBoxshadow,
@@ -15,10 +15,8 @@ interface IDataTextbook {
 
 class TextbookController {
   static actionIndex() {
-    const data: IDataTextbook = {
-      difficulty: 0,
-      pageNum: 0,
-    };
+    const data: IDataTextbook = TextbookController.getFromLS()
+    || { difficulty: 0, pageNum: 0 };
 
     showBurgerMenu();
 
@@ -33,6 +31,7 @@ class TextbookController {
 
     TextbookController.generateWordCards(data.pageNum, data.difficulty)
       .catch((e) => console.log(e));
+    activateCurrentDifficulty(data.difficulty + 1);
 
     const mainContainer = findHtmlElement(document, '.main-container-textbook');
     mainContainer.append(renderPagination());
@@ -81,11 +80,6 @@ class TextbookController {
     });
   }
 
-  static addListenersToDiffBar() {
-    const difficultyContainer = findHtmlElement(document, '.difficulty-container');
-    difficultyContainer.addEventListener('click', (e) => activateProp(e.target as HTMLElement, '.difficulty-btn'));
-  }
-
   static async generateWordCards(page: number, difficulty: number) {
     const wordsContainer = findHtmlElement(document, '.words-container');
     wordsContainer.innerHTML = '';
@@ -98,6 +92,12 @@ class TextbookController {
     TextbookController.addListenersToCards();
     setPageNum(page + 1);
     disableBtns(page);
+    TextbookController.setToLS({ pageNum: page, difficulty });
+  }
+
+  static addListenersToDiffBar() {
+    const difficultyContainer = findHtmlElement(document, '.difficulty-container');
+    difficultyContainer.addEventListener('click', (e) => activateProp(e.target as HTMLElement));
   }
 
   static addListenersToCards() {
@@ -109,6 +109,23 @@ class TextbookController {
     document.querySelectorAll('.audio-icon').forEach((icon) => {
       icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
     });
+  }
+
+  static setToLS(data: IDataTextbook) {
+    localStorage.setItem('textbookData', JSON.stringify(data));
+  }
+
+  static getFromLS() {
+    const textbookData = localStorage.getItem('textbookData');
+    let res = { difficulty: 0, pageNum: 0 };
+    if (textbookData) {
+      try {
+        res = JSON.parse(textbookData) as IDataTextbook;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    return res;
   }
 }
 

@@ -13,6 +13,7 @@
 .textbook-word-img {
   height: fit-content;
   opacity: 80%;
+  border-radius: 0 0 150px 150px;
 }
 
 .word-description {
@@ -27,9 +28,10 @@
   width: 306px;
   z-index: 1;
   position: absolute;
-  top: -60px;
+  top: -30px;
   display: flex;
   justify-content: space-between;
+  align-self: center;
   align-items: center;
 }
 

@@ -1,3 +1,4 @@
+import { findHtmlElement } from '../../../common/utils/utils';
 import './difficulty-bar.css';
 
 export function renderDifficultyBar() {
@@ -13,11 +14,16 @@ export function renderDifficultyBar() {
   return diffBar;
 }
 
-export function activateProp(el: HTMLElement, selector: string) {
+export function activateProp(el: HTMLElement, selector = '.difficulty-btn') {
   if (!el.classList.contains('difficulty-btn')) return;
   if (el) {
     const elements = document.querySelectorAll(selector);
     elements?.forEach((element) => element.classList.remove('active'));
     el.classList.add('active');
   }
+}
+
+export function activateCurrentDifficulty(category: number) {
+  const currentDiff = findHtmlElement(document, `[data-group="${category}"]`);
+  activateProp(currentDiff);
 }
