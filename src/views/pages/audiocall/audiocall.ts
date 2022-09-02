@@ -149,7 +149,7 @@ class AudiocallView {
         <button class="answer5 answer-item">5. ${answers[4]}</button>
       </div>
     </div>
-    <button id="btn-next" disabled>Next</button>
+    <button id="btn-next" class="next-btn" disabled>Next</button>
   </div>
   </div>`;
   }
@@ -177,18 +177,18 @@ class AudiocallView {
 
   static renderCorrectResults(word: IWord) {
     return `
-    <div>
+    <div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
-      <img id="audio-btn-${word.word}" class = "audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
-      <span class="word-original">${word.word}</span> - <span class="word-translation">${word.wordTranslate}</span>
+      <img id="audio-btn-${word.word}" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audiocall-audio-icon" width="20">
+      <span class="word-original word-audiocall">${word.word}</span> - <span class="word-translation word-audiocall">${word.wordTranslate}</span>
     </div>`;
   }
 
   static renderIncorrectResults(word: IWord) {
-    return `<div>
+    return `<div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
-      <img id="audio-btn-${word.word}" class = "audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
-      <span class="word-original">${word.word}</span> - <span class="word-translation">${word.wordTranslate}</span>
+      <img id="audio-btn-${word.word}" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audiocall-audio-icon" width="20">
+      <span class="word-original word-audiocall">${word.word}</span> - <span class="word-translation word-audiocall">${word.wordTranslate}</span>
   </div>`;
   }
 }
