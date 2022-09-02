@@ -1,7 +1,9 @@
 import { IErrorApi } from '../common/interfaces/IErrorApi';
 import { IHtmlElements } from '../common/interfaces/IHtmlElemets';
 import { IUser } from '../common/interfaces/IUser';
-import { closeBurgerMenu, findHtmlElement, toggleBurgerMenu } from '../common/utils/utils';
+import {
+  closeBurgerMenu, findHtmlElement, hideBurgerMenu, showBurgerMenu, toggleBurgerMenu,
+} from '../common/utils/utils';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
 // eslint-disable-next-line import/no-cycle
@@ -58,6 +60,11 @@ class App {
   set url(value: string) {
     this._url = value;
     this.page = this._url.slice(1) || 'index';
+    if (this.page === 'index') {
+      hideBurgerMenu();
+    } else {
+      showBurgerMenu();
+    }
   }
 
   get isAuth() {
