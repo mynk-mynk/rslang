@@ -1,20 +1,27 @@
-// Add to the top of main container
-// add class .no-scroll to body (don't forget to remove .no-scroll after closing popup)
-
 import './authorization.css';
 
-export function renderAuthorization() {
+export default function renderAuthorization() {
   return `<div class="blur"></div>
-<div class="authorization-container">
-  <img class="close-icon" src="../../assets/svg/cross.svg" alt="Close Icon" width="20">
-  <h2>LogIn</h2>
-  <form class="login-form" action="">
-    <input class="authorization-email" type="email" placeholder="E-mail" autofocus>
-    <input class="authorization-password" type="password" placeholder="Password">
-  </form>
-  <div class="authorization-btns">
-    <button class="login-btn btn-like-link">Login</button>
-    <button class="regestration-btn">Registration</button>
-  </div>
-</div>`;
+  <div class="authorization-block">
+    <img class="close-icon" src="../../assets/svg/cross.svg" alt="Close Icon" width="20">
+    <h2>Авторизация</h2>
+    <form class="login-form auth-form" id="login-form">
+      <p class="authorization-error error-msg">Неверный логин или пароль</p>
+      <input class="authorization-email auth-input" name="email" type="email" placeholder="E-mail" autofocus>
+      <input class="authorization-password auth-input" name="password" type="password" placeholder="Пароль" minlength="8">
+    </form>
+    <form class="registration-form auth-form" id="registration-form" style="display:none">
+      <p class="registration-error error-msg"></p>
+      <p class="registration-success success-msg">Пользователь успешно зарегистрирован!</p>
+      <input class="registration-name auth-input" name="name" type="text" placeholder="Имя" autofocus>
+      <input class="registration-email auth-input" name="email" type="email" placeholder="E-mail">
+      <input class="registration-password auth-input" name="password" type="password" placeholder="Пароль" minlength="8">
+    </form>
+    <div class="authorization-btns">
+        <button class="login-btn btn-like-link">Войти</button>
+        <button class="registration-link-btn">Зарегистрироваться</button>
+        <button class="registration-btn btn-like-link" style="display:none">Регистрация</button>
+        <button class="login-link-btn" style="display:none">Уже есть аккаунт?</button>
+      </div>
+  </div>`;
 }

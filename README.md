@@ -21,5 +21,28 @@ WORD
 1. Создать экземпляр класса с данными по одному слову: 
   С помощью только id: const word = await Word.init('5e9f5ee35eb9e72bc21af4a4');
   Если есть все параметры передаем их в виде объекта: const word = new Word(params);
-2. Получить все слова со страницы (возвращает промис): Word.getWords().then((data) => console.log(data)).catch((e) => console.log(e));
+2. Получить все слова со страницы: Word.getWords();
 USER
+1. Создание: 
+    User.createUser({ name: 'TestUser3', email: 'hello3@user.com', password: 'Gfhjkm_123' });
+2. Авторизация:
+    (async () => {
+      const auth: User | null = await User.signin({ email: 'hello@user.com', password: 'Gfhjkm_12' });
+      console.log(auth);
+    })();
+3. Получить пользователя: 
+    (async () => {
+      const auth: User | null = await User.signin({ email: 'hello@user.com', password: 'Gfhjkm_123' });
+      if (auth) {
+        const user = await auth.getUser();
+        console.log(user);
+      }
+    })();
+4. Новый токен:
+    (async () => {
+      const auth: User | null = await User.signin({ email: 'hello5@user.com', password: 'Gfhjkm_123' });
+      if (auth) {
+        const token = await auth.getNewToken();
+        console.log(token);
+      }
+    })();
