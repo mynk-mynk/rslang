@@ -46,6 +46,7 @@ class App {
       body: findHtmlElement(document, 'body'),
       authContainer: findHtmlElement(document, '.authorization-container'),
       authIcon: findHtmlElement(document, '.authorization-icon'),
+      tooltipText: findHtmlElement(document, '.tooltiptext'),
     };
     this._isAuth = false;
 
@@ -75,6 +76,7 @@ class App {
     this._isAuth = value;
     const imgUrl = `./assets/svg/${value ? '' : 'un'}verified.svg`;
     (this.htmlElemets.authIcon as HTMLImageElement).src = imgUrl;
+    this.htmlElemets.tooltipText.innerHTML = value ? 'Выйти' : 'Войти?';
   }
 
   start() {
