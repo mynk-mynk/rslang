@@ -105,9 +105,8 @@ class AudiocallView {
         </div>
       </div>
       <h3>Пожалуйста, выберите раздел</h3>
-    </div>`
+    </div>`;
   }
-
 
   static renderQuestion(answers: string[], word: IWord | null) {
     return `<div class="main-container-audiocall">
