@@ -101,6 +101,7 @@ ul {
 }
 
 .authorization-link {
+  position: relative;
   text-align: end;
   margin-right: 10px;
   border: none;
@@ -121,6 +122,23 @@ ul {
   transform: scale(0.97);
 }
 
+.tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  left: -85px;
+  top: 6px;
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  color: var(--ligth-color);
+  padding: 6px 10px;
+  border: 1px solid var(--ligth-color);
+  border-radius: 5px;
+}
+
+.authorization-link:hover .tooltiptext {
+  visibility: visible;
+}
+
 .burger,
 .burger-line {
   z-index: 2;
@@ -134,7 +152,7 @@ ul {
   position: relative;
   width: 30px;
   height: 22px;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .burger-line,
@@ -171,7 +189,7 @@ ul {
   top: 30px;
   right: 0;
   margin: 30px 0;
-  transition: 0.5s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 .nav-bar.open {
@@ -196,13 +214,6 @@ ul {
 .home-icon {
   filter: var(--filter);
   margin-bottom: 20px !important;
-}
-
-.main-container {
-  font-family: 'Comfortaa';
-  margin: auto;
-  display: flex;
-  padding: 50px 0;
 }
 
 .footer-container {

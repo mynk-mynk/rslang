@@ -5,7 +5,30 @@ Document, selector: string): TElement {
   return el;
 }
 
-// Add this because of linter import/prefer-default-export
-export function capitalizeFirstLetter(str: string) {
-  return str[0].toUpperCase() + str.slice(1);
+export function toggleBurgerMenu() {
+  const burgerIcon = findHtmlElement(document, '.burger');
+  const navBar = findHtmlElement(document, '.nav-bar');
+  burgerIcon.classList.toggle('open');
+  navBar.classList.toggle('open');
+}
+
+export function hideBurgerMenu() {
+  const burger = findHtmlElement(document, '.burger');
+  const navBar = findHtmlElement(document, '.nav-bar');
+  burger.style.display = 'none';
+  navBar.style.display = 'none';
+}
+
+export function showBurgerMenu() {
+  const burger = findHtmlElement(document, '.burger');
+  const navBar = findHtmlElement(document, '.nav-bar');
+  burger.style.display = 'inline-block';
+  navBar.style.display = 'block';
+}
+
+export function closeBurgerMenu() {
+  const burger = findHtmlElement(document, '.burger');
+  const navBar = findHtmlElement(document, '.nav-bar');
+  burger.classList.remove('open');
+  navBar.classList.remove('open');
 }

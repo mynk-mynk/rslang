@@ -1,13 +1,14 @@
+import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import { IWord, IWords } from '../common/interfaces/IWord';
 import { IDataAudio } from '../common/interfaces/IDataAudio';
 import config from '../config';
 import Word from '../models/Word';
 import AudiocallView from '../views/pages/audiocall/audiocall';
-import DifficultyBar from '../views/components/difficulty-bar/difficulty-bar';
+import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 
 class AudiocallController {
   static actionIndex() {
-    const data: IDataAudio = {
+      const data: IDataAudio = {
       currentDifficulty: 0,
       data2: 'audiocall',
       wordsArr: [],
@@ -16,9 +17,12 @@ class AudiocallController {
       answerMap: new Map(),
     };
 
-    const mainContainer = <HTMLElement>document.querySelector('main');
+    showBurgerMenu();
+    
+    const mainContainer = findHtmlElement(document, 'main');
 
-    mainContainer.innerHTML = DifficultyBar.draw();
+    mainContainer.innerHTML = '';
+    mainContainer.append(renderDifficultyBar());
 
     mainContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());
 
