@@ -25,7 +25,7 @@ class SprintController {
     mainContainer.innerHTML = '';
 
     mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription());
-    const gameContainer = <HTMLElement>document.querySelector('.main-container-sprint')
+    const gameContainer = <HTMLElement>document.querySelector('.main-container-sprint');
     gameContainer.append(renderDifficultyBar());
     gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
 
@@ -55,7 +55,7 @@ class SprintController {
         const counter = document.getElementById('timer-container');
         const currentMinutes = mins - 1;
         seconds -= 1;
-        (<HTMLDivElement>counter).innerHTML = currentMinutes.toString() + ':' + (seconds < 10 ? '0' : '') + String(seconds);
+        (<HTMLDivElement>counter).innerHTML = `${currentMinutes.toString()}:${(seconds < 10 ? '0' : '')}${String(seconds)}`;
         if (seconds > 0) {
           setTimeout(tick, 1000);
         } else {
@@ -70,7 +70,7 @@ class SprintController {
     function checkGameEnd() {
       let timerId = setTimeout(function gameEnd() {
         const counter = document.getElementById('timer-container');
-        if (counter?.innerHTML === '0:55') {
+        if (counter?.innerHTML === '0:40') {
           mainContainer.innerHTML = '';
           const mapSort = new Map([...data.answerMap.entries()].sort());
           const mapCorrect = new Map(

@@ -44,21 +44,18 @@ h1 {
   padding-top: 50px;
 }
 
-.sprint-description {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 20px;
-}
-
 .rules-container {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 70%;
+
 }
 
 .control-keys {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .sprint-timer {
