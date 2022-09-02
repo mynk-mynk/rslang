@@ -22,9 +22,10 @@ class AudiocallController {
     const mainContainer = findHtmlElement(document, 'main');
 
     mainContainer.innerHTML = '';
-    mainContainer.append(renderDifficultyBar());
-
-    mainContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());
+    mainContainer.insertAdjacentHTML('afterbegin', AudiocallView.renderAudiocallDescription());
+    const gameContainer = <HTMLElement>document.querySelector('.main-container-audiocall')
+    gameContainer.append(renderDifficultyBar());
+    gameContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());
 
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
 
@@ -116,7 +117,7 @@ class AudiocallController {
     };
 
     function checkAnswer() {
-      (<HTMLDivElement>document.querySelector('.btns-container')).onclick = (
+      (<HTMLDivElement>document.querySelector('.btns-container-audiocall')).onclick = (
         e: Event,
       ) => {
         nextQuestion();
@@ -192,7 +193,7 @@ class AudiocallController {
             AudiocallView.renderResults(
               mapCorrect.size,
               mapIncorrect.size,
-              mapIncorrect.size === 0 ? 100 : (mapCorrect.size / mapSort.size) * 100,
+              mapIncorrect.size === 0 ? 100 : +((mapCorrect.size / mapSort.size) * 100).toFixed(0),
             ),
           );
           mapCorrect.forEach((_, k) => {

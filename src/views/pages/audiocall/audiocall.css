@@ -1,8 +1,33 @@
+.start-btn {
+  display: inline-block;
+  width: 100px;
+  padding: 10px;
+  margin: 0 10px;
+  border: 2px solid var(--color);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.start-btn:hover {
+  cursor: pointer;
+  background: var(--color);
+  color: var(--ligth-color);
+}
+
+.start-btn:active {
+  transform: scale(0.98);
+}
+
+
 .main-container-audiocall {
+  position: relative;
+  width: 100%;
+  height: 100%;
   font-family: 'Comfortaa';
   margin: auto;
   display: flex;
-  height: 100%;
+  justify-content: space-between;
   flex-direction: column;
   align-items: center;
 }
@@ -13,6 +38,20 @@
   align-items: center;
   gap: 80px;
   padding-top: 100px;
+}
+
+.rules-container {
+  text-align: center;
+}
+
+.controls-description {
+  text-align: center;
+}
+
+.control-keys {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .word-img {
@@ -58,7 +97,7 @@
   gap: 50px;
 }
 
-.btns-container-audiocall div {
+.btns-container-audiocall button {
   position: relative;
   user-select: none;
   font-family: var(--font-secondary);
@@ -67,32 +106,36 @@
   transition: 0.2s;
 }
 
-.btns-container-audiocall div.correct-answer,
-.btns-container-audiocall div.wrong-answer {
+.btns-container-audiocall button.correct-answer,
+.btns-container-audiocall button.wrong-answer {
   opacity: 100%;
   text-shadow: 0 0 1px var(--color);
   transform: scale(1.05);
 }
 
-.btns-container-audiocall div:hover {
+.btns-container-audiocall button:hover {
   cursor: pointer;
   opacity: 100%;
   transform: scale(1.05);
   text-shadow: 0 0 1px var(--color);
 }
 
-.btns-container-audiocall div.correct-answer:hover,
-.btns-container-audiocall div.wrong-answer:hover {
+.btns-container-audiocall button.correct-answer:hover,
+.btns-container-audiocall button.wrong-answer:hover {
   cursor: auto;
 }
 
-.btns-container-audiocall div.correct-answer:active,
-.btns-container-audiocall div.wrong-answer:active {
+.btns-container-audiocall button.correct-answer:active,
+.btns-container-audiocall button.wrong-answer:active {
   transform: scale(1.05);
 }
 
-.btns-container-audiocall div:active {
+.btns-container-audiocall button:active {
   transform: scale(0.95);
+}
+
+.answer-container-audiocall {
+  position: relative;
 }
 
 .answer-img {
@@ -139,15 +182,21 @@
   margin: 10px 0;
 }
 
-.word-list li {
+.word-list-item {
   height: 30px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.word-list li span {
+.word-sprint {
   font-family: var(--font-primary);
   font-weight: 500;
   font-size: 1.1rem;
+}
+
+.result-answers-container {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 }
