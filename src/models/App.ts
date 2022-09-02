@@ -1,7 +1,9 @@
 import { IErrorApi } from '../common/interfaces/IErrorApi';
 import { IHtmlElements } from '../common/interfaces/IHtmlElemets';
 import { IUser } from '../common/interfaces/IUser';
-import { closeBurgerMenu, findHtmlElement, toggleBurgerMenu } from '../common/utils/utils';
+import {
+  closeBurgerMenu, findHtmlElement, hideBurgerMenu, showBurgerMenu, toggleBurgerMenu,
+} from '../common/utils/utils';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
 // eslint-disable-next-line import/no-cycle
@@ -44,6 +46,7 @@ class App {
       body: findHtmlElement(document, 'body'),
       authContainer: findHtmlElement(document, '.authorization-container'),
       authIcon: findHtmlElement(document, '.authorization-icon'),
+      tooltipText: findHtmlElement(document, '.tooltiptext'),
     };
     this._isAuth = false;
 
@@ -58,6 +61,11 @@ class App {
   set url(value: string) {
     this._url = value;
     this.page = this._url.slice(1) || 'index';
+    if (this.page === 'index') {
+      hideBurgerMenu();
+    } else {
+      showBurgerMenu();
+    }
   }
 
   get isAuth() {
@@ -68,6 +76,7 @@ class App {
     this._isAuth = value;
     const imgUrl = `./assets/svg/${value ? '' : 'un'}verified.svg`;
     (this.htmlElemets.authIcon as HTMLImageElement).src = imgUrl;
+    this.htmlElemets.tooltipText.innerHTML = value ? 'Выйти' : 'Войти?';
   }
 
   start() {

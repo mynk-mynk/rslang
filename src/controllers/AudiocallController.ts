@@ -1,4 +1,4 @@
-import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
+import { findHtmlElement } from '../common/utils/utils';
 import { IWord, IWords } from '../common/interfaces/IWord';
 import { IDataAudio } from '../common/interfaces/IDataAudio';
 import config from '../config';
@@ -8,7 +8,7 @@ import { renderDifficultyBar } from '../views/components/difficulty-bar/difficul
 
 class AudiocallController {
   static actionIndex() {
-      const data: IDataAudio = {
+    const data: IDataAudio = {
       currentDifficulty: 0,
       data2: 'audiocall',
       wordsArr: [],
@@ -17,8 +17,6 @@ class AudiocallController {
       answerMap: new Map(),
     };
 
-    showBurgerMenu();
-    
     const mainContainer = findHtmlElement(document, 'main');
 
     mainContainer.innerHTML = '';
