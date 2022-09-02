@@ -5,6 +5,7 @@ import config from '../config';
 import Word from '../models/Word';
 import AudiocallView from '../views/pages/audiocall/audiocall';
 import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
+import Chart, { ChartType } from 'chart.js/auto';
 
 class AudiocallController {
   static actionIndex() {
@@ -91,6 +92,50 @@ class AudiocallController {
         Math.floor(Math.random() * 5),
         1,
         data.currentWord.wordTranslate,
+      );
+    }
+
+
+    function createPieChart(incorrect: number, correct: number) {
+      const labels = [
+        'Ошибка',
+        'Правильно',
+      ];
+
+      const pieColors = ['#ff6969', '#00a249']
+    
+      const pieResultsData = {
+        labels: labels,
+        datasets: [{
+          label: 'Результаты игры',
+          backgroundColor: pieColors,
+          borderColor: '#000',
+          data: [incorrect, correct],
+          borderAlign: 'inner',
+          borderWidth: 1,
+        }]
+      };
+    
+      const chartConfig = {
+        type: 'pie' as ChartType,
+        data: pieResultsData,
+        options: {
+          responsive: true,
+          responsiveAnimationDuration: 3000,
+          plugins: {
+            legend: {
+              position: 'top' as const,
+            },
+            title: {
+              display: true,
+              text: 'Результаты игры'
+            }
+          }
+        },
+      };
+      const myChart = new Chart(
+        <HTMLCanvasElement>document.getElementById('audiocall-results-chart'),
+        chartConfig
       );
     }
 
@@ -199,6 +244,7 @@ class AudiocallController {
               mapIncorrect.size === 0 ? 100 : +((mapCorrect.size / mapSort.size) * 100).toFixed(0),
             ),
           );
+          createPieChart(mapIncorrect.size, mapCorrect.size),
           mapCorrect.forEach((_, k) => {
             (<HTMLDivElement>(
               document.querySelector('.correct-results')

@@ -110,11 +110,13 @@ class AudiocallView {
     return `<div class="main-container-audiocall">
     <h1>Игра "Аудиовызов"</h1>
     <div class="game-container">
+    <div class="audiocall-image-container">
           <img
             class="sound-icon"
             src="../../assets/images/audiocall/sound.png"
             alt="Sound"
           />
+          </div>
           <audio id="audio-word-${(<IWord>word).word}" src="http://localhost:4000/${(<IWord>word).audio}"></audio>
 
           <div class="audiocall-word-description">
@@ -160,8 +162,11 @@ class AudiocallView {
                     <p>Правильных ответов: ${correct}</p>
                     <p>Ошибок: ${incorrect}</p>
                     <p>Правильных ответов подряд: 0</p>
+                    <p class="results-accuracy">Процент правильных ответов: ${accuracy}%</p>
                 </div>
-              <p class="results-accuracy">${accuracy}%</p>
+                <div>
+                  <canvas id="audiocall-results-chart"></canvas>
+                </div>
             </div>
             <div class="result-answers-container">
               <h3><img src="../../assets/images/right-icon.png" alt="Correct Icon" width="20"> Правильные ответы</h3>
@@ -177,7 +182,7 @@ class AudiocallView {
     <div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
       <img id="audio-btn-${word.word}" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audiocall-audio-icon" width="20">
-      <span class="word-original word-audiocall">${word.word}</span> - <span class="word-translation word-audiocall">${word.wordTranslate}</span>
+      <span class="word-original word-audiocall">${word.word}</span> - <span class="word-audiocall">${word.wordTranslate}</span>
     </div>`;
   }
 
@@ -185,7 +190,7 @@ class AudiocallView {
     return `<div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
       <img id="audio-btn-${word.word}" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audiocall-audio-icon" width="20">
-      <span class="word-original word-audiocall">${word.word}</span> - <span class="word-translation word-audiocall">${word.wordTranslate}</span>
+      <span class="word-original word-audiocall">${word.word}</span> - <span class="word-audiocall">${word.wordTranslate}</span>
   </div>`;
   }
 }
