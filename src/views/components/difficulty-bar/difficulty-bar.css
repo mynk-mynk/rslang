@@ -19,31 +19,31 @@
 }
 
 .level1 {
-  background: var(--diff1-red);
+  background: var(--diff1);
 }
 
 .level2 {
-  background: var(--diff2-orange);
+  background: var(--diff2);
 }
 
 .level3 {
-  background: var(--diff3-yellow);
+  background: var(--diff3);
 }
 
 .level4 {
-  background: var(--diff4-green);
+  background: var(--diff4);
 }
 
 .level5 {
-  background: var(--diff5-lightBlue);
+  background: var(--diff5);
 }
 
 .level6 {
-  background: var(--diff6-blue);
+  background: var(--diff6);
 }
 
 .level7 {
-  background: var(--diff7-violet)
+  background: var(--diff7)
 }
 
 .difficulty-btn:hover {

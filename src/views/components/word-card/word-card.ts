@@ -62,3 +62,12 @@ export function playAudio(btn: HTMLElement) {
     document.querySelector<HTMLAudioElement>(`#audio-${id[1]}-${id[2]}`)?.play().then((res) => res).catch((e: Error) => e);
   }
 }
+
+export function changeCardBoxshadow(difficulty: number) {
+  if (!difficulty) return;
+  const cards = document.querySelectorAll<HTMLElement>('.word-container');
+  cards.forEach((card) => {
+    const card2 = card;
+    card2.style.boxShadow = `0 0 20px var(--diff${difficulty})`;
+  });
+}

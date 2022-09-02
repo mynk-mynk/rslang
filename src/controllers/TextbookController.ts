@@ -3,13 +3,14 @@ import { IWord } from '../common/interfaces/IWord';
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import { activateProp, renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 import { disableBtns, renderPagination, setPageNum } from '../views/components/pagination/pagination';
-import { chooseWordProp, renderWordCard, playAudio } from '../views/components/word-card/word-card';
+import {
+  chooseWordProp, renderWordCard, playAudio, changeCardBoxshadow,
+} from '../views/components/word-card/word-card';
 import { renderTextbookPage } from '../views/pages/textbook/textbook';
 
 interface IDataTextbook {
   difficulty: number,
   pageNum: number,
-  words: IWord[]
 }
 
 class TextbookController {
@@ -17,7 +18,6 @@ class TextbookController {
     const data: IDataTextbook = {
       difficulty: 0,
       pageNum: 0,
-      words: [],
     };
 
     showBurgerMenu();
@@ -66,14 +66,24 @@ class TextbookController {
       }
 
       await TextbookController.generateWordCards(data.pageNum, data.difficulty);
-      disableBtns(data.pageNum);
-      setPageNum(data.pageNum + 1);
+    });
+
+    const difficultyContainer = findHtmlElement(document, '.difficulty-container');
+    difficultyContainer.addEventListener('click', async (e) => {
+      const btn = e.target as HTMLElement;
+      if (!btn.classList.contains('difficulty-btn')) return;
+      const diff = btn.dataset.group;
+      data.difficulty = Number(diff) - 1 || 0;
+      data.pageNum = 0;
+      await TextbookController.generateWordCards(data.pageNum, data.difficulty);
+      // TODO: hard words generation when difficulty = 6;
+      changeCardBoxshadow(data.difficulty + 1);
     });
   }
 
   static addListenersToDiffBar() {
-    const difficultyContainer = document.querySelector('.difficulty-container');
-    difficultyContainer?.addEventListener('click', (e) => activateProp(e.target as HTMLElement, '.difficulty-btn'));
+    const difficultyContainer = findHtmlElement(document, '.difficulty-container');
+    difficultyContainer.addEventListener('click', (e) => activateProp(e.target as HTMLElement, '.difficulty-btn'));
   }
 
   static async generateWordCards(page: number, difficulty: number) {
@@ -84,7 +94,10 @@ class TextbookController {
       const card = renderWordCard(word);
       wordsContainer.append(card);
     });
+    changeCardBoxshadow(difficulty + 1);
     TextbookController.addListenersToCards();
+    setPageNum(page + 1);
+    disableBtns(page);
   }
 
   static addListenersToCards() {

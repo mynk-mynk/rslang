@@ -3,7 +3,7 @@
   flex-direction: column;
   width: 350px;
   border: 2px solid var(--color);
-  box-shadow: 0 0 10px var(--diff1-red);
+  box-shadow: 0 0 20px var(--diff1);
   border-radius: 20px;
   color: var(--color);
   opacity: 90%;
