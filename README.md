@@ -21,7 +21,7 @@ WORD
 1. Создать экземпляр класса с данными по одному слову: 
   С помощью только id: const word = await Word.init('5e9f5ee35eb9e72bc21af4a4');
   Если есть все параметры передаем их в виде объекта: const word = new Word(params);
-2. Получить все слова со страницы (возвращает промис): Word.getWords().then((data) => console.log(data)).catch((e) => console.log(e));
+2. Получить все слова со страницы: Word.getWords();
 USER
 1. Создание: 
     User.createUser({ name: 'TestUser3', email: 'hello3@user.com', password: 'Gfhjkm_123' });

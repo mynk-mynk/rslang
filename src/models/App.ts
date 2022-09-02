@@ -288,7 +288,7 @@ class App {
   }
 
   private authorization() {
-    this.isAuth = !!localStorage.getItem('token')
+    this.isAuth = !!localStorage.getItem('token');
     this.addAuthorizationToHtml();
     this.addAuthBtnClickListener();
     this.addBlurClickListener();
