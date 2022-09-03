@@ -22,16 +22,16 @@ class SprintPage {
           <p class="points-per-answer">+10 очков за слово</p>
         </div>
         <div class="progress">
-          <img src="../../assets/images/sprint/baby.png" alt="Level 1" width="25">
-          <img src="../../assets/images/sprint/toddler.png" alt="Level 2" width="35">
-          <img src="../../assets/images/sprint/teen.png" alt="Level 3" width="45">
-          <img src="../../assets/images/sprint/prof.png" alt="Level 4" width="55">
+          <img src="./assets/images/sprint/baby.png" alt="Level 1" width="25">
+          <img src="./assets/images/sprint/toddler.png" alt="Level 2" width="35">
+          <img src="./assets/images/sprint/teen.png" alt="Level 3" width="45">
+          <img src="./assets/images/sprint/prof.png" alt="Level 4" width="55">
         </div>
         <div class="word-props">
           <p class="sprint-word">word</p>
           <p class="sprint-translation">перевод</p>
-          <img class="answer-correct" src="../../assets/images/right-icon.png" alt="Correct icon" width="30">
-          <img class="answer-wrong" src="../../assets/images/wrong-icon.png" alt="Correct icon" width="30">
+          <img class="answer-correct" src="./assets/images/right-icon.png" alt="Correct icon" width="30">
+          <img class="answer-wrong" src="./assets/images/wrong-icon.png" alt="Correct icon" width="30">
         </div>
         <div class="btns-container">
           <div class="btn-true">+</div>
@@ -59,14 +59,14 @@ class SprintPage {
     <ul class="word-list">
       <h3>Список слов:</h3>
       <li>
-        <img class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
+        <img class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
         <audio id="audio-word" src=""></audio>
-        <img src="../../assets/images/right-icon.png" alt="Correct Icon" width="20">
+        <img src="./assets/images/right-icon.png" alt="Correct Icon" width="20">
         <p><span>Word</span> - перевод</p>
       </li>
       <li>
-        <img class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
-        <img src="../../assets/images/wrong-icon.png" alt="Correct Icon" width="20">
+        <img class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
+        <img src="./assets/images/wrong-icon.png" alt="Correct Icon" width="20">
         <p><span>Word</span> - перевод</p>
       </li>
     </ul>

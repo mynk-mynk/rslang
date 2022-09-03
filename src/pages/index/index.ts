@@ -5,7 +5,7 @@ class MainPage {
   static draw() {
     return `<div class="main-container">
     <div class="description">
-        <img class="description-img" src="../../assets/images/main/bus.png" alt="Bus">
+        <img class="description-img" src="./assets/images/main/bus.png" alt="Bus">
         <div class="description-text">
             <p><b>SyllaBus</b> - интерактивное приложение для изучения английского языка.
             <p>Здесь ты найдешь:</p>
@@ -22,27 +22,27 @@ class MainPage {
     <div class="start-menu">
         <a href="./textbook.html">
             <div class="menu-item">
-                <img src="../../assets/images/textbook.png" alt="Textbook image" class="menu-item-img"
+                <img src="./assets/images/textbook.png" alt="Textbook image" class="menu-item-img"
                     width="80">
                 <span class="menu-item-name">Учебник</span>
             </div>
         </a>
         <a href="./sprint.html">
             <div class="menu-item">
-                <img src="../../assets/images/sprint.png" alt="Sprint image" class="menu-item-img" width="70">
+                <img src="./assets/images/sprint.png" alt="Sprint image" class="menu-item-img" width="70">
                 <span class="menu-item-name">Игра "Спринт"</span>
             </div>
         </a>
         <a href="./audiocall.html">
             <div class="menu-item">
-                <img src="../../assets/images/audiocall.png" alt="Audiogame image" class="menu-item-img"
+                <img src="./assets/images/audiocall.png" alt="Audiogame image" class="menu-item-img"
                     width="70">
                 <span class="menu-item-name">Игра "Аудиовызов"</span>
             </div>
         </a>
         <a href="./statistics.html">
             <div class="menu-item">
-                <img src="../../assets/images/statistics.png" alt="Statistics image" class="menu-item-img"
+                <img src="./assets/images/statistics.png" alt="Statistics image" class="menu-item-img"
                     width="70">
                 <span class="menu-item-name">Статистика</span>
             </div>
