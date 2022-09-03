@@ -8,23 +8,23 @@ class AudiocallView {
     <h1>Игра "Аудиовызов"</h1>
     
     <div class="game-container">
-      <img class="sound-icon" src="../../assets/images/audiocall/sound.png" alt="Sound">
+      <img class="sound-icon" src="./assets/images/audiocall/sound.png" alt="Sound">
       <img class="word-img" src="" alt="Word image" width="100">
 
       <div class="audiocall-word-description">
-        <img id="audio-btn" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audiocall-audio-icon" width="25">
+        <img id="audio-btn" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audiocall-audio-icon" width="25">
         <p>Word</p>
       </div>
 
       <div class="btns-container-audiocall">
         <div class="answer1 correct-answer">
-          <img class="answer-img active" src="../../assets/images/right-icon.png" alt="Correct-icon" width="20">
-          <img class="answer-img" src="../../assets/images/wrong-icon.png" alt="Wrong-icon" width="20">
+          <img class="answer-img active" src="./assets/images/right-icon.png" alt="Correct-icon" width="20">
+          <img class="answer-img" src="./assets/images/wrong-icon.png" alt="Wrong-icon" width="20">
           Answer 1
         </div>
         <div class="answer2 wrong-answer">
-          <img class="answer-img" src="../../assets/images/right-icon.png" alt="Correct-icon" width="20">
-          <img class="answer-img active" src="../../assets/images/wrong-icon.png" alt="Wrong-icon" width="20">
+          <img class="answer-img" src="./assets/images/right-icon.png" alt="Correct-icon" width="20">
+          <img class="answer-img active" src="./assets/images/wrong-icon.png" alt="Wrong-icon" width="20">
           Answer 2
         </div>
         <div class="answer3">Answer 3</div>
@@ -47,13 +47,13 @@ class AudiocallView {
       <ul class="word-list">
         <h3>Список слов:</h3>
         <li>
-          <img class="audiocall-audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
-          <img src="../../assets/images/right-icon.png" alt="Correct Icon" width="20">
+          <img class="audiocall-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
+          <img src="./assets/images/right-icon.png" alt="Correct Icon" width="20">
           <p><span>Word</span> - перевод</p>
         </li>
         <li>
-          <img class="audiocall-audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
-          <img src="../../assets/images/wrong-icon.png" alt="Correct Icon" width="20">
+          <img class="audiocall-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
+          <img src="./assets/images/wrong-icon.png" alt="Correct Icon" width="20">
           <p><span>Word</span> - перевод</p>
         </li>
       </ul>
@@ -98,7 +98,7 @@ class AudiocallView {
   static rightIcon() {
     return `<img
                     class="answer-img active"
-                    src="../../assets/images/right-icon.png"
+                    src="./assets/images/right-icon.png"
                     alt="Correct-icon"
                     width="20"
                     />`;
@@ -107,7 +107,7 @@ class AudiocallView {
   static wrongIcon() {
     return `<img
                     class="answer-img active"
-                    src="../../assets/images/wrong-icon.png"
+                    src="./assets/images/wrong-icon.png"
                     alt="Wrong-icon"
                     width="20"
                     />`;
@@ -119,7 +119,7 @@ class AudiocallView {
           <img
             
             class="sound-icon"
-            src="../../assets/images/audiocall/sound.png"
+            src="./assets/images/audiocall/sound.png"
             alt="Sound"
           />
           <audio id="audio-word-${(<IWord>word).word}" src="http://localhost:4000/${(<IWord>word).audio}"></audio>
@@ -128,7 +128,7 @@ class AudiocallView {
             <img
               id="audio-btn-${(<IWord>word).word}"
               class = "audio-btn-img"
-              src="../../assets/svg/audio-speaker.svg"
+              src="./assets/svg/audio-speaker.svg"
               alt="Audio"
               class="audio-icon"
               width="25"
@@ -182,7 +182,7 @@ class AudiocallView {
     return `
     <div>
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
-      <img id="audio-btn-${word.word}" class = "audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <img id="audio-btn-${word.word}" class = "audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
       <span class="word-original">${word.word}</span> - <span class="word-translation">${word.wordTranslate}</span>
     </div>`;
   }
@@ -190,7 +190,7 @@ class AudiocallView {
   static renderIncorrectResults(word: IWord) {
     return `<div>
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
-      <img id="audio-btn-${word.word}" class = "audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <img id="audio-btn-${word.word}" class = "audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
       <span class="word-original">${word.word}</span> - <span class="word-translation">${word.wordTranslate}</span>
   </div>`;
   }
