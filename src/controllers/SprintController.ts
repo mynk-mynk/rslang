@@ -4,6 +4,7 @@ import { IDataSprint } from '../common/interfaces/IDataSprint';
 import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 import { IWord, IWords } from '../common/interfaces/IWord';
 import Word from '../models/Word';
+import Chart, { ChartType } from 'chart.js/auto';
 
 class SprintController {
   static actionIndex() {
@@ -32,7 +33,6 @@ class SprintController {
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
 
     const difficultyContainer = document.querySelector('.difficulty-container');
-    
 
     function activateProp(el: HTMLElement, selector: string) {
       if (el) {
@@ -58,19 +58,60 @@ class SprintController {
         (<HTMLDivElement>counter).innerHTML = `${currentMinutes.toString()}:${(seconds < 10 ? '0' : '')}${String(seconds)}`;
         if (seconds > 0) {
           setTimeout(tick, 1000);
-        } else {
-          if (mins > 1) {
-            countdown(mins - 1);
-          }
+        } else if (mins > 1) {
+          countdown(mins - 1);
         }
       }
       tick();
     }
 
+    function createPieChart(incorrect: number, correct: number) {
+      const labels = [
+        'Ошибка',
+        'Правильно',
+      ];
+
+      const pieColors = ['#ff6969', '#00a249']
+    
+      const pieResultsData = {
+        labels: labels,
+        datasets: [{
+          label: 'Результаты игры',
+          backgroundColor: pieColors,
+          borderColor: 'var(--color)',
+          data: [incorrect, correct],
+          borderAlign: 'inner',
+          borderWidth: 1,
+        }]
+      };
+    
+      const chartConfig = {
+        type: 'pie' as ChartType,
+        data: pieResultsData,
+        options: {
+          responsive: true,
+          responsiveAnimationDuration: 3000,
+          plugins: {
+            legend: {
+              position: 'top' as const,
+            },
+            title: {
+              display: true,
+              text: 'Результаты игры'
+            }
+          }
+        },
+      };
+      const myChart = new Chart(
+        <HTMLCanvasElement>document.getElementById('sprint-results-chart'),
+        chartConfig
+      );
+    }
+
     function checkGameEnd() {
       let timerId = setTimeout(function gameEnd() {
         const counter = document.getElementById('timer-container');
-        if (counter?.innerHTML === '0:40') {
+        if (counter?.innerHTML === '0:50') {
           mainContainer.innerHTML = '';
           const mapSort = new Map([...data.answerMap.entries()].sort());
           const mapCorrect = new Map(
@@ -86,8 +127,9 @@ class SprintController {
               mapCorrect.size,
               mapIncorrect.size,
               mapIncorrect.size === 0 ? 100 : +((mapCorrect.size / mapSort.size) * 100).toFixed(0),
-            )
+            ),
           );
+          createPieChart(mapIncorrect.size, mapCorrect.size);
           mapCorrect.forEach((_, k) => {
             (<HTMLDivElement>(
               document.querySelector('.correct-results')
@@ -125,7 +167,7 @@ class SprintController {
     async function generateWords() {
       const temporaryResult: IWords[] = [];
       for (let i = 0; i < 30; i += 1) {
-        const midRes: IWord[] = await Word.getWords(i, data.currentDifficulty)
+        const midRes: IWords = await Word.getWords(i, data.currentDifficulty)
           .then((words) => words)
           .catch((e) => console.log(e));
         temporaryResult.push(midRes.flat());
@@ -156,6 +198,7 @@ class SprintController {
 
     function increaseMultiplier() {
       data.streak += 1;
+      (<HTMLElement>document.getElementById(`${data.streak}-correct-answer`)).style.background = '#00a249';
       data.answerMap.set(<IWord>data.currentWord, 'correct');
       data.totalScore += data.pointsPerAnswer;
       if (data.streak === 3) {
@@ -168,6 +211,7 @@ class SprintController {
 
     function decreaseMultiplier() {
       data.streak = 0;
+      document.querySelectorAll('.streak-mark').forEach((el) => el.setAttribute('style', 'var(--color)'));
       data.answerMap.set(<IWord>data.currentWord, 'incorrect');
       data.pointsPerAnswer > 10 ? data.pointsPerAnswer /= 2 : data.pointsPerAnswer = 10;
       if (data.multiplier === 1) {
@@ -181,7 +225,7 @@ class SprintController {
     function playAudio(btn: HTMLElement) {
       if (btn) {
         const id = btn.id.split('-').reverse()[0];
-        (<HTMLAudioElement>document.getElementById(`audio-word-${id}`)).play();
+        (<HTMLAudioElement>document.getElementById(`audio-word-${id}`)).play().then((res) => res).catch((e: Error) => e);
       }
     }
 

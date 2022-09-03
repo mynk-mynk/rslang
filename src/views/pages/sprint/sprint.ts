@@ -26,18 +26,12 @@ class SprintView {
         </div>
       </div>
       <h3>Пожалуйста, выберите раздел</h3>
-    </div>`
+    </div>`;
   }
 
   static renderScores(currentScore: number, pointPerAnswer: number) {
     return `
-    
       <p class="current-score">${currentScore}</p>
-      <div class="correct-answers">
-        <p id="1-correct-answer"></p>
-        <p id="2-correct-answer"></p>
-        <p id="3-correct-answer"></p>
-      </div>
       <p class="points-per-answer">+${pointPerAnswer} очков за слово</p>
   `;
   }
@@ -49,6 +43,11 @@ class SprintView {
     <p id="timer-container"></p>
     <div class="game-field">
       <div class="answers">
+      </div>
+      <div class="correct-answers">
+        <p id="1-correct-answer" class="streak-mark"></p>
+        <p id="2-correct-answer" class="streak-mark"></p>
+        <p id="3-correct-answer" class="streak-mark"></p>
       </div>
       <div class="progress">
         <img
@@ -114,13 +113,14 @@ class SprintView {
 
                 <div class="results">
                   <div class="results-description">
-
                     <p>Правильных ответов: ${correct}</p>
                     <p>Ошибок: ${incorrect}</p>
-                    <p>Правильных ответов подряд: 0</p>
+                    <p class="results-accuracy">Процент правильных ответов: ${accuracy}%</p>
                 </div>
-
-              <p class="results-accuracy">${accuracy}%</p>
+                <div>
+                  <canvas id="sprint-results-chart"></canvas>
+                </div>
+              
             </div>
             <div class="result-answers-container">
               <h3><img src="./assets/images/right-icon.png" alt="Correct Icon" width="20"> Правильные ответы</h3>
@@ -136,7 +136,7 @@ class SprintView {
     <div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
       <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
-      <span class="word-original word-sprint">${word.word}</span>-<span class="word-translation word-sprint">${word.wordTranslate}</span>
+      <span class="word-original word-sprint">${word.word}</span>-<span class="word-sprint">${word.wordTranslate}</span>
     </div>`;
   }
 
@@ -144,7 +144,7 @@ class SprintView {
     return `<div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
       <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
-      <span class="word-original word-sprint">${word.word}</span>-<span class="word-translation word-sprint">${word.wordTranslate}</span>
+      <span class="word-original word-sprint">${word.word}</span>-<span class="word-sprint">${word.wordTranslate}</span>
   </div>`;
   }
 }
