@@ -86,7 +86,7 @@ h1 {
   height: 16px;
   border-radius: 6px;
   background: var(--color);
-  opacity: 40%;
+  opacity: 90%;
   margin: 3px;
 }
 
@@ -105,11 +105,14 @@ h1 {
 .word-props {
   text-align: center;
   margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .sprint-word {
   font-family: var(--font-primary);
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .sprint-translation {
@@ -154,6 +157,12 @@ h1 {
 
 .btns-container div:active {
   transform: scale(0.95);
+  box-shadow: 5px 5px #000;
+}
+
+.sprint-active {
+  transform: scale(0.95);
+  box-shadow: 5px 5px #000;
 }
 
 .result-container {

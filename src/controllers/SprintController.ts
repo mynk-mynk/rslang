@@ -22,9 +22,10 @@ class SprintController {
       answerMap: new Map(),
     };
 
+    
+
     const mainContainer = <HTMLElement>document.querySelector('main');
     mainContainer.innerHTML = '';
-
     mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription());
     const gameContainer = <HTMLElement>document.querySelector('.main-container-sprint');
     gameContainer.append(renderDifficultyBar());
@@ -154,13 +155,25 @@ class SprintController {
     }
 
     function buttonPress() {
-      document.addEventListener('keypress', (event: KeyboardEvent) => {
-        if (event.key === 'a') {
-          (<HTMLDivElement>document.getElementById('btn-true')).click();
-        } else if (event.key === 'd') {
-          (<HTMLDivElement>document.getElementById('btn-false')).click();
+      const btnTrue = <HTMLDivElement>document.getElementById('btn-true');
+      const btnFalse = <HTMLDivElement>document.getElementById('btn-false');
+      document.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key === '1') {
+          btnTrue.click();
+          btnTrue.classList.add('sprint-active')
+        } else if (event.key === '2') {
+          btnFalse.click();
+          btnFalse.classList.add('sprint-active')
         }
       });
+      document.addEventListener('keyup', (event: KeyboardEvent) => {
+        if (event.key === '1') {
+          btnTrue.classList.remove('sprint-active')
+        } else if (event.key === '2') {
+          btnFalse.classList.remove('sprint-active')
+        }
+      });
+
     }
 
     async function generateWords() {
