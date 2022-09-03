@@ -8,7 +8,7 @@ class StatisticsController {
     //   data2: 'statistics',
     // };
     const main = findHtmlElement(document, 'main');
-    main.innerHTML = StatisticsView.draw();
+    main.innerHTML = StatisticsView.draw(1,2,3,4,5,6);
   }
 }
 
