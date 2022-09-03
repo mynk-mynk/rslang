@@ -11,14 +11,13 @@ class Word {
   }
 
   static async init(id: string) {
-    const params: IWord | null = await Word.getWord(id) || null;
+    const params: IWord | null = (await Word.getWord(id)) || null;
     return new Word(params);
   }
 
   static async getWords(page = 0, group = 0) {
     const url = `${config.api.url}words?page=${page}&group=${group}`;
-    const words = fetch(url)
-      .then((data) => data.json());
+    const words = fetch(url).then((data) => data.json());
     return words;
   }
 
@@ -26,7 +25,7 @@ class Word {
     const url = `${config.api.url}words/${id}`;
     const word = fetch(url)
       .then((data) => data.json())
-      .then((data) => data as IWord)
+      .then((data: IWord) => data)
       .catch((err) => console.log(err));
     return word;
   }

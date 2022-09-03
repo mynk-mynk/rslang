@@ -1,10 +1,12 @@
+import '../pages.css';
+import '../pages';
 import './sprint.css';
-// import { IObject } from '../../common/interfaces/IObject';
 
-class SprintView {
-  // static draw(data: IObject<string>)
-  static draw() {
-    return `<div class="main-container-sprint">
+// Toggle display: flex / none; in .game-container and .results-container
+
+class SprintPage {
+  static drawGame() {
+    return `<div class="main-container">
     <h1>Игра "Спринт"</h1>
     <div class="game-container">
       <p>timer 3 2 1 start</p>
@@ -40,33 +42,37 @@ class SprintView {
       <div class="sprint-timer">timer for 1 min</div>
 
     </div>
+  </div>`;
+  }
 
-    <div class="result-container">
-      <h2 class="results-header">Ваш результат:</h2>
-      <div class="results">
-        <div class="results-description">
-          <p>Правильных ответов: 0</p>
-          <p>Ошибок: 0</p>
-          <p>Правильных ответов подряд: 0</p>
-        </div>
-        <p class="results-accuracy">100%</p>
+  static drawResults() {
+    return `<div class="result-container">
+    <h2 class="results-header">Ваш результат:</h2>
+    <div class="results">
+      <div class="results-description">
+        <p>Правильных ответов: 0</p>
+        <p>Ошибок: 0</p>
+        <p>Правильных ответов подряд: 0</p>
       </div>
-      <ul class="word-list">
-        <h3>Список слов:</h3>
-        <li>
-          <img class="sprint-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
-          <img src="./assets/images/right-icon.png" alt="Correct Icon" width="20">
-          <p><span>Word</span> - перевод</p>
-        </li>
-        <li>
-          <img class="sprint-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
-          <img src="./assets/images/wrong-icon.png" alt="Correct Icon" width="20">
-          <p><span>Word</span> - перевод</p>
-        </li>
-      </ul>
+      <p class="results-accuracy">100%</p>
     </div>
+    <ul class="word-list">
+      <h3>Список слов:</h3>
+      <li>
+        <img class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
+        <audio id="audio-word" src=""></audio>
+        <img src="./assets/images/right-icon.png" alt="Correct Icon" width="20">
+        <p><span>Word</span> - перевод</p>
+      </li>
+      <li>
+        <img class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
+        <img src="./assets/images/wrong-icon.png" alt="Correct Icon" width="20">
+        <p><span>Word</span> - перевод</p>
+      </li>
+    </ul>
   </div>`;
   }
 }
 
-export default SprintView;
+const main: HTMLElement | null = document.querySelector<HTMLElement>('main');
+if (main) main.innerHTML = SprintPage.drawGame();

@@ -1,9 +1,10 @@
+import '../pages.css';
+import '../pages';
 import './team.css';
 
-class TeamView {
-  // static draw(data: IObject<string>)
+class TeamPage {
   static draw() {
-    return `<div class="main-container-team">
+    return `<div class="main-container">
     <h1>Наша команда</h1>
     <div class="team-container">
       <div class="card-container">
@@ -20,4 +21,5 @@ class TeamView {
   }
 }
 
-export default TeamView;
+const main: HTMLElement | null = document.querySelector<HTMLElement>('main');
+if (main) main.innerHTML = TeamPage.draw();

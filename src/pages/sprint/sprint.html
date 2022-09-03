@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprint</title>
+</head>
+
+<body>
+  <header>
+    <div class="header-container">
+      <a href="./" class="logo">SyllaBus</a>
+      <a class="authorization-link" href="./authorization.html"><img class="authorization-icon"
+          src="./assets/svg/unverified.svg" alt="Account icon"></a>
+      <span class="burger">
+        <span class="burger-line"></span>
+      </span>
+      <ul class="nav-bar">
+        <li class="home-icon"><img src="./assets/svg/home.svg" alt="Home" width="35"></li>
+        <li><img src="./assets/images/textbook.png" alt="Textbook" width="35"></li>
+        <li><img src="./assets/images/sprint.png" alt="Sprint" width="35"></li>
+        <li><img src="./assets/images/audiocall.png" alt="Audiocall" width="35"></li>
+        <li><img src="./assets/images/statistics.png" alt="Staistics" width="35"></li>
+      </ul>
+    </div>
+  </header>
+  <main>
+    <div class="main-container">
+      <style>
+        body.no-scroll {
+          overflow: hidden;
+        }
+
+        .authorization-container {
+          position: absolute;
+          width: 450px;
+          height: 320px;
+          top: calc(50% - 160px);
+          left: calc(50% - 225px);
+          z-index: 20;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 30px;
+          border: 2px solid var(--color);
+          border-radius: 30px;
+          background: rgba(246, 240, 153, 1);
+          transition: 0.1s;
+        }
+
+        .blur {
+          position: absolute;
+          z-index: 15;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: #000;
+          opacity: 50%;
+        }
+
+        .close-icon {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          filter: var(--filter);
+          transition: 0.1s;
+        }
+
+        .close-icon:hover {
+          cursor: pointer;
+          filter: var(--filter) drop-shadow(2px 2px 2px var(--ligth-color));
+          transform: scale(1.05);
+        }
+
+        .close-icon:active {
+          transform: scale(0.95);
+        }
+
+        .login-form {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          width: 80%;
+        }
+
+        .authorization-email,
+        .authorization-password {
+          height: 40px;
+          display: block;
+          padding: 5px 15px;
+          font-family: var(--font-secondary);
+          font-size: 1rem;
+          border: 1px solid var(--color);
+          border-radius: 10px;
+          color: var(--color);
+        }
+
+        .authorization-btns {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .login-btn {
+          font-family: var(--font-secondary);
+          font-size: 1rem;
+          padding: 10px 15px;
+          width: fit-content;
+          background: transparent;
+        }
+
+        .login-btn:active {
+          transform: scale(0.95);
+        }
+
+        .regestration-btn {
+          background: transparent;
+          border: none;
+          color: var(--color);
+          font-family: var(--font-secondary);
+          font-weight: 600;
+          transition: 0.1s;
+        }
+
+        .regestration-btn:hover {
+          cursor: pointer;
+          transform: scale(1.02);
+          text-shadow: 2px 2px 3px var(--ligth-color);
+        }
+
+        .regestration-btn:active {
+          transform: scale(0.98);
+        }
+      </style>
+      <div class="blur"></div>
+      <div class="authorization-container">
+        <img class="close-icon" src="./assets/svg/cross.svg" alt="Close Icon" width="20">
+        <h2>LogIn</h2>
+        <form class="login-form" action="">
+          <input class="authorization-email" type="email" placeholder="E-mail" autofocus>
+          <input class="authorization-password" type="password" placeholder="Password">
+        </form>
+        <div class="authorization-btns">
+          <button class="login-btn btn-like-link">Login</button>
+          <button class="regestration-btn">Registration</button>
+        </div>
+      </div>
+      <h1>Игра "Спринт"</h1>
+      <div class="game-container">
+        <p>timer 3 2 1 start</p>
+
+        <div class="game-field">
+          <div class="answers">
+            <p class="current-score">350</p>
+            <div class="correct-answers">
+              <p id="1-correct-answer"></p>
+              <p id="2-correct-answer"></p>
+              <p id="3-correct-answer"></p>
+            </div>
+            <p class="points-per-answer">+10 очков за слово</p>
+          </div>
+          <div class="progress">
+            <img src="./assets/images/sprint/baby.png" alt="Level 1" width="25">
+            <img src="./assets/images/sprint/toddler.png" alt="Level 2" width="35">
+            <img src="./assets/images/sprint/teen.png" alt="Level 3" width="45">
+            <img src="./assets/images/sprint/prof.png" alt="Level 4" width="55">
+          </div>
+          <div class="word-props">
+            <p class="sprint-word">word</p>
+            <p class="sprint-translation">перевод</p>
+            <img class="answer-correct" src="./assets/images/right-icon.png" alt="Correct icon" width="30">
+            <img class="answer-wrong" src="./assets/images/wrong-icon.png" alt="Correct icon" width="30">
+          </div>
+          <div class="btns-container">
+            <div class="btn-true">+</div>
+            <div class="btn-false">-</div>
+          </div>
+        </div>
+
+        <div class="sprint-timer">timer for 1 min</div>
+
+      </div>
+
+      <div class="result-container">
+        <h2 class="results-header">Ваш результат:</h2>
+        <div class="results">
+          <div class="results-description">
+            <p>Правильных ответов: 0</p>
+            <p>Ошибок: 0</p>
+            <p>Правильных ответов подряд: 0</p>
+          </div>
+          <p class="results-accuracy">100%</p>
+        </div>
+        <ul class="word-list">
+          <h3>Список слов:</h3>
+          <li>
+            <img class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
+            <img src="./assets/images/right-icon.png" alt="Correct Icon" width="20">
+            <p><span>Word</span> - перевод</p>
+          </li>
+          <li>
+            <img class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
+            <img src="./assets/images/wrong-icon.png" alt="Correct Icon" width="20">
+            <p><span>Word</span> - перевод</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer-container">
+      <p>©2022</p>
+      <div class="github-names">
+        <img src="./assets/svg/github.svg" alt="Github logo" class="github-logo">
+        <a href="https://github.com/mynk-mynk">Dasha</a>
+        <a href="https://github.com/spin4ester">Rustam</a>
+        <a href="https://github.com/ann-makovskaya">Ann</a>
+      </div>
+      <a href="https://rs.school/js/"><img src="./assets/svg/rs-school-js.svg" alt="RS School logo"
+          class="rs-logo"></a>
+    </div>
+  </footer>
+</body>
+
+</html>

@@ -1,10 +1,9 @@
+import '../pages.css';
 import './index.css';
-// import { IObject } from './../common/interfaces/IObject';
 
-class IndexView {
-  // static draw(data: IObject<string>)
+class MainPage {
   static draw() {
-    return `<div class="main-container-index">
+    return `<div class="main-container">
     <div class="description">
         <img class="description-img" src="./assets/images/main/bus.png" alt="Bus">
         <div class="description-text">
@@ -17,40 +16,41 @@ class IndexView {
             </ul>
         </div>
         <div class="description-btns">
-            <span data-path="/team" class="btn-like-link">Команда</span>
+            <a href="./team.html" class="btn-like-link">Команда</a>
         </div>
     </div>
-    <ul class="start-menu">
-        <li data-path="/textbook">
+    <div class="start-menu">
+        <a href="./textbook.html">
             <div class="menu-item">
                 <img src="./assets/images/textbook.png" alt="Textbook image" class="menu-item-img"
                     width="80">
                 <span class="menu-item-name">Учебник</span>
             </div>
-        </li>
-        <li data-path="/sprint">
+        </a>
+        <a href="./sprint.html">
             <div class="menu-item">
                 <img src="./assets/images/sprint.png" alt="Sprint image" class="menu-item-img" width="70">
                 <span class="menu-item-name">Игра "Спринт"</span>
             </div>
-        </li>
-        <li data-path="/audiocall">
+        </a>
+        <a href="./audiocall.html">
             <div class="menu-item">
                 <img src="./assets/images/audiocall.png" alt="Audiogame image" class="menu-item-img"
                     width="70">
                 <span class="menu-item-name">Игра "Аудиовызов"</span>
             </div>
-        </li>
-        <li data-path="/statistics">
+        </a>
+        <a href="./statistics.html">
             <div class="menu-item">
                 <img src="./assets/images/statistics.png" alt="Statistics image" class="menu-item-img"
                     width="70">
                 <span class="menu-item-name">Статистика</span>
             </div>
-        </li>
-    </ul>
+        </a>
+    </div>
 </div>`;
   }
 }
 
-export default IndexView;
+const main: HTMLElement | null = document.querySelector<HTMLElement>('main');
+if (main) main.innerHTML = MainPage.draw();

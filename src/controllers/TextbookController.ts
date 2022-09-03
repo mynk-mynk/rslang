@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Word from '../models/Word';
 import { IWord } from '../common/interfaces/IWord';
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
@@ -6,6 +7,11 @@ import { disableBtns, renderPagination, setPageNum } from '../views/components/p
 import {
   chooseWordProp, renderWordCard, playAudio, changeCardBoxshadow,
 } from '../views/components/word-card/word-card';
+=======
+import { findHtmlElement } from '../common/utils/utils';
+import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
+// import DifficultyBar from '../views/components/difficulty-bar/difficulty-bar';
+>>>>>>> develop
 import { renderTextbookPage } from '../views/pages/textbook/textbook';
 
 interface IDataTextbook {
@@ -15,6 +21,7 @@ interface IDataTextbook {
 
 class TextbookController {
   static actionIndex() {
+<<<<<<< HEAD
     const data: IDataTextbook = TextbookController.getFromLS()
     || { difficulty: 0, pageNum: 0 };
 
@@ -126,6 +133,12 @@ class TextbookController {
       }
     }
     return res;
+=======
+    const main = findHtmlElement(document, 'main');
+    main.innerHTML = renderTextbookPage();
+    const header = findHtmlElement(document, 'h1');
+    header.after(renderDifficultyBar());
+>>>>>>> develop
   }
 }
 
