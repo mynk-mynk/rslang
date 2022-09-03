@@ -57,21 +57,21 @@ class SprintView {
           width="25"
         />
         <img
-        style="display: none"
+        style="visibility: hidden"
           id="level-2"
           src="./assets/images/sprint/toddler.png"
           alt="Level 2"
           width="35"
         />
         <img
-        style="display: none"
+        style="visibility: hidden"
           id="level-3"
           src="./assets/images/sprint/teen.png"
           alt="Level 3"
           width="45"
         />
         <img
-        style="display: none"
+        style="visibility: hidden"
           id="level-4"
           src="./assets/images/sprint/prof.png"
           alt="Level 4"
@@ -88,22 +88,17 @@ class SprintView {
     </div>`;
   }
 
-  static renderQuestion(word: IWord, translation: IWord, score: number) {
+  static renderQuestion(word: IWord, translation: IWord, score: number, answer: string) {
     return `
         <p class="sprint-word">${word.word}</p>
         <p class="sprint-translation">${translation.wordTranslate}</p>
         <img
-          class="answer-correct"
-          src="./assets/images/right-icon.png"
-          alt="Correct icon"
+        style="visibility: hidden"
+          class="answer-icon-image"
+          src="./assets/images/${answer}-icon.png"
+          alt="Answer icon"
           width="30"
-        />
-        <img
-          class="answer-wrong"
-          src="./assets/images/wrong-icon.png"
-          alt="Wrong icon"
-          width="30"
-        />`;
+        />`
   }
 
   static renderResults(correct: number, incorrect: number, accuracy: number) {

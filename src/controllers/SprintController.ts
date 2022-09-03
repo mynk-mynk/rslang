@@ -1,10 +1,10 @@
+import Chart, { ChartType } from 'chart.js/auto';
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import SprintView from '../views/pages/sprint/sprint';
 import { IDataSprint } from '../common/interfaces/IDataSprint';
 import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 import { IWord, IWords } from '../common/interfaces/IWord';
 import Word from '../models/Word';
-import Chart, { ChartType } from 'chart.js/auto';
 
 class SprintController {
   static actionIndex() {
@@ -71,10 +71,9 @@ class SprintController {
         'Правильно',
       ];
 
-      const pieColors = ['#ff6969', '#00a249']
-    
+      const pieColors = ['#ff6969', '#00a249'];
       const pieResultsData = {
-        labels: labels,
+        labels,
         datasets: [{
           label: 'Результаты игры',
           backgroundColor: pieColors,
@@ -82,11 +81,11 @@ class SprintController {
           data: [incorrect, correct],
           borderAlign: 'inner',
           borderWidth: 1,
-        }]
+        }],
       };
-    
+
       const chartConfig = {
-        type: 'pie' as ChartType,
+        type: <ChartType>'pie',
         data: pieResultsData,
         options: {
           responsive: true,
@@ -97,21 +96,21 @@ class SprintController {
             },
             title: {
               display: true,
-              text: 'Результаты игры'
-            }
-          }
+              text: 'Результаты игры',
+            },
+          },
         },
       };
       const myChart = new Chart(
         <HTMLCanvasElement>document.getElementById('sprint-results-chart'),
-        chartConfig
+        chartConfig,
       );
     }
 
     function checkGameEnd() {
       let timerId = setTimeout(function gameEnd() {
         const counter = document.getElementById('timer-container');
-        if (counter?.innerHTML === '0:50') {
+        if (counter?.innerHTML === '0:111') {
           mainContainer.innerHTML = '';
           const mapSort = new Map([...data.answerMap.entries()].sort());
           const mapCorrect = new Map(
@@ -196,28 +195,43 @@ class SprintController {
       data.currentTranslation = data.currentAnswers[Math.round(Math.random())];
     }
 
+    function changeStreakColor(color: string) {
+      document.querySelectorAll('.streak-mark').forEach((el) => el.setAttribute('style', `background:${color}`));
+    }
+
     function increaseMultiplier() {
-      data.streak += 1;
-      (<HTMLElement>document.getElementById(`${data.streak}-correct-answer`)).style.background = '#00a249';
+      if (data.streak === 3 && data.multiplier === 4) {
+        data.streak = 3;
+      } else if (data.streak === 3 && data.multiplier < 4) {
+        data.streak = 0;
+        changeStreakColor('var(--color)');
+        data.streak += 1;
+      } else {
+        data.streak += 1;
+      }
       data.answerMap.set(<IWord>data.currentWord, 'correct');
       data.totalScore += data.pointsPerAnswer;
+      (<HTMLElement>document.getElementById(`${data.streak}-correct-answer`)).style.background = '#00a249';
+
       if (data.streak === 3) {
         data.pointsPerAnswer < 80 ? data.pointsPerAnswer *= 2 : data.pointsPerAnswer = 80;
-        data.streak = 0;
+        changeStreakColor('#00a249');
         data.multiplier === 4 ? (data.multiplier = 4) : (data.multiplier += 1);
-        (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.display = 'inline-block';
+        (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.visibility = 'visible';
       }
     }
 
     function decreaseMultiplier() {
       data.streak = 0;
-      document.querySelectorAll('.streak-mark').forEach((el) => el.setAttribute('style', 'var(--color)'));
+      (<HTMLImageElement>document.querySelector('.answer-icon-image')).src = 'wrong';
+      (<HTMLImageElement>document.querySelector('.answer-icon-image')).style.visibility = 'visible';
+      changeStreakColor('var(--color)');
       data.answerMap.set(<IWord>data.currentWord, 'incorrect');
       data.pointsPerAnswer > 10 ? data.pointsPerAnswer /= 2 : data.pointsPerAnswer = 10;
       if (data.multiplier === 1) {
         data.multiplier = 1;
       } else {
-        (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.display = 'none';
+        (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.visibility = 'hidden';
         data.multiplier -= 1;
       }
     }
@@ -239,6 +253,7 @@ class SprintController {
         <IWord>data.currentWord,
         <IWord>data.currentTranslation,
         data.totalScore,
+        'right',
       );
       const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
       scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
@@ -276,6 +291,7 @@ class SprintController {
         <IWord>data.currentWord,
         <IWord>data.currentTranslation,
         data.totalScore,
+        'right',
       );
       const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
       scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);

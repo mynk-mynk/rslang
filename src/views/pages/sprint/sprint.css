@@ -98,7 +98,8 @@ h1 {
 
 .progress {
   margin-bottom: 10px;
-  border-bottom: 2px solid var(--color);
+  /* border-bottom: 2px solid var(--color); */
+  height: 55px;
 }
 
 .word-props {
