@@ -20,8 +20,8 @@ class AudiocallController {
 
     showBurgerMenu();
     const mainContainer = findHtmlElement(document, 'main');
-
     mainContainer.innerHTML = '';
+
     mainContainer.insertAdjacentHTML('afterbegin', AudiocallView.renderAudiocallDescription());
     const gameContainer = <HTMLElement>document.querySelector('.main-container-audiocall');
     gameContainer.append(renderDifficultyBar());

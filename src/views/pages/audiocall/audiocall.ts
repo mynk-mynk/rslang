@@ -104,7 +104,6 @@ class AudiocallView {
                   <div class="results-description">
                     <p>Правильных ответов: ${correct}</p>
                     <p>Ошибок: ${incorrect}</p>
-                    <p>Правильных ответов подряд: 0</p>
                     <p class="results-accuracy">Процент правильных ответов: ${accuracy}%</p>
                 </div>
                 <div>
