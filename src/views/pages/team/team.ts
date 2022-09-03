@@ -7,7 +7,7 @@ class TeamView {
     <h1>Наша команда</h1>
     <div class="team-container">
       <div class="card-container">
-        <img class="card-img" src="../../assets/images/team/anonymous.png" alt="Team member picture 1" width="200">
+        <img class="card-img" src="./assets/images/team/anonymous.png" alt="Team member picture 1" width="200">
         <div class="card-description">
           <p class="card-name">Name</p>
           <p>Frontend developer</p>

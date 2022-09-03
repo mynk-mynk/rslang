@@ -3,7 +3,6 @@ import { IObject } from '../../../common/interfaces/IObject';
 import { IWord } from '../../../common/interfaces/IWord';
 
 class AudiocallView {
-  
   static renderStartBtn() {
     return `
     <button class="start-btn" disabled>Start</button>

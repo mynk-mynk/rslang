@@ -86,20 +86,20 @@ function drawWordCard(word: IWord) {
   wordContainer.innerHTML = `<img class="word-img" src="${server.getLocal()}${word.image}" alt="">
   <div class="word-description">
     <div class="word-properties">
-      <img class="word-learned" src="../../assets/images/textbook/tick.png" alt="Learned" width="40">
-      <img class="word-hard" src="../../assets/images/textbook/star.png" alt="Hard" width="40">
+      <img class="word-learned" src="./assets/images/textbook/tick.png" alt="Learned" width="40">
+      <img class="word-hard" src="./assets/images/textbook/star.png" alt="Hard" width="40">
         </div>
       <div class="word">
       <h2>${word.word}</h2>
       <p class="word-transcription">${word.transcription}</p>
-      <img id="btn-${word.id}-word" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <img id="btn-${word.id}-word" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
       <audio id="audio-${word.id}-word" src="${server.getLocal()}${word.audio}"></audio>
       <p class="word-translation">${word.wordTranslate}</p>
     </div>
     <div class="word-meaning">
       <p>
       ${word.textMeaning}
-      <img id="btn-${word.id}-meaning" class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+      <img id="btn-${word.id}-meaning" class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" width="20">
         <audio id="audio-${word.id}-meaning" src="${server.getLocal()}${word.audioMeaning}"></audio>
       </p>
       <p class="meaning-translation">${word.textMeaningTranslate}</p>
@@ -107,7 +107,7 @@ function drawWordCard(word: IWord) {
     <div class="word-example">
       <p>
       ${word.textExample}
-      <img id="btn-${word.id}-example" class="audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+      <img id="btn-${word.id}-example" class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" width="20">
         <audio id="audio-${word.id}-example" src="${server.getLocal()}${word.audioExample}"></audio>
       </p>
       <p class="example-translation">${word.textExampleTranslate}</p>
@@ -129,8 +129,8 @@ function deactivateWordProp(el: HTMLImageElement) {
   const card = el.closest('.word-container');
   const learned = card?.querySelector<HTMLImageElement>('.word-learned');
   const hard = card?.querySelector<HTMLImageElement>('.word-hard');
-  if (img === learned) img.src = '../../assets/images/textbook/tick.png';
-  if (img === hard) img.src = '../../assets/images/textbook/star.png';
+  if (img === learned) img.src = './assets/images/textbook/tick.png';
+  if (img === hard) img.src = './assets/images/textbook/star.png';
   img.classList.remove('active');
 }
 
@@ -142,18 +142,18 @@ function chooseWordProp(el: HTMLImageElement) {
   toggleProp(img);
   if (img === learned) {
     if (img.classList.contains('active')) {
-      img.src = '../../assets/images/textbook/tick-filled.png';
+      img.src = './assets/images/textbook/tick-filled.png';
       if (hard) deactivateWordProp(hard);
     } else {
-      img.src = '../../assets/images/textbook/tick.png';
+      img.src = './assets/images/textbook/tick.png';
     }
   }
   if (img === hard) {
     if (img.classList.contains('active')) {
-      img.src = '../../assets/images/textbook/star-filled.png';
+      img.src = './assets/images/textbook/star-filled.png';
       if (learned) deactivateWordProp(learned);
     } else {
-      img.src = '../../assets/images/textbook/star.png';
+      img.src = './assets/images/textbook/star.png';
     }
   }
 }

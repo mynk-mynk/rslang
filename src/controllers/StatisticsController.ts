@@ -1,4 +1,4 @@
-import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
+import { findHtmlElement } from '../common/utils/utils';
 import StatisticsView from '../views/pages/statistics/statistics';
 
 class StatisticsController {
@@ -9,8 +9,6 @@ class StatisticsController {
     // };
     const main = findHtmlElement(document, 'main');
     main.innerHTML = StatisticsView.draw();
-
-    showBurgerMenu();
   }
 }
 

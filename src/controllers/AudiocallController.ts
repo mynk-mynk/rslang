@@ -1,4 +1,4 @@
-import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
+import { findHtmlElement } from '../common/utils/utils';
 import { IWord, IWords } from '../common/interfaces/IWord';
 import { IDataAudio } from '../common/interfaces/IDataAudio';
 import config from '../config';
@@ -18,7 +18,6 @@ class AudiocallController {
       answerMap: new Map(),
     };
 
-    showBurgerMenu();
     const mainContainer = findHtmlElement(document, 'main');
     mainContainer.innerHTML = '';
 
