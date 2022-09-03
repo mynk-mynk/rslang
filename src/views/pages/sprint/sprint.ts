@@ -3,37 +3,6 @@ import './sprint.css';
 import { IWord } from '../../../common/interfaces/IWord';
 
 class SprintView {
-  // static draw(data: IObject<string>)
-  static draw() {
-    return `
-
-    <div class="result-container">
-      <h2 class="results-header">Ваш результат:</h2>
-      <div class="results">
-        <div class="results-description">
-          <p>Правильных ответов: 0</p>
-          <p>Ошибок: 0</p>
-          <p>Правильных ответов подряд: 0</p>
-        </div>
-        <p class="results-accuracy">100%</p>
-      </div>
-      <ul class="word-list">
-        <h3>Список слов:</h3>
-        <li>
-          <img class="sprint-audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
-          <img src="../../assets/images/right-icon.png" alt="Correct Icon" width="20">
-          <p><span>Word</span> - перевод</p>
-        </li>
-        <li>
-          <img class="sprint-audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio Icon" width="20">
-          <img src="../../assets/images/wrong-icon.png" alt="Correct Icon" width="20">
-          <p><span>Word</span> - перевод</p>
-        </li>
-      </ul>
-    </div>
-  </div>`;
-  }
-
   static renderStartBtn() {
     return `
     <button class="start-btn" disabled>Start</button>
@@ -52,8 +21,8 @@ class SprintView {
       </div>
       <div>
         <div class="control-keys">
-          <img src="../../assets/images/sprint/left-arrow.png">
-          <img src="../../assets/images/sprint/right-arrow.png">
+          <img src="./assets/images/sprint/left-arrow.png">
+          <img src="./assets/images/sprint/right-arrow.png">
         </div>
       </div>
       <h3>Пожалуйста, выберите раздел</h3>
@@ -84,28 +53,28 @@ class SprintView {
       <div class="progress">
         <img
           id="level-1"
-          src="../../assets/images/sprint/baby.png"
+          src="./assets/images/sprint/baby.png"
           alt="Level 1"
           width="25"
         />
         <img
         style="display: none"
           id="level-2"
-          src="../../assets/images/sprint/toddler.png"
+          src="./assets/images/sprint/toddler.png"
           alt="Level 2"
           width="35"
         />
         <img
         style="display: none"
           id="level-3"
-          src="../../assets/images/sprint/teen.png"
+          src="./assets/images/sprint/teen.png"
           alt="Level 3"
           width="45"
         />
         <img
         style="display: none"
           id="level-4"
-          src="../../assets/images/sprint/prof.png"
+          src="./assets/images/sprint/prof.png"
           alt="Level 4"
           width="55"
         />
@@ -126,13 +95,13 @@ class SprintView {
         <p class="sprint-translation">${translation.wordTranslate}</p>
         <img
           class="answer-correct"
-          src="../../assets/images/right-icon.png"
+          src="./assets/images/right-icon.png"
           alt="Correct icon"
           width="30"
         />
         <img
           class="answer-wrong"
-          src="../../assets/images/wrong-icon.png"
+          src="./assets/images/wrong-icon.png"
           alt="Wrong icon"
           width="30"
         />`;
@@ -154,9 +123,9 @@ class SprintView {
               <p class="results-accuracy">${accuracy}%</p>
             </div>
             <div class="result-answers-container">
-              <h3><img src="../../assets/images/right-icon.png" alt="Correct Icon" width="20"> Правильные ответы</h3>
+              <h3><img src="./assets/images/right-icon.png" alt="Correct Icon" width="20"> Правильные ответы</h3>
               <div class="correct-results"></div>
-              <h3><img src="../../assets/images/wrong-icon.png" alt="Incorrect Icon" width="20"> Ошибки</h3>
+              <h3><img src="./assets/images/wrong-icon.png" alt="Incorrect Icon" width="20"> Ошибки</h3>
               <div class="incorrect-results"></div>
             </div>
         </div`;
@@ -166,7 +135,7 @@ class SprintView {
     return `
     <div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
-      <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
       <span class="word-original word-sprint">${word.word}</span>-<span class="word-translation word-sprint">${word.wordTranslate}</span>
     </div>`;
   }
@@ -174,7 +143,7 @@ class SprintView {
   static renderIncorrectResults(word: IWord) {
     return `<div class="word-list-item">
       <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
-      <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
       <span class="word-original word-sprint">${word.word}</span>-<span class="word-translation word-sprint">${word.wordTranslate}</span>
   </div>`;
   }
