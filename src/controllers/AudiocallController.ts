@@ -7,7 +7,8 @@
 // import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 
 class AudiocallController {
-  actionIndex() {
+  actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
+    console.log(page, difficulty, textBookClick);
     // const data: IDataAudio = {
     //   currentDifficulty: 0,
     //   data2: 'audiocall',

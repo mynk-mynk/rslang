@@ -2,7 +2,8 @@ import { findHtmlElement } from '../common/utils/utils';
 import SprintView from '../views/pages/sprint/sprint';
 
 class SprintController {
-  actionIndex() {
+  actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
+    console.log(page, difficulty, textBookClick);
     // const data = {
     //   data1: '3',
     //   data2: 'sprint',

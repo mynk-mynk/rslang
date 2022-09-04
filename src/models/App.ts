@@ -1,6 +1,7 @@
 import { IErrorApi } from '../common/interfaces/IErrorApi';
 import { IHtmlElements } from '../common/interfaces/IHtmlElemets';
 import { IUser } from '../common/interfaces/IUser';
+import { IGameParams } from '../common/interfaces/IGameParams';
 import {
   closeBurgerMenu, findHtmlElement, hideBurgerMenu, showBurgerMenu,
 } from '../common/utils/utils';
@@ -337,6 +338,11 @@ class App {
     this.addLoginLinkBtnListener();
     this.addLoginBtnListener();
     this.addRegistrationBtnListener();
+  }
+
+  openGamePage(page: keyof IAppPages, params: IGameParams) {
+    console.log(page);
+    this.pages[page].actionIndex(params.page, params.difficulty, true);
   }
 }
 
