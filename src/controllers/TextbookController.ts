@@ -1,27 +1,23 @@
-<<<<<<< HEAD
+import App from '../models/App';
 import Word from '../models/Word';
 import { IWord } from '../common/interfaces/IWord';
+import { IDataTextbook } from '../common/interfaces/IDataTextbook';
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import { activateCurrentDifficulty, activateProp, renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 import { disableBtns, renderPagination, setPageNum } from '../views/components/pagination/pagination';
 import {
   chooseWordProp, renderWordCard, playAudio, changeCardBoxshadow,
 } from '../views/components/word-card/word-card';
-=======
-import { findHtmlElement } from '../common/utils/utils';
-import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
-// import DifficultyBar from '../views/components/difficulty-bar/difficulty-bar';
->>>>>>> develop
 import { renderTextbookPage } from '../views/pages/textbook/textbook';
 
-interface IDataTextbook {
-  difficulty: number,
-  pageNum: number,
-}
-
 class TextbookController {
-  static actionIndex() {
-<<<<<<< HEAD
+  private app: App;
+
+  constructor(app: App) {
+    this.app = app;
+  }
+
+  actionIndex() {
     const data: IDataTextbook = TextbookController.getFromLS()
     || { difficulty: 0, pageNum: 0 };
 
@@ -32,8 +28,8 @@ class TextbookController {
 
     const header = findHtmlElement(document, 'h1');
     header.after(renderDifficultyBar());
-    // const hardWords = findHtmlElement(document, '.level7');
-    // hardWords.style.display = App.isAuth ? 'block' : 'none';
+    const hardWords = findHtmlElement(document, '.level7');
+    hardWords.style.display = this.app.isAuth ? 'block' : 'none';
     TextbookController.addListenersToDiffBar();
 
     TextbookController.generateWordCards(data.pageNum, data.difficulty)
@@ -133,12 +129,6 @@ class TextbookController {
       }
     }
     return res;
-=======
-    const main = findHtmlElement(document, 'main');
-    main.innerHTML = renderTextbookPage();
-    const header = findHtmlElement(document, 'h1');
-    header.after(renderDifficultyBar());
->>>>>>> develop
   }
 }
 

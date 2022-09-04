@@ -17,12 +17,22 @@ import renderAuthorization from '../views/components/authorization/authorization
 import EventObserver from './EventObserver';
 import User from './User';
 
+interface IAppPages {
+  index: IndexController,
+  team: TeamController,
+  textbook: TextbookController,
+  sprint: SprintController,
+  audiocall: AudiocallController,
+  statistics: StatisticsController,
+  error: ErrorController,
+}
+
 class App {
   private _url: string;
 
   private page: string;
 
-  private readonly pages;
+  private readonly pages: IAppPages;
 
   private urlObserver: EventObserver<string>;
 
@@ -40,12 +50,12 @@ class App {
 
     this.pages = {
       index: new IndexController(this),
-      team: TeamController,
-      textbook: TextbookController,
-      sprint: SprintController,
-      audiocall: AudiocallController,
-      statistics: StatisticsController,
-      error: ErrorController,
+      team: new TeamController(),
+      textbook: new TextbookController(this),
+      sprint: new SprintController(),
+      audiocall: new AudiocallController(),
+      statistics: new StatisticsController(),
+      error: new ErrorController(),
     };
     this.urlObserver = new EventObserver<string>();
     this.htmlElemets = {
@@ -82,7 +92,7 @@ class App {
 
   set isAuth(value: boolean) {
     this._isAuth = value;
-    const imgUrl = `./assets/svg/${value ? '' : 'un'}verified.svg`;
+    const imgUrl = `./assets/images/${value ? '' : 'un'}verified.png`;
     (this.htmlElemets.authIcon as HTMLImageElement).src = imgUrl;
     this.htmlElemets.tooltipText.innerHTML = value ? 'Выйти' : 'Войти?';
   }
@@ -102,7 +112,7 @@ class App {
     this.setRouterToElements('.logo');
 
     const burgerIcon = findHtmlElement(document, '.burger');
-    burgerIcon.addEventListener('click', toggleBurgerMenu);
+    burgerIcon.addEventListener('click', () => App.toggleBurgerMenu());
 
     // add event listener to browser history buttons
     window.addEventListener('popstate', () => {
@@ -128,7 +138,7 @@ class App {
 
   private getContent() {
     closeBurgerMenu();
-    const controller = this.pages[this.page as keyof typeof this.pages];
+    const controller = this.pages[this.page as keyof IAppPages];
     if (controller) {
       controller.actionIndex();
     } else {

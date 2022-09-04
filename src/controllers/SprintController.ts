@@ -2,7 +2,7 @@ import { findHtmlElement } from '../common/utils/utils';
 import SprintView from '../views/pages/sprint/sprint';
 
 class SprintController {
-  static actionIndex() {
+  actionIndex() {
     // const data = {
     //   data1: '3',
     //   data2: 'sprint',

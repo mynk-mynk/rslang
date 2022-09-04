@@ -6,7 +6,7 @@
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  gap: 40px;
 }
 
 .words-container {
@@ -15,4 +15,35 @@
   gap: 50px;
   flex-wrap: wrap;
   flex-grow: 1;
+}
+
+.textbook-game-btns {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.textbook-game-btns button {
+  border: none;
+  background: transparent;
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  transition: 0.1s;
+}
+
+.textbook-game-btns button img {
+  vertical-align: middle;
+  margin-bottom: 10px;
+}
+
+.textbook-game-btns button p {
+  opacity: 80%;
+}
+
+.textbook-game-btns button:hover {
+  transform: scale(1.05);
+}
+
+.textbook-game-btns button:active {
+  transform: scale(0.98);
 }
