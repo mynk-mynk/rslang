@@ -28,7 +28,7 @@ export function activateCurrentDifficulty(category: number) {
   activateProp(currentDiff);
 }
 
-export function setIsVisible(auth: boolean) {
+export function setHardWordsVisible(auth: boolean) {
   const hardWords = document.querySelector<HTMLElement>('.level7');
   if (hardWords) hardWords.style.display = auth ? '' : 'none';
 }

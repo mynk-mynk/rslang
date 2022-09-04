@@ -4,7 +4,7 @@ import { IWord } from '../common/interfaces/IWord';
 import { IDataTextbook } from '../common/interfaces/IDataTextbook';
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import {
-  activateCurrentDifficulty, activateProp, renderDifficultyBar, setIsVisible,
+  activateCurrentDifficulty, activateProp, renderDifficultyBar, setHardWordsVisible,
 } from '../views/components/difficulty-bar/difficulty-bar';
 import { disableBtns, renderPagination, setPageNum } from '../views/components/pagination/pagination';
 import {
@@ -17,7 +17,7 @@ class TextbookController {
 
   constructor(app: App) {
     this.app = app;
-    this.app.subscribeOnAuthChange(() => setIsVisible(this.app.isAuth));
+    this.app.subscribeOnAuthChange(() => setHardWordsVisible(this.app.isAuth));
   }
 
   actionIndex() {
@@ -88,7 +88,7 @@ class TextbookController {
         .then(() => changeCardBoxshadow(data.difficulty + 1));
     });
 
-    setIsVisible(this.app.isAuth);
+    setHardWordsVisible(this.app.isAuth);
   }
 
   static async generateWordCards(page: number, difficulty: number) {
