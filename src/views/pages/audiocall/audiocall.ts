@@ -31,9 +31,9 @@ class AudiocallView {
   static renderAudiocallDescription() {
     return `
     <div class="main-container-audiocall">
-      <h1>Игра "Аудиокол"</h1>
+      <h1>Игра "Аудиовызов"</h1>
       <div class="rules-container">
-        <p>В игре "Аудиоколл" Ваша задача выбрать правильный перевод к услышанному слову из 5 предложенных вариантов.</p>
+        <p>В игре "Аудиовызов" Ваша задача выбрать правильный перевод к услышанному слову из 5 предложенных вариантов.</p>
         <p class="controls-description">Вы можете отвечать на вопросы с помощью кнопок "1", "2", "3", "4", "5". Увидеть следующий вопрос можно при помощи клавиши "Enter"</p>
         <div class="control-keys">
           <img src="./assets/images/audiocall/key-one.png">
@@ -44,11 +44,10 @@ class AudiocallView {
           <img src="./assets/images/audiocall/key-enter.png">
         </div>
       </div>
-      <h3>Пожалуйста, выберите раздел</h3>
     </div>`;
   }
 
-  static renderQuestion(answers: string[], word: IWord | null) {
+  static renderQuestion(answers: IWord[], word: IWord | null) {
     return `<div class="main-container-audiocall">
     <h1>Игра "Аудиовызов"</h1>
     <div class="game-container">
@@ -75,19 +74,19 @@ class AudiocallView {
 
     <div class="btns-container-audiocall">
       <div class="answer-container-audiocall">
-        <button class="answer1 answer-item">1. ${answers[0]}</button>
+        <button class="answer1 answer-item">1. ${answers[0].wordTranslate}</button>
       </div>
       <div class="answer-container-audiocall">
-        <button class="answer2 answer-item">2. ${answers[1]}</button>
+        <button class="answer2 answer-item">2. ${answers[1].wordTranslate}</button>
       </div>
       <div class="answer-container-audiocall">
-        <button class="answer3 answer-item">3. ${answers[2]}</button>
+        <button class="answer3 answer-item">3. ${answers[2].wordTranslate}</button>
       </div>
       <div class="answer-container-audiocall">
-        <button class="answer4 answer-item">4. ${answers[3]}</button>
+        <button class="answer4 answer-item">4. ${answers[3].wordTranslate}</button>
       </div>
       <div class="answer-container-audiocall">
-        <button class="answer5 answer-item">5. ${answers[4]}</button>
+        <button class="answer5 answer-item">5. ${answers[4].wordTranslate}</button>
       </div>
     </div>
     <button id="btn-next" class="next-btn" disabled>Next</button>

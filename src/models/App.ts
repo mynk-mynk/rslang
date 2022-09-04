@@ -43,7 +43,7 @@ class App {
       team: TeamController,
       textbook: TextbookController,
       sprint: SprintController,
-      audiocall: AudiocallController,
+      audiocall: new AudiocallController(this),
       statistics: StatisticsController,
       error: ErrorController,
     };
