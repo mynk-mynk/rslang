@@ -71,3 +71,11 @@ export function changeCardBoxshadow(difficulty: number) {
     card2.style.boxShadow = `0 0 20px var(--diff${difficulty})`;
   });
 }
+
+export function setWordPropsVisible(auth: boolean) {
+  const props = document.querySelectorAll<HTMLElement>('.word-properties');
+  props.forEach((prop) => {
+    const prop2 = prop;
+    prop2.style.display = auth ? 'flex' : 'none';
+  });
+}

@@ -8,7 +8,7 @@ import {
 } from '../views/components/difficulty-bar/difficulty-bar';
 import { disableBtns, renderPagination, setPageNum } from '../views/components/pagination/pagination';
 import {
-  chooseWordProp, renderWordCard, playAudio, changeCardBoxshadow,
+  chooseWordProp, renderWordCard, playAudio, changeCardBoxshadow, setWordPropsVisible,
 } from '../views/components/word-card/word-card';
 import { renderTextbookPage } from '../views/pages/textbook/textbook';
 
@@ -17,12 +17,15 @@ class TextbookController {
 
   constructor(app: App) {
     this.app = app;
-    this.app.subscribeOnAuthChange(() => setHardWordsVisible(this.app.isAuth));
+    this.app.subscribeOnAuthChange(() => {
+      setHardWordsVisible(this.app.isAuth);
+      setWordPropsVisible(this.app.isAuth);
+    });
   }
 
   actionIndex() {
     const data: IDataTextbook = TextbookController.getFromLS()
-    || { difficulty: 0, pageNum: 0 };
+      || { difficulty: 0, pageNum: 0 };
 
     showBurgerMenu();
 
@@ -31,19 +34,14 @@ class TextbookController {
 
     const header = findHtmlElement(document, 'h1');
     header.after(renderDifficultyBar());
-    // const hardWords = findHtmlElement(document, '.level7');
-    // hardWords.style.display = this.app.isAuth ? '' : 'none';
     TextbookController.addListenersToDiffBar();
 
-    TextbookController.generateWordCards(data.pageNum, data.difficulty)
+    TextbookController.generateWordCards(data.pageNum, data.difficulty, this.app.isAuth)
       .catch((e) => console.log(e));
     activateCurrentDifficulty(data.difficulty + 1);
 
     const mainContainer = findHtmlElement(document, '.main-container-textbook');
     mainContainer.append(renderPagination());
-
-    // const gameBtns = findHtmlElement(document, '.textbook-game-btns');
-    // gameBtns.after(renderPagination());
 
     const pagination = findHtmlElement(document, '.pagination-container');
     pagination.addEventListener('click', (e) => {
@@ -73,7 +71,7 @@ class TextbookController {
         data.pageNum = 0;
       }
 
-      TextbookController.generateWordCards(data.pageNum, data.difficulty);
+      TextbookController.generateWordCards(data.pageNum, data.difficulty, this.app.isAuth);
     });
 
     const difficultyContainer = findHtmlElement(document, '.difficulty-container');
@@ -84,14 +82,14 @@ class TextbookController {
       data.difficulty = Number(diff) - 1 || 0;
       data.pageNum = 0;
       // TODO: hard words generation when difficulty = 6;
-      TextbookController.generateWordCards(data.pageNum, data.difficulty)
+      TextbookController.generateWordCards(data.pageNum, data.difficulty, this.app.isAuth)
         .then(() => changeCardBoxshadow(data.difficulty + 1));
     });
 
     setHardWordsVisible(this.app.isAuth);
   }
 
-  static async generateWordCards(page: number, difficulty: number) {
+  static async generateWordCards(page: number, difficulty: number, auth: boolean) {
     const wordsContainer = findHtmlElement(document, '.words-container');
     wordsContainer.innerHTML = '';
     const words = await Word.getWords(page, difficulty) as IWord[];
@@ -100,6 +98,7 @@ class TextbookController {
       wordsContainer.append(card);
     });
     changeCardBoxshadow(difficulty + 1);
+    setWordPropsVisible(auth);
     TextbookController.addListenersToCards();
     setPageNum(page + 1);
     disableBtns(page);
