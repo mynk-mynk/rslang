@@ -6,12 +6,12 @@ export function renderTextbookPage(): string {
 
     <div class="textbook-game-btns">
       <button class="start-audiocall">
-        <img src="../../../assets/images/audiocall.png" alt="Sprint" width="40">
-        <p>Играть</p>
+        <img src="../../../assets/images/audiocall.png" alt="Audiocall" width="40">
+        <p>Аудиовызов</p>
       </button>
       <button class="start-sprint">
         <img src="../../../assets/images/sprint.png" alt="Sprint" width="40">
-        <p>Играть</p>
+        <p>Спринт</p>
       </button>
     </div>
 

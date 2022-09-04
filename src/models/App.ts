@@ -2,7 +2,7 @@ import { IErrorApi } from '../common/interfaces/IErrorApi';
 import { IHtmlElements } from '../common/interfaces/IHtmlElemets';
 import { IUser } from '../common/interfaces/IUser';
 import {
-  closeBurgerMenu, findHtmlElement, hideBurgerMenu, showBurgerMenu, toggleBurgerMenu,
+  closeBurgerMenu, findHtmlElement, hideBurgerMenu, showBurgerMenu,
 } from '../common/utils/utils';
 import config from '../config';
 import AudiocallController from '../controllers/AudiocallController';
@@ -40,6 +40,8 @@ class App {
 
   private _isAuth: boolean;
 
+  private authObserver: EventObserver<boolean>;
+
   constructor() {
     this._url = window.location.pathname;
 
@@ -47,6 +49,9 @@ class App {
     const pattern = '/[a-zA-Z.]*$';
     const match = this._url.match(pattern);
     if (match) this.page = match[0].slice(1).split('.')[0] || 'index';
+
+    this._isAuth = false;
+    this.authObserver = new EventObserver<boolean>();
 
     this.pages = {
       index: new IndexController(this),
@@ -64,7 +69,6 @@ class App {
       authIcon: findHtmlElement(document, '.authorization-icon'),
       tooltipText: findHtmlElement(document, '.tooltiptext'),
     };
-    this._isAuth = false;
 
     // add content into main according to link
     this.getContent();
@@ -95,6 +99,11 @@ class App {
     const imgUrl = `./assets/images/${value ? '' : 'un'}verified.png`;
     (this.htmlElemets.authIcon as HTMLImageElement).src = imgUrl;
     this.htmlElemets.tooltipText.innerHTML = value ? 'Выйти' : 'Войти?';
+    this.authObserver.broadcast(this.isAuth);
+  }
+
+  subscribeOnAuthChange(callback: () => void) {
+    this.authObserver.subscribe(callback);
   }
 
   start() {
@@ -281,7 +290,8 @@ class App {
           this.clearLoginForm();
           this.clearRegistrationForm();
           this.closeAuthorizationBlock();
-          (this.htmlElemets.authIcon as HTMLImageElement).src = './assets/svg/verified.svg';
+          (this.htmlElemets.authIcon as HTMLImageElement).src = './assets/images/verified.png';
+          this.isAuth = true;
         } else {
           this.htmlElemets.loginError.style.display = 'block';
           (this.htmlElemets.loginPassword as HTMLInputElement).value = '';

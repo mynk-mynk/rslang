@@ -27,3 +27,8 @@ export function activateCurrentDifficulty(category: number) {
   const currentDiff = findHtmlElement(document, `[data-group="${category}"]`);
   activateProp(currentDiff);
 }
+
+export function setIsVisible(auth: boolean) {
+  const hardWords = document.querySelector<HTMLElement>('.level7');
+  if (hardWords) hardWords.style.display = auth ? '' : 'none';
+}
