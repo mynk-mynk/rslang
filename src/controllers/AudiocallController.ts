@@ -144,14 +144,14 @@ class AudiocallController {
   wordsRandomizer() {
     this.data.curWord = this.data.wordsArr[Math.floor(Math.random() * this.data.wordsArr.length)];
     const random = this.data.wordsArr.sort(() => 0.5 - Math.random()).slice(0, 5);
-    if (random.includes(this.data.curWord)) {
+    if (random.includes(<IWord> this.data.curWord)) {
       this.wordsRandomizer();
     } else {
       this.data.curAnswers = random;
-      this.data.curAnswers.splice(
+      <IWords> this.data.curAnswers.splice(
         Math.floor(Math.random() * 5),
         1,
-        this.data.curWord,
+        <IWord> this.data.curWord,
       );
     }
   }
@@ -168,8 +168,8 @@ class AudiocallController {
       } else {
         this.wordsRandomizer();
         mainContainer.innerHTML = AudiocallView.renderQuestion(
-          this.data.curAnswers,
-          this.data.curWord,
+          <IWord[]> this.data.curAnswers,
+          <IWord> this.data.curWord,
         );
         (<HTMLAudioElement>(
             document.getElementById(`audio-word-${(<IWord> this.data.curWord).word}`)
@@ -200,7 +200,8 @@ class AudiocallController {
         (<HTMLParagraphElement>(
           document.querySelector('.current-word-answer')
         )).innerHTML = (<IWord> this.data.curWord).word;
-        if ((<HTMLElement>e.target).innerText.slice(3) === (<IWord> this.data.curWord).wordTranslate) {
+        if ((<HTMLElement>e.target).innerText.slice(3) === (<IWord> this.data.curWord)
+          .wordTranslate) {
           (<HTMLButtonElement[]>answerItems).forEach((el) => el.setAttribute('disabled', 'true'));
           (<HTMLElement>e.target).insertAdjacentHTML(
             'beforebegin',
@@ -237,8 +238,8 @@ class AudiocallController {
     const mainContainer = findHtmlElement(document, 'main');
     this.wordsRandomizer();
     mainContainer.innerHTML = AudiocallView.renderQuestion(
-      this.data.curAnswers,
-      this.data.curWord,
+      <IWord[]> this.data.curAnswers,
+      <IWord> this.data.curWord,
     );
 
     (<HTMLAudioElement>(
@@ -253,7 +254,7 @@ class AudiocallController {
 
   nextQuestion() {
     (<HTMLButtonElement>document.getElementById('btn-next')).onclick = async () => {
-      if (this.data.answerMap.size < 40) {
+      if (this.data.answerMap.size < 10) {
         const currentWordIndex: number = this.data.wordsArr.indexOf(<IWord> this.data.curWord);
         this.data.wordsArr.splice(currentWordIndex, 1);
         if (this.data.wordsArr.length <= 5) {
@@ -317,7 +318,11 @@ class AudiocallController {
       );
     });
     this.countBestStreak();
-    this.prepareGameStatistics(this.data.answerMap.size, mapCorrect.size / mapSort.size, this.data.maxStreak);
+    this.prepareGameStatistics(
+      this.data.answerMap.size,
+      mapCorrect.size / mapSort.size,
+      <number> this.data.maxStreak,
+    );
     this.updateUserWords();
 
     document.querySelectorAll('.audiocall-audio-icon').forEach((icon) => {
@@ -326,16 +331,14 @@ class AudiocallController {
   }
 
   async deleteUserWords() {
-    const userWords = await User.getUserWords();
+    const userWords = <IUserWord[]> await User.getUserWords();
     userWords.forEach((el: IUserWord) => User.deleteUserWord(<string>el.wordId));
   }
 
   async updateUserWords() {
-    const userWords = await User.getUserWords();
+    const userWords = <IUserWord[]> await User.getUserWords();
     function checkAnswerMap(array1: Map<IWord, string>, array2: IUserWord[]) {
-
-      const array2Id = array2.map((el) => el.wordId);
-
+      const array2Id = array2.map((el) => <string> el.wordId);
       array1.forEach((val, result) => {
         if (array2.length > 0) {
           if (array2Id.includes(result.id)) {
@@ -351,6 +354,7 @@ class AudiocallController {
                 newWord: false,
                 dateNew: newIds[0].optional.dateNew,
                 dateLearned: learnDate ? learnDate : newIds[0].optional.dateLearned,
+                newInGame: newIds[0].optional.newInGame,
                 streakAudio: +(`${val === 'correct' ? newIds[0].optional.streakAudio += 1 : 0}`),
                 streakSprint: newIds[0].optional.streakSprint,
                 totalCountAudiocall: newIds[0].optional.totalCountAudiocall += 1,
@@ -361,11 +365,12 @@ class AudiocallController {
             });
           } else {
             User.createUserWord(result.id, {
-              difficulty: '',
+              difficulty: 'none',
               optional: {
                 newWord: true,
                 dateNew: Date.now(),
                 dateLearned: 0,
+                newInGame: 'audiocall',
                 streakAudio: +(`${val === 'correct' ? 1 : 0}`),
                 streakSprint: 0,
                 totalCountAudiocall: 1,
@@ -377,11 +382,12 @@ class AudiocallController {
           }
         } else {
           User.createUserWord(result.id, {
-            difficulty: '',
+            difficulty: 'none',
             optional: {
               newWord: true,
               dateNew: Date.now(),
               dateLearned: 0,
+              newInGame: 'audiocall',
               streakAudio: +(`${val === 'correct' ? 1 : 0}`),
               streakSprint: 0,
               totalCountAudiocall: 1,
@@ -399,7 +405,8 @@ class AudiocallController {
   countBestStreak() {
     let counter = 0;
     let streak = 0;
-    this.data.answerMap.forEach((k, _) => { k === 'correct' ? counter += 1 : counter = 0;
+    this.data.answerMap.forEach((k, _) => {
+      k === 'correct' ? counter += 1 : counter = 0;
       if (counter > streak) streak = counter;
     });
     this.data.maxStreak = streak;
@@ -409,9 +416,9 @@ class AudiocallController {
     if (!localStorage.getItem('AudiocallGameTotal') && !localStorage.getItem('AudiocallCorrectPercentage') && !localStorage.getItem('AudiocallGameStreak')) {
       this.saveResults(total, percentage, streak);
     } else {
-      const audiocallTotal = JSON.parse(<string>localStorage.getItem('AudiocallGameTotal'));
-      const audiocallCorrectPercentage = JSON.parse(<string>localStorage.getItem('AudiocallCorrectPercentage'));
-      const audiocallStreak = JSON.parse(<string>localStorage.getItem('AudiocallGameStreak'));
+      const audiocallTotal = <number> JSON.parse(<string>localStorage.getItem('AudiocallGameTotal'));
+      const audiocallCorrectPercentage = <number> JSON.parse(<string>localStorage.getItem('AudiocallCorrectPercentage'));
+      const audiocallStreak = <number> JSON.parse(<string>localStorage.getItem('AudiocallGameStreak'));
 
       localStorage.setItem('AudiocallGameTotal', JSON.stringify(audiocallTotal + total));
       localStorage.setItem('AudiocallCorrectPercentage', JSON.stringify((audiocallCorrectPercentage + percentage) / 2));
@@ -426,9 +433,9 @@ class AudiocallController {
   }
 
   getResults() {
-    const totalScore = JSON.parse(<string>localStorage.getItem('AudiocallGameTotal'));
-    const correctPercentage = JSON.parse(<string>localStorage.getItem('AudiocallCorrectPercentage'));
-    const gameStreak = (JSON.parse(<string>localStorage.getItem('AudiocallGameStreak')));
+    const totalScore = <number> JSON.parse(<string>localStorage.getItem('AudiocallGameTotal'));
+    const correctPercentage = <number> JSON.parse(<string>localStorage.getItem('AudiocallCorrectPercentage'));
+    const gameStreak = <number> JSON.parse(<string>localStorage.getItem('AudiocallGameStreak'));
   }
 }
 
