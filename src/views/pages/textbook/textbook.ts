@@ -3,16 +3,19 @@ import './textbook.css';
 export function renderTextbookPage(): string {
   return `<div class="main-container-textbook">
     <h1>Учебник</h1>
-    <div class="difficulty-container"></div>
-    <div class="words-container"></div>
 
-    <div class="pagination-container">
-      <p class="pagination-first disabled"><<</p>
-      <p class="pagination-prev disabled"><</p>
-      <div class="pagination-current"><span id="page-number">1</span> / 30</div>
-      <p class="pagination-next">></p>
-      <p class="pagination-last">>></p>
+    <div class="textbook-game-btns">
+      <button class="start-audiocall">
+        <img src="../../../assets/images/audiocall.png" alt="Audiocall" width="40">
+        <p>Аудиовызов</p>
+      </button>
+      <button class="start-sprint">
+        <img src="../../../assets/images/sprint.png" alt="Sprint" width="40">
+        <p>Спринт</p>
+      </button>
     </div>
+
+    <div class="words-container"></div>
 
   </div>`;
 }

@@ -5,6 +5,13 @@
   --filter-light: invert(87%) sepia(27%) saturate(6724%) hue-rotate(206deg) brightness(88%) contrast(83%);
   --font-primary: 'DynaPuff';
   --font-secondary: 'Comfortaa';
+  --diff1: #f06969;
+  --diff2: #ec7d3d;
+  --diff3: #e4e713;
+  --diff4: #50a150;
+  --diff5: #69d0f0;
+  --diff6: #4183c0;
+  --diff7: #906bb3;
 }
 
 @font-face {
@@ -110,12 +117,12 @@ ul {
 
 .authorization-icon {
   width: 40px;
-  filter: var(--filter);
+  /* filter: var(--filter); */
   transition: 0.1s;
 }
 
 .authorization-icon:hover {
-  filter: var(--filter) drop-shadow(1px 1px 2px var(--ligth-color));
+  filter: drop-shadow(1px 1px 2px var(--ligth-color));
 }
 
 .authorization-icon:active {
@@ -125,7 +132,7 @@ ul {
 .tooltiptext {
   visibility: hidden;
   position: absolute;
-  left: -85px;
+  left: -95px;
   top: 6px;
   font-family: var(--font-secondary);
   font-size: 1rem;

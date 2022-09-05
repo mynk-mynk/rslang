@@ -1,5 +1,5 @@
 import './audiocall.css';
-import { IObject } from '../../../common/interfaces/IObject';
+// import { IObject } from '../../../common/interfaces/IObject';
 import { IWord } from '../../../common/interfaces/IWord';
 
 class AudiocallView {

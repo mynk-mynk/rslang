@@ -38,6 +38,7 @@
         "import/no-cycle": "off",
         "no-underscore-dangle": "off",
         "@typescript-eslint/no-floating-promises" : "off",
+        "class-methods-use-this": "off",
         // "@typescript-eslint/no-unsafe-call": "off",
         "import/extensions": [
             "error",
