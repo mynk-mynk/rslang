@@ -10,21 +10,23 @@ class StatisticsView {
     learnedAudio: number,
     correctAudio: number,
     streakAudio: number,
+    newWords: number,
+    correctTotal: number,
   ) {
     return `
     <div class="main-container-statistics">
       <h1>Статистика за сегодня</h1>
       <div class="general-statistics-container">
         <div class="new-words-stats">
-          <h2>0</h2>
+          <h2>${newWords}</h2>
           <p>новых слов</p>
         </div>
         <div class="learned-words-stats">
-          <h2>0</h2>
+          <h2>${learnedSprint + learnedAudio}</h2>
           <p>изученных слов</p>
         </div>
         <div class="learned-words-stats">
-          <h2>0%</h2>
+          <h2>${correctTotal}%</h2>
           <p>правильных ответов</p>
         </div>
         </div>
@@ -33,7 +35,7 @@ class StatisticsView {
           <h2>Игра "Спринт"</h2>
           <div class="statistics-content">               
               <div class="statistics-content-item"><img src="../../assets/images/statistics/learned-icon.png" alt="Learned words"><p>Изучено слов: ${learnedSprint}</p></div>
-              <div class="statistics-content-item"><img src="../../assets/images/right-icon.png" alt="Correct words"><p>Правильных ответов: ${correctSprint}</p></div>
+              <div class="statistics-content-item"><img src="../../assets/images/right-icon.png" alt="Correct words"><p>Правильных ответов: ${correctSprint}%</p></div>
               <div class="statistics-content-item"><img src="../../assets/images/statistics/streak-icon.png" alt="Streak words"><p>Самая длинная серия ответов: ${streakSprint}</p></div>
           </div>
         </div>
@@ -41,10 +43,15 @@ class StatisticsView {
           <h2>Игра "Аудиозвонок"</h2>
           <div class="statistics-content">
               <div class="statistics-content-item"><img src="../../assets/images/statistics/learned-icon.png" alt="Learned words"><p>Изучено слов: ${learnedAudio}</p></div>
-              <div class="statistics-content-item"><img src="../../assets/images/right-icon.png" alt="Correct words"><p>Правильных ответов: ${correctAudio}</p></div>
+              <div class="statistics-content-item"><img src="../../assets/images/right-icon.png" alt="Correct words"><p>Правильных ответов: ${correctAudio}%</p></div>
               <div class="statistics-content-item"><img src="../../assets/images/statistics/streak-icon.png" alt="Streak words"><p>Самая длинная серия ответов: ${streakAudio}</p></div>
           </div>
         </div>
+    </div>
+    <div class="long-statistics">
+      <div>
+        <canvas id="myChart" width="800" height="400"></canvas>
+      </div>
     </div>`;
   }
 }
