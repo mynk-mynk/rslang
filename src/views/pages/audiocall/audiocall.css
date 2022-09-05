@@ -1,8 +1,10 @@
 .start-btn {
+  background: none;
+  font-family: var(--font-secondary);
   display: inline-block;
   width: 100px;
   padding: 10px;
-  margin: 0 10px;
+  margin: 20px 10px;
   border: 2px solid var(--color);
   border-radius: 10px;
   font-size: 0.8rem;
@@ -21,6 +23,8 @@
 
 
 .next-btn {
+  background: none;
+  font-family: var(--font-secondary);
   display: inline-block;
   width: 100px;
   padding: 10px;
