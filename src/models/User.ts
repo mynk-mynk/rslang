@@ -252,7 +252,7 @@ class User {
     page = 0,
     group = 0,
     wordsPerPage = 20,
-    filter: IUserWord | null = null,
+    // filter: IUserWord | null = null,
   ) {
     const { id, token } = User.getIdAndTokenFromLocalStorage();
     if (!id || !token) return null;
