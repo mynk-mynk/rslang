@@ -37,6 +37,11 @@ class App {
     const pattern = '/[a-zA-Z.]*$';
     const match = this._url.match(pattern);
     if (match) this.page = match[0].slice(1).split('.')[0] || 'index';
+    if (this.page === 'index') {
+      hideBurgerMenu();
+    } else {
+      showBurgerMenu();
+    }
 
     this.pages = {
       index: new IndexController(this),
