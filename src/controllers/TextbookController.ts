@@ -85,6 +85,8 @@ class TextbookController {
     hardBtn.forEach((btn) => {
       btn.style.display = this.data.difficulty === 6 ? 'none' : 'block';
     });
+
+    this.markUserWords();
   }
 
   addListenersToDiffBar() {
@@ -213,18 +215,35 @@ class TextbookController {
 
   async onPropsBtnsClick(eventTarget: HTMLElement) {
     const word = eventTarget.closest<HTMLElement>('.word-container');
-    const activeProp = word?.querySelector<HTMLElement>('.word-properties .active');
+    if (!word) return;
+    const activeProp = word.querySelector<HTMLElement>('.word-properties .active');
     let currentDifficulty = '';
 
     if (activeProp) {
       currentDifficulty = activeProp.dataset.difficulty || '';
-    }
-
-    if (word) {
       await this.putWordToServer(word.id, currentDifficulty);
+      if (this.data.difficulty === 6) {
+        word.remove();
+      }
+    } else {
+      await User.deleteUserWord(word.id);
     }
+    // await this.generateWordCards(this.data.pageNum, this.data.difficulty, this.app.isAuth);
+  }
 
-    await this.generateWordCards(this.data.pageNum, this.data.difficulty, this.app.isAuth);
+  async markUserWords() {
+    const userWords: IUserWord[] = await User.getUserWords() as IUserWord[];
+    const wordsOnPage = document.querySelectorAll<HTMLElement>('.word-container');
+
+    wordsOnPage.forEach((word) => {
+      const userWord = userWords.find((el) => el.wordId === word.id);
+      if (userWord) {
+        const prop = word.querySelector<HTMLElement>(`.word-${userWord.difficulty}`);
+        if (prop) {
+          prop.classList.add('active');
+        }
+      }
+    });
   }
 }
 
