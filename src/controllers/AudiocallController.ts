@@ -12,12 +12,12 @@ import User from '../models/User';
 interface IUserWordtest {
   wordId: string
   id: string
-  difficulty: 'learned';
+  difficulty: string;
     optional: {
-    streak: 0
-    newWord: true
-    totalCount: 1
-    totalCorrect: 2
+    streak: number
+    newWord: boolean
+    totalCountAudiocall: number
+    totalCorrectAudiocall: number
 }
 }
 
@@ -53,13 +53,13 @@ class AudiocallController {
       this.data.currentDifficulty = difficulty;
       this.data.textbookClick = textBookClick;
     }
-    //   await User.updateUserWord('5e9f5ee35eb9e72bc21af4a1', {
-    //     difficulty: 'learned',
+    //   await User.updateUserWord('5e9f5ee35eb9e72bc21af4ba', {
+    //     difficulty: 'hard',
     //     optional: {
     //     streak: 0,
     //     newWord: true,
-    //     totalCount: 1,
-    //     totalCorrect: 2,
+    //     totalCount: 0,
+    //     totalCorrect: 0,
     //   }
     // })
 
@@ -144,6 +144,7 @@ class AudiocallController {
         temporaryResult.push(midRes.flat());
       }
       this.data.wordsArr = temporaryResult.flat();
+      
     }
   }
 
@@ -326,12 +327,64 @@ class AudiocallController {
       );
     });
 
+   console.log(this.data.answerMap);  
+
     this.countBestStreak()
     this.prepareGameStatistics(this.data.answerMap.size, mapCorrect.size / mapSort.size, this.data.maxStreak)
+    this.updateUserWords()
 
     document.querySelectorAll('.audiocall-audio-icon').forEach((icon) => {
       icon.addEventListener('click', (e) => this.playAudio(e.target as HTMLElement));
     });
+  }
+
+  async updateUserWords() {
+    const userWords = await User.getUserWords()
+    console.log(userWords);
+
+    function checkAnswerMap(array1: Map<IWord, string>, array2: IUserWordtest[]) {
+      array1.forEach((val, result) => {
+        for (let j = 0; j < array2.length; j += 1) {
+          if (result.id === array2[j].wordId) {
+            User.updateUserWord(array2[j].wordId, {
+              difficulty: `${array2[j].optional.streak >= 3 ? array2[j].difficulty = 'learned' : array2[j].difficulty = 'hard'}`,
+              optional: {
+                streak: +(`${val === 'correct' ? array2[j].optional.streak += 1 : array2[j].optional.streak = 0}`),
+                newWord: false,
+                totalCountAudiocall: array2[j].optional.totalCountAudiocall += 1,
+                totalCorrectAudiocall: +(`${val === 'correct' ? array2[j].optional.totalCorrectAudiocall += 1 : array2[j].optional.totalCorrectAudiocall += 0}`),
+            }
+          })
+          } 
+          else {
+              User.createUserWord(result.id, {
+                difficulty: 'okay',
+                optional: {
+                  streak: 1,
+                  newWord: false,
+                  totalCountAudiocall: 1,
+                  totalCorrectAudiocall: 1,
+                }
+              })
+              // User.createUserWord(result.id, {
+              //   difficulty: ``,
+              //   optional: {
+              //     streak: +(`${val === 'correct' ? 1 : 0}`),
+              //     newWord: false,
+              //     totalCountAudiocall: 1,
+              //     totalCorrectAudiocall: +(`${val === 'correct' ? 1 : 0}`),
+              //   }
+              // })
+            }
+          }
+        }
+      
+      )
+      return false;
+    }
+
+    checkAnswerMap(this.data.answerMap, userWords)
+
   }
 
   countBestStreak() {
@@ -365,7 +418,7 @@ class AudiocallController {
 
   getResults() {
     const totalScore = JSON.parse(<string>localStorage.getItem('AudiocallGameTotal')); 
-    const correctPercentage = JSON.parse(<string>localStorage.getItem('AudiocallCorrectPercentage'))); 
+    const correctPercentage = JSON.parse(<string>localStorage.getItem('AudiocallCorrectPercentage')); 
     const gameStreak = (JSON.parse(<string>localStorage.getItem('AudiocallGameStreak'))); 
   }
 }
