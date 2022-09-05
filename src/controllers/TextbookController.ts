@@ -188,8 +188,12 @@ class TextbookController {
     const word: IUserWord = {
       difficulty,
       optional: {
-        streak: 0,
-        newWord: false,
+        newWord: true,
+        dateNew: 0,
+        dateLearned: 0,
+        newInGame: '',
+        streakAudio: 0,
+        streakSprint: 0,
         totalCountAudiocall: 0,
         totalCorrectAudiocall: 0,
         totalCountSprint: 0,
@@ -217,10 +221,10 @@ class TextbookController {
     const word = eventTarget.closest<HTMLElement>('.word-container');
     if (!word) return;
     const activeProp = word.querySelector<HTMLElement>('.word-properties .active');
-    let currentDifficulty = '';
+    let currentDifficulty = 'none';
 
     if (activeProp) {
-      currentDifficulty = activeProp.dataset.difficulty || '';
+      currentDifficulty = activeProp.dataset.difficulty || 'none';
       await this.putWordToServer(word.id, currentDifficulty);
       if (this.data.difficulty === 6) {
         word.remove();
