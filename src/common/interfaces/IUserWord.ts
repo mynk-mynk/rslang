@@ -1,13 +1,16 @@
 export interface IUserWord {
   difficulty: string;
   optional: {
-    streak: number
-    // streakAudio: number
-    // streakSprint: number
     newWord: boolean,
-    // dateNew: date,
-    // dateLearned: date,
+    dateNew: number,
+    dateLearned: number,
+    streakAudio: number,
+    streakSprint: number,
     totalCountAudiocall: number,
     totalCorrectAudiocall: number,
-  }
+    totalCountSprint: number,
+    totalCorrectSprint: number,
+  },
+  wordId?: string,
+  id?: string,
 }
