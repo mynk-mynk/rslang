@@ -254,7 +254,7 @@ class AudiocallController {
 
   nextQuestion() {
     (<HTMLButtonElement>document.getElementById('btn-next')).onclick = async () => {
-      if (this.data.answerMap.size < 10) {
+      if (this.data.answerMap.size < 20) {
         const currentWordIndex: number = this.data.wordsArr.indexOf(<IWord> this.data.curWord);
         this.data.wordsArr.splice(currentWordIndex, 1);
         if (this.data.wordsArr.length <= 5) {
