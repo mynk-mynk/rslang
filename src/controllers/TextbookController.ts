@@ -232,7 +232,7 @@ class TextbookController {
   }
 
   async markUserWords() {
-    const userWords: IUserWord[] = await User.getUserWords() as IUserWord[];
+    const userWords: IUserWord[] = await User.getUserWords() as IUserWord[] || [];
     const wordsOnPage = document.querySelectorAll<HTMLElement>('.word-container');
 
     wordsOnPage.forEach((word) => {

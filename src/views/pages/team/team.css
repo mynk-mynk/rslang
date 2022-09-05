@@ -37,6 +37,7 @@
 
 .card-img {
   margin-bottom: 20px;
+  border-radius: 60px;
 }
 
 .card-description {
@@ -50,8 +51,13 @@
 }
 
 .card-contribution {
+  list-style: circle;
   margin: 20px 0;
   text-align: justify;
+}
+
+.card-contribution li {
+  margin: 5px;
 }
 
 .card-link {

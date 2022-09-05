@@ -9,20 +9,20 @@ export function renderWordCard(word: IWord) {
   wordContainer.innerHTML = `<img class="textbook-word-img" src="${config.api.url}${word.image}" alt="${word.word} image">
   <div class="word-description">
     <div class="word-properties">
-      <img class="word-learned" data-difficulty="learned" src="../../../assets/images/textbook/tick-filled.png" alt="Learned" width="40">
-      <img class="word-hard" data-difficulty="hard" src="../../../assets/images/textbook/star-filled.png" alt="Hard" width="40">
+      <img class="word-learned" data-difficulty="learned" src="./assets/images/textbook/tick-filled.png" alt="Learned" width="40">
+      <img class="word-hard" data-difficulty="hard" src="./assets/images/textbook/star-filled.png" alt="Hard" width="40">
         </div>
       <div class="word">
       <h2>${word.word}</h2>
       <p class="word-transcription">${word.transcription}</p>
-      <img id="btn-${word.id}-word" src="../../../assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
+      <img id="btn-${word.id}-word" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
       <audio id="audio-${word.id}-word" src="${config.api.url}${word.audio}"></audio>
       <p class="word-translation">${word.wordTranslate}</p>
     </div>
     <div class="word-meaning">
       <p>
       ${word.textMeaning}
-      <img id="btn-${word.id}-meaning" class="audio-icon" src="../../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+      <img id="btn-${word.id}-meaning" class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" width="20">
         <audio id="audio-${word.id}-meaning" src="${config.api.url}${word.audioMeaning}"></audio>
       </p>
       <p class="meaning-translation">${word.textMeaningTranslate}</p>
@@ -30,7 +30,7 @@ export function renderWordCard(word: IWord) {
     <div class="word-example">
       <p>
       ${word.textExample}
-      <img id="btn-${word.id}-example" class="audio-icon" src="../../../assets/svg/audio-speaker.svg" alt="Audio" width="20">
+      <img id="btn-${word.id}-example" class="audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" width="20">
         <audio id="audio-${word.id}-example" src="${config.api.url}${word.audioExample}"></audio>
       </p>
       <p class="example-translation">${word.textExampleTranslate}</p>
