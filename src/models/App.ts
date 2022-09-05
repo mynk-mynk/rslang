@@ -51,7 +51,7 @@ class App {
     const match = this._url.match(pattern);
     if (match) this.page = match[0].slice(1).split('.')[0] || 'index';
 
-    this._isAuth = false;
+    this._isAuth = !!localStorage.getItem('token');
     this.authObserver = new EventObserver<boolean>();
 
     this.pages = {

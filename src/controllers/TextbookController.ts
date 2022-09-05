@@ -11,6 +11,8 @@ import {
   chooseWordProp, renderWordCard, playAudio, changeCardBoxshadow, setWordPropsVisible,
 } from '../views/components/word-card/word-card';
 import { renderTextbookPage } from '../views/pages/textbook/textbook';
+import User from '../models/User';
+import { IUserWord } from '../common/interfaces/IUserWord';
 
 class TextbookController {
   private app: App;
@@ -43,14 +45,32 @@ class TextbookController {
     this.addListenersToPagination();
 
     this.addListenersToGameBtns();
+
+    // User.getUserWords().then((res) => console.log(res));
   }
 
   async generateWordCards(page: number, difficulty: number, auth: boolean) {
     const wordsContainer = findHtmlElement(document, '.words-container');
     wordsContainer.innerHTML = '';
-    const words = await Word.getWords(page, difficulty) as IWord[];
+    let words = difficulty !== 6
+      ? await Word.getWords(page, difficulty) as IWord[]
+      : await User.getUserWords() as IUserWord[];
+
+    if (difficulty === 6) {
+      const wordsPromises = (words as IUserWord[])
+        .filter((word) => word.difficulty === 'hard')
+        .map((word) => Word.convertIUserWordToIWord(word));
+      const results = await Promise.allSettled(wordsPromises);
+      const successfullWords = results
+        .filter((res) => res.status === 'fulfilled')
+        .map((res) => (res as PromiseFulfilledResult<IWord | undefined>).value)
+        .filter((val) => val) as IWord[];
+
+      words = successfullWords;
+    }
+
     words.forEach((word) => {
-      const card = renderWordCard(word);
+      const card = renderWordCard(word as IWord);
       wordsContainer.append(card);
     });
     changeCardBoxshadow(difficulty + 1);
@@ -71,7 +91,6 @@ class TextbookController {
       const diff = btn.dataset.group;
       this.data.difficulty = Number(diff) - 1 || 0;
       this.data.pageNum = 0;
-      // TODO: hard words generation when difficulty = 6;
       this.generateWordCards(this.data.pageNum, this.data.difficulty, this.app.isAuth)
         .then(() => changeCardBoxshadow(this.data.difficulty + 1));
     });
@@ -80,7 +99,10 @@ class TextbookController {
   addListenersToCards() {
     const wordProps = document.querySelectorAll('.word-properties');
     wordProps.forEach((container) => {
-      container.addEventListener('click', (e) => chooseWordProp(e.target as HTMLImageElement));
+      container.addEventListener('click', (e) => {
+        chooseWordProp(e.target as HTMLImageElement);
+        this.onPropsBtnsClick(e.target as HTMLImageElement);
+      });
     });
 
     document.querySelectorAll('.audio-icon').forEach((icon) => {
@@ -152,6 +174,45 @@ class TextbookController {
       }
     }
     return res;
+  }
+
+  createUserWord(difficulty: string) {
+    const word: IUserWord = {
+      difficulty,
+      optional: {
+        streak: 0,
+        newWord: false,
+        totalCountAudiocall: 0,
+        totalCorrectAudiocall: 0,
+        totalCountSprint: 0,
+        totalCorrectSprint: 0,
+      },
+    };
+    return word;
+  }
+
+  async putWordToServer(id: string, difficulty: string) {
+    let userWord: IUserWord;
+    try {
+      userWord = await User.getUserWord(id) as IUserWord;
+      userWord.difficulty = difficulty;
+      User.updateUserWord(id, userWord);
+    } catch (e) {
+      userWord = this.createUserWord(difficulty);
+      User.createUserWord(id, userWord);
+    }
+  }
+
+  onPropsBtnsClick(eventTarget: HTMLElement) {
+    const word = eventTarget.closest<HTMLElement>('.word-container');
+    const activeProp = word?.querySelector<HTMLElement>('.word-properties .active');
+    let currentDifficulty = '';
+
+    if (activeProp) {
+      currentDifficulty = activeProp.dataset.difficulty || '';
+    }
+
+    if (word) this.putWordToServer(word.id, currentDifficulty);
   }
 }
 
