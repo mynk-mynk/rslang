@@ -6,6 +6,7 @@ class AudiocallView {
   static renderStartBtn() {
     return `
     <button class="start-btn" disabled>Start</button>
+    <h4 class='insufficient-words-message' style='color: red; visibility: hidden; text-align: center'>Для выбранной вами страницы слишком мало слов. Пожалуйста, вернитесь в учебник и добавьте больше слов либо выберите другой раздел</h4>
     `;
   }
 

@@ -8,10 +8,10 @@ import { renderDifficultyBar } from '../views/components/difficulty-bar/difficul
 import App from '../models/App';
 import { createPieChart } from '../views/components/pie-chart/pie-chart';
 import User from '../models/User';
+import { query } from 'express';
 
 interface IUserWordtest {
   wordId: string
-  id: string
   difficulty: string;
     optional: {
     streak: number
@@ -33,8 +33,8 @@ class AudiocallController {
 
     this.data = {
       textbookClick: true,
-      currentDifficulty: 0,
-      currentPage: 1,
+      currentDifficulty: 5,
+      currentPage: 0,
       data2: 'audiocall',
       wordsArr: [],
       currentWord: null,
@@ -47,13 +47,13 @@ class AudiocallController {
   async actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
     const mainContainer = findHtmlElement(document, 'main');
     mainContainer.innerHTML = '';
-
+    
     if (page && difficulty && textBookClick) {
       this.data.currentPage = page;
       this.data.currentDifficulty = difficulty;
       this.data.textbookClick = textBookClick;
     }
-    //   await User.updateUserWord('5e9f5ee35eb9e72bc21af4ba', {
+    //   await User.createUserWord('5e9f5ee35eb9e72bc21af4ba', {
     //     difficulty: 'hard',
     //     optional: {
     //     streak: 0,
@@ -120,8 +120,10 @@ class AudiocallController {
     const temporaryResult: IWords[] = [];
     if (this.data.textbookClick === true) {
       if (this.app.isAuth === true) {
+        console.log(this.app.isAuth);
         const userWords: IUserWordtest[] = await User.getUserWords();
-        if (this.data.currentPage === 6) {
+        console.log(userWords);
+        if (this.data.currentDifficulty === 6) {
           const userCustomWords: IWords = [];
           for (let i = 0; i < userWords.length; i += 1) {
             const userWordId = userWords[i].wordId;
@@ -130,6 +132,7 @@ class AudiocallController {
               userCustomWords.push(midRes);
             }
           }
+          
           this.data.wordsArr = userCustomWords;
           // this.removeLearnedUserWords(this.data.wordsArr, userWords);
         } else {
@@ -137,6 +140,9 @@ class AudiocallController {
           this.data.wordsArr = midRes.flat();
           this.removeLearnedUserWords(this.data.wordsArr, userWords);
         }
+      } else {
+        const midRes: IWord[] = await Word.getWords(this.data.currentPage, this.data.currentDifficulty);
+        this.data.wordsArr = midRes.flat();
       }
     } else {
       for (let i = 0; i < 30; i += 1) {
@@ -170,9 +176,9 @@ class AudiocallController {
     startBtn.onclick = async () => {
       startBtn.disabled = true;
       await this.generateWords();
-      if (this.data.wordsArr.length <= 5) {
-        alert('Извините, у вас слишком мало слов');
-      } else {
+      // if (this.data.wordsArr.length <= 5) {
+      //   (<HTMLHeadingElement>document.querySelector('.insufficient-words-message')).style.visibility = 'visible'
+      // } else {
         this.wordsRandomizer();
         mainContainer.innerHTML = AudiocallView.renderQuestion(
           this.data.currentAnswers,
@@ -187,7 +193,7 @@ class AudiocallController {
         (<HTMLImageElement>(
           document.querySelector('.audio-btn-img')
         )).addEventListener('click', (e) => this.playAudio(e.target as HTMLImageElement));
-      }
+      // }
     };
   }
 
@@ -261,7 +267,7 @@ class AudiocallController {
 
   nextQuestion() {
     (<HTMLButtonElement>document.getElementById('btn-next')).onclick = async () => {
-      if (this.data.answerMap.size < 10) {
+      if (this.data.answerMap.size < 5) {
         const currentWordIndex: number = this.data.wordsArr.indexOf(<IWord> this.data.currentWord);
         this.data.wordsArr.splice(currentWordIndex, 1);
 
@@ -327,46 +333,96 @@ class AudiocallController {
       );
     });
 
+    // User.createUserWord(this.data.wordsArr[0].id, {
+    //   difficulty: "okay",
+    //   optional: {
+    //     streak: 1,
+    //     newWord: false,
+    //     totalCountAudiocall: 1,
+    //     totalCorrectAudiocall: 1,
+    //   }
+    // })
+
    console.log(this.data.answerMap);  
 
+   
     this.countBestStreak()
     this.prepareGameStatistics(this.data.answerMap.size, mapCorrect.size / mapSort.size, this.data.maxStreak)
     this.updateUserWords()
+    // this.deleteUserWords()
 
     document.querySelectorAll('.audiocall-audio-icon').forEach((icon) => {
       icon.addEventListener('click', (e) => this.playAudio(e.target as HTMLElement));
     });
   }
 
+  async deleteUserWords() {
+    const userWords = await User.getUserWords()
+    userWords.forEach((el: IUserWordtest) => User.deleteUserWord(el.wordId))
+  }
+
   async updateUserWords() {
     const userWords = await User.getUserWords()
-    console.log(userWords);
-
     function checkAnswerMap(array1: Map<IWord, string>, array2: IUserWordtest[]) {
+
+      // for (let i = 0; i < array1.size; i += 1) {
+      //   for (let j = 0; j < array2.length; j += 1) {
+      //     if (array1[i].result.id === array2[j].wordId && array2[j].difficulty === 'learned') {
+      //       array1.splice(i, 1);
+      //     }
+      //   }
+      // }
+
       array1.forEach((val, result) => {
-        for (let j = 0; j < array2.length; j += 1) {
-          if (result.id === array2[j].wordId) {
-            User.updateUserWord(array2[j].wordId, {
-              difficulty: `${array2[j].optional.streak >= 3 ? array2[j].difficulty = 'learned' : array2[j].difficulty = 'hard'}`,
-              optional: {
-                streak: +(`${val === 'correct' ? array2[j].optional.streak += 1 : array2[j].optional.streak = 0}`),
-                newWord: false,
-                totalCountAudiocall: array2[j].optional.totalCountAudiocall += 1,
-                totalCorrectAudiocall: +(`${val === 'correct' ? array2[j].optional.totalCorrectAudiocall += 1 : array2[j].optional.totalCorrectAudiocall += 0}`),
+        if(array2.length > 0) {
+          for (let j = 0; j < array2.length; j += 1) {
+            if (result.id === array2[j].wordId) {
+              console.log('USER WORD UPDATED');
+              User.updateUserWord(array2[j].wordId, {
+                difficulty: `${array2[j].optional.streak >= 3 ? array2[j].difficulty = 'learned' : array2[j].difficulty = array2[j].difficulty}`,
+                optional: {
+                  streak: +(`${val === 'correct' ? array2[j].optional.streak += 1 : array2[j].optional.streak = 0}`),
+                  newWord: false,
+                  totalCountAudiocall: array2[j].optional.totalCountAudiocall += 1,
+                  totalCorrectAudiocall: +(`${val === 'correct' ? array2[j].optional.totalCorrectAudiocall += 1 : array2[j].optional.totalCorrectAudiocall += 0}`),
+              }
+            })
+            } 
+            else {
+                console.log('USER WORD CREATED');
+                User.createUserWord(result.id, {
+                  difficulty: 'okay',
+                  optional: {
+                    streak: 1,
+                    newWord: false,
+                    totalCountAudiocall: 1,
+                    totalCorrectAudiocall: 1,
+                  }
+                })
+                
+              }
+            }
+        } else {
+          console.log('USER WORD CREATED TWICE');
+          User.createUserWord(result.id, {
+            difficulty: 'okay',
+            optional: {
+              streak: 1,
+              newWord: false,
+              totalCountAudiocall: 1,
+              totalCorrectAudiocall: 1,
             }
           })
-          } 
-          else {
-              User.createUserWord(result.id, {
-                difficulty: 'okay',
-                optional: {
-                  streak: 1,
-                  newWord: false,
-                  totalCountAudiocall: 1,
-                  totalCorrectAudiocall: 1,
-                }
-              })
-              // User.createUserWord(result.id, {
+        }
+        
+        }
+      )
+    }
+    checkAnswerMap(this.data.answerMap, userWords)
+    console.log(userWords);
+  }
+
+  // User.createUserWord(result.id, {
               //   difficulty: ``,
               //   optional: {
               //     streak: +(`${val === 'correct' ? 1 : 0}`),
@@ -375,17 +431,6 @@ class AudiocallController {
               //     totalCorrectAudiocall: +(`${val === 'correct' ? 1 : 0}`),
               //   }
               // })
-            }
-          }
-        }
-      
-      )
-      return false;
-    }
-
-    checkAnswerMap(this.data.answerMap, userWords)
-
-  }
 
   countBestStreak() {
     let counter = 0;
