@@ -27,7 +27,6 @@ class AudiocallView {
                     />`;
   }
 
-
   static renderAudiocallDescription() {
     return `
     <div class="main-container-audiocall">
