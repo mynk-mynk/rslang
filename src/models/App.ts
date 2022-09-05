@@ -4,6 +4,7 @@ import { IUser } from '../common/interfaces/IUser';
 import {
   closeBurgerMenu, findHtmlElement, hideBurgerMenu, showBurgerMenu, toggleBurgerMenu,
 } from '../common/utils/utils';
+import config from '../config';
 import AudiocallController from '../controllers/AudiocallController';
 import ErrorController from '../controllers/ErrorController';
 // eslint-disable-next-line import/no-cycle
@@ -31,7 +32,12 @@ class App {
 
   constructor() {
     this._url = window.location.pathname;
-    this.page = this._url.slice(1) || 'index';
+
+    this.page = '';
+    const pattern = '/[a-zA-Z.]*$';
+    const match = this._url.match(pattern);
+    if (match) this.page = match[0].slice(1).split('.')[0] || 'index';
+
     this.pages = {
       index: new IndexController(this),
       team: TeamController,
@@ -60,7 +66,9 @@ class App {
 
   set url(value: string) {
     this._url = value;
-    this.page = this._url.slice(1) || 'index';
+    const pattern = '/[a-zA-Z.]*$';
+    const match = this._url.match(pattern);
+    if (match) this.page = match[0].slice(1).split('.')[0] || 'index';
     if (this.page === 'index') {
       hideBurgerMenu();
     } else {
@@ -106,7 +114,8 @@ class App {
   setRouterToElements(selector: string) {
     const menuLinks: NodeListOf<HTMLElement> = document.querySelectorAll(selector);
     menuLinks.forEach((link: HTMLElement) => {
-      const { path } = link.dataset;
+      let { path } = link.dataset;
+      if (path) path = `${config.sitePath}${path}`;
       link.addEventListener('click', () => {
         if (path) {
           window.history.pushState({ state: path }, 'SyllaBus', path);

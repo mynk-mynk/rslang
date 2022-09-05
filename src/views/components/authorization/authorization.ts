@@ -3,7 +3,7 @@ import './authorization.css';
 export default function renderAuthorization() {
   return `<div class="blur"></div>
   <div class="authorization-block">
-    <img class="close-icon" src="../../assets/svg/cross.svg" alt="Close Icon" width="20">
+    <img class="close-icon" src="./assets/svg/cross.svg" alt="Close Icon" width="20">
     <h2>Авторизация</h2>
     <form class="login-form auth-form" id="login-form">
       <p class="authorization-error error-msg">Неверный логин или пароль</p>
