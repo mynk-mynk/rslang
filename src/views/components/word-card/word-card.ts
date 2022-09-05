@@ -5,11 +5,12 @@ import './word-card.css';
 export function renderWordCard(word: IWord) {
   const wordContainer = document.createElement('div');
   wordContainer.classList.add('word-container');
+  wordContainer.id = word.id;
   wordContainer.innerHTML = `<img class="textbook-word-img" src="${config.api.url}${word.image}" alt="${word.word} image">
   <div class="word-description">
     <div class="word-properties">
-      <img class="word-learned" src="../../../assets/images/textbook/tick-filled.png" alt="Learned" width="40">
-      <img class="word-hard" src="../../../assets/images/textbook/star-filled.png" alt="Hard" width="40">
+      <img class="word-learned" data-difficulty="learned" src="../../../assets/images/textbook/tick-filled.png" alt="Learned" width="40">
+      <img class="word-hard" data-difficulty="hard" src="../../../assets/images/textbook/star-filled.png" alt="Hard" width="40">
         </div>
       <div class="word">
       <h2>${word.word}</h2>
@@ -38,9 +39,8 @@ export function renderWordCard(word: IWord) {
   return wordContainer;
 }
 
-export function chooseWordProp(el: HTMLImageElement) {
-  const img = el;
-  const card = el.closest('.word-container');
+export function chooseWordProp(img: HTMLImageElement) {
+  const card = img.closest<HTMLElement>('.word-container');
   const learned = card?.querySelector<HTMLImageElement>('.word-learned');
   const hard = card?.querySelector<HTMLImageElement>('.word-hard');
   img.classList.toggle('active');
