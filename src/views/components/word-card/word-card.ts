@@ -39,9 +39,8 @@ export function renderWordCard(word: IWord) {
   return wordContainer;
 }
 
-export function chooseWordProp(el: HTMLImageElement) {
-  const img = el;
-  const card = el.closest<HTMLElement>('.word-container');
+export function chooseWordProp(img: HTMLImageElement) {
+  const card = img.closest<HTMLElement>('.word-container');
   const learned = card?.querySelector<HTMLImageElement>('.word-learned');
   const hard = card?.querySelector<HTMLImageElement>('.word-hard');
   img.classList.toggle('active');

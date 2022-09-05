@@ -45,8 +45,6 @@ class TextbookController {
     this.addListenersToPagination();
 
     this.addListenersToGameBtns();
-
-    // User.getUserWords().then((res) => console.log(res));
   }
 
   async generateWordCards(page: number, difficulty: number, auth: boolean) {
@@ -79,6 +77,14 @@ class TextbookController {
     setPageNum(page + 1);
     disableBtns(page);
     this.setToLS({ pageNum: page, difficulty });
+
+    const pagination = findHtmlElement(document, '.pagination-container');
+    pagination.style.display = this.data.difficulty === 6 ? 'none' : 'flex';
+
+    const hardBtn = document.querySelectorAll<HTMLElement>('.word-hard');
+    hardBtn.forEach((btn) => {
+      btn.style.display = this.data.difficulty === 6 ? 'none' : 'block';
+    });
   }
 
   addListenersToDiffBar() {
@@ -192,18 +198,20 @@ class TextbookController {
   }
 
   async putWordToServer(id: string, difficulty: string) {
-    let userWord: IUserWord;
-    try {
-      userWord = await User.getUserWord(id) as IUserWord;
+    let userWord = await User.getUserWord(id) as IUserWord | null;
+    if (userWord) {
       userWord.difficulty = difficulty;
-      User.updateUserWord(id, userWord);
-    } catch (e) {
+      // to match PUT IUserWord interface (fails with them)
+      delete userWord.wordId;
+      delete userWord.id;
+      await User.updateUserWord(id, userWord);
+    } else {
       userWord = this.createUserWord(difficulty);
       User.createUserWord(id, userWord);
     }
   }
 
-  onPropsBtnsClick(eventTarget: HTMLElement) {
+  async onPropsBtnsClick(eventTarget: HTMLElement) {
     const word = eventTarget.closest<HTMLElement>('.word-container');
     const activeProp = word?.querySelector<HTMLElement>('.word-properties .active');
     let currentDifficulty = '';
@@ -212,7 +220,11 @@ class TextbookController {
       currentDifficulty = activeProp.dataset.difficulty || '';
     }
 
-    if (word) this.putWordToServer(word.id, currentDifficulty);
+    if (word) {
+      await this.putWordToServer(word.id, currentDifficulty);
+    }
+
+    await this.generateWordCards(this.data.pageNum, this.data.difficulty, this.app.isAuth);
   }
 }
 

@@ -9,4 +9,5 @@ export interface IUserWord {
     totalCorrectSprint: number,
   },
   wordId?: string,
+  id?: string,
 }
