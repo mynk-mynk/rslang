@@ -80,6 +80,8 @@ class SprintController {
     } else {
       gameContainer.append(renderDifficultyBar());
       setHardWordsVisible(this.app.isAuth);
+      const firstDifficulty = findHtmlElement(document, '.level1');
+      firstDifficulty.classList.remove('active');
       gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
 
       const difficultyContainer = document.querySelector('.difficulty-container');

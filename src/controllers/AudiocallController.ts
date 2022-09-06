@@ -20,7 +20,6 @@ class AudiocallController {
     this.app = app;
     this.app.subscribeOnAuthChange(() => {
       setHardWordsVisible(this.app.isAuth);
-      setWordPropsVisible(this.app.isAuth);
     });
 
     this.data = {
@@ -64,6 +63,8 @@ class AudiocallController {
     } else {
       gameContainer.append(renderDifficultyBar());
       setHardWordsVisible(this.app.isAuth);
+      const firstDifficulty = findHtmlElement(document, '.level1');
+      firstDifficulty.classList.remove('active');
       gameContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());
 
       const difficultyContainer = document.querySelector('.difficulty-container');
