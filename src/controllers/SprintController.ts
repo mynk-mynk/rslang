@@ -46,7 +46,6 @@ class SprintController {
       this.data.textbookClick = textBookClick;
     }
     this.data.answerMap.clear();
-    console.log(this.app.isAuth);
 
     mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription());
 
@@ -73,7 +72,6 @@ class SprintController {
     const mainContainer = findHtmlElement(document, 'main');
 
     startBtn.onclick = async () => {
-    
       startBtn.disabled = true;
       await this.generateWords();
       if (this.data.wordsArr.length <= 2) {
@@ -223,12 +221,11 @@ class SprintController {
 
   async checkGameEndHandler() {
     const counter = document.getElementById('timer-container');
-    let timerId = setInterval(() => this.checkGameEndHandler(), 1000);
     
     if (counter?.innerHTML !== '0:50') {
       if(this.data.wordsArr.length <= 2) {
         if (this.data.curPage - 1 === -1) {
-          clearInterval(timerId);
+          // clearInterval(timerId);
           this.finishGame();
 
         } else {
@@ -238,16 +235,18 @@ class SprintController {
         }
       }
   } else {
-    clearInterval(timerId);
+    // clearInterval(timerId);
     this.finishGame()
   }
   }
 
+  checkGameEndTimer() {
+    let timerId = setInterval(() => this.checkGameEndHandler(), 1000);
+  }
   
 
   finishGame() {
     const mainContainer = findHtmlElement(document, 'main');
-
     this.buttonPressRemove()
     mainContainer.innerHTML = '';
     const mapSort = new Map([...this.data.answerMap.entries()].sort());
@@ -294,6 +293,7 @@ class SprintController {
       <number> this.data.maxStreak,
     );
     this.updateUserWords();
+    // this.deleteUserWords()
   }
 
   // showAnswerIcon() {
@@ -469,8 +469,8 @@ class SprintController {
   }
 
   buttonPressRemove() {
-    document.addEventListener('keydown', this.buttonDownHandler);
-    document.addEventListener('keyup', this.buttonUpHandler);
+    document.removeEventListener('keydown', this.buttonDownHandler);
+    document.removeEventListener('keyup', this.buttonUpHandler);
   }
 
   buttonDownHandler(event: KeyboardEvent) {
