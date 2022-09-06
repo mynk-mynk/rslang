@@ -17,6 +17,12 @@ export function createPieChart(incorrect: number, correct: number) {
       data: [incorrect, correct],
       borderAlign: 'inner',
       borderWidth: 1,
+      font: {
+        family: 'Comfortaa',
+        size: 20,
+        lineHeight: 2,
+      },
+      color: '#181f4a',
     }],
   };
 
@@ -29,10 +35,22 @@ export function createPieChart(incorrect: number, correct: number) {
       plugins: {
         legend: {
           position: 'top' as const,
+          labels: {
+            font: {
+              family: 'Comfortaa',
+            },
+            color: '#181f4a',
+          },
         },
         title: {
           display: true,
           text: 'Результаты игры',
+          font: {
+            family: 'Comfortaa',
+            size: 20,
+            lineHeight: 2,
+          },
+          color: '#181f4a',
         },
       },
     },

@@ -50,6 +50,11 @@ class App {
     const pattern = '/[a-zA-Z.]*$';
     const match = this._url.match(pattern);
     if (match) this.page = match[0].slice(1).split('.')[0] || 'index';
+    if (this.page === 'index') {
+      hideBurgerMenu();
+    } else {
+      showBurgerMenu();
+    }
 
     this._isAuth = !!localStorage.getItem('token');
     this.authObserver = new EventObserver<boolean>();
@@ -60,7 +65,7 @@ class App {
       textbook: new TextbookController(this),
       sprint: new SprintController(),
       audiocall: new AudiocallController(this),
-      statistics: new StatisticsController(),
+      statistics: new StatisticsController(this),
       error: new ErrorController(),
     };
     this.urlObserver = new EventObserver<string>();
@@ -70,6 +75,7 @@ class App {
       authIcon: findHtmlElement(document, '.authorization-icon'),
       tooltipText: findHtmlElement(document, '.tooltiptext'),
     };
+    this._isAuth = !!localStorage.getItem('token');
 
     // add content into main according to link
     this.getContent();
@@ -135,6 +141,9 @@ class App {
     const menuLinks: NodeListOf<HTMLElement> = document.querySelectorAll(selector);
     menuLinks.forEach((link: HTMLElement) => {
       let { path } = link.dataset;
+      if (path === '/statistics' && !this.isAuth) {
+        link.style.display = 'none';
+      }
       if (path) path = `${config.sitePath}${path}`;
       link.addEventListener('click', () => {
         if (path) {

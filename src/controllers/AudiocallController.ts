@@ -339,7 +339,15 @@ class AudiocallController {
     const userWords = <IUserWord[]> await User.getUserWords();
     function checkAnswerMap(array1: Map<IWord, string>, array2: IUserWord[]) {
       const array2Id = array2.map((el) => <string> el.wordId);
+      let totalStreakAudio = 0;
+      let tempStreakAudio = 0;
       array1.forEach((val, result) => {
+        if (val === 'correct') {
+          tempStreakAudio += 1;
+        } else {
+          tempStreakAudio = 0;
+        }
+        totalStreakAudio = tempStreakAudio > totalStreakAudio ? tempStreakAudio : totalStreakAudio;
         if (array2.length > 0) {
           if (array2Id.includes(result.id)) {
             const newIds = array2.filter((el) => el.wordId === result.id);
@@ -359,8 +367,9 @@ class AudiocallController {
                 streakSprint: newIds[0].optional.streakSprint,
                 totalCountAudiocall: newIds[0].optional.totalCountAudiocall += 1,
                 totalCorrectAudiocall: +(`${val === 'correct' ? newIds[0].optional.totalCorrectAudiocall += 1 : newIds[0].optional.totalCorrectAudiocall}`),
-                totalCountSprint: +(`${val === 'correct' ? newIds[0].optional.totalCorrectAudiocall += 1 : newIds[0].optional.totalCorrectAudiocall}`),
+                totalCountSprint: newIds[0].optional.totalCountSprint,
                 totalCorrectSprint: newIds[0].optional.totalCorrectSprint,
+                totalStreakAudio,
               },
             });
           } else {
@@ -377,6 +386,7 @@ class AudiocallController {
                 totalCorrectAudiocall: +(`${val === 'correct' ? 1 : 0}`),
                 totalCountSprint: 0,
                 totalCorrectSprint: 0,
+                totalStreakAudio,
               },
             });
           }
@@ -394,6 +404,7 @@ class AudiocallController {
               totalCorrectAudiocall: +(`${val === 'correct' ? 1 : 0}`),
               totalCountSprint: 0,
               totalCorrectSprint: 0,
+              totalStreakAudio,
             },
           });
         }
