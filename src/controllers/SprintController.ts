@@ -91,7 +91,7 @@ class SprintController {
         <IWord> this.data.curWord,
         <IWord> this.data.curTranslation,
         );
-        questionContainer.insertAdjacentHTML('afterend', SprintView.renderAnswerCorrectIcon())
+        questionContainer.insertAdjacentHTML('afterend', SprintView.renderAnswerCorrectIcon());
         const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
         scoresContainer.innerHTML = SprintView.renderScores(
           this.data.totalScore,
@@ -121,7 +121,6 @@ class SprintController {
     if (this.data.textbookClick === true) {
       if (this.app.isAuth === true) {
         const userWords = <IUserWord[]> await User.getUserWords();
-        console.log(userWords);
         if (this.data.curGroup === 6) {
           const userCustomWords: IWords = [];
           for (let i = 0; i < userWords.length; i += 1) {
@@ -240,7 +239,7 @@ class SprintController {
 
   async checkGameEndHandler() {
     const counter = document.getElementById('timer-container');
-    if (counter?.innerHTML !== '0:111') {
+    if (counter?.innerHTML !== '0:00') {
       if (this.data.wordsArr.length <= 2) {
         if (this.data.curPage - 1 === -1) {
           if (this.timer) clearInterval(this.timer);
@@ -353,8 +352,8 @@ class SprintController {
   }
 
   hideAnswerImageIcon() {
-    const answerImageIcon = (<HTMLImageElement>document.querySelector('.answer-icon-image'))
-    answerImageIcon.style.visibility = 'hidden'
+    const answerImageIcon = (<HTMLImageElement>document.querySelector('.answer-icon-image'));
+    answerImageIcon.style.visibility = 'hidden';
   }
 
   nextQuestion() {
