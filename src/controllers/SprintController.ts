@@ -80,6 +80,8 @@ class SprintController {
     } else {
       gameContainer.append(renderDifficultyBar());
       setHardWordsVisible(this.app.isAuth);
+      const firstDifficulty = findHtmlElement(document, '.level1');
+      firstDifficulty.classList.remove('active');
       gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
 
       const difficultyContainer = document.querySelector('.difficulty-container');
@@ -541,18 +543,20 @@ class SprintController {
     if (event.key === 'ArrowLeft') {
       btnTrue.click();
       btnTrue.classList.add('sprint-active');
+      btnFalse.classList.remove('sprint-active');
     } else if (event.key === 'ArrowRight') {
       btnFalse.click();
       btnFalse.classList.add('sprint-active');
+      btnTrue.classList.remove('sprint-active');
     }
   }
 
   buttonUpHandler(event: KeyboardEvent) {
     const btnTrue = <HTMLDivElement>document.getElementById('btn-true');
     const btnFalse = <HTMLDivElement>document.getElementById('btn-false');
-    if (event.key === '1') {
+    if (event.key === 'ArrowLeft') {
       btnTrue.classList.remove('sprint-active');
-    } else if (event.key === '2') {
+    } else if (event.key === 'ArrowRight') {
       btnFalse.classList.remove('sprint-active');
     }
   }
