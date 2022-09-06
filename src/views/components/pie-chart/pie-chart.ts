@@ -1,6 +1,6 @@
 import Chart, { ChartType } from 'chart.js/auto';
 
-export function createPieChart(incorrect: number, correct: number) {
+export function createPieChart(incorrect: number, correct: number, game: string) {
   const labels = [
     'Ошибка',
     'Правильно',
@@ -56,7 +56,7 @@ export function createPieChart(incorrect: number, correct: number) {
     },
   };
   const myChart = new Chart(
-        <HTMLCanvasElement>document.getElementById('audiocall-results-chart'),
+        <HTMLCanvasElement>document.getElementById(`${game}-results-chart`),
         chartConfig,
   );
 }

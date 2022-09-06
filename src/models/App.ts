@@ -63,7 +63,7 @@ class App {
       index: new IndexController(this),
       team: new TeamController(),
       textbook: new TextbookController(this),
-      sprint: new SprintController(),
+      sprint: new SprintController(this),
       audiocall: new AudiocallController(this),
       statistics: new StatisticsController(this),
       error: new ErrorController(),
