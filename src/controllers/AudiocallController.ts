@@ -47,7 +47,7 @@ class AudiocallController {
     this.removeRandomListeners();
     const mainContainer = findHtmlElement(document, 'main');
     mainContainer.innerHTML = '';
-    if ((page || page === 0) && difficulty && textBookClick) {
+    if ((page || page === 0) && (difficulty || difficulty === 0) && textBookClick) {
       this.data.curPage = page;
       this.data.curGroup = difficulty;
       this.data.textbookClick = textBookClick;
