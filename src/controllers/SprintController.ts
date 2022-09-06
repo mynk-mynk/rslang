@@ -8,6 +8,8 @@ import App from '../models/App';
 import { createPieChart } from '../views/components/pie-chart/pie-chart';
 import { IUserWord } from '../common/interfaces/IUserWord';
 import User from '../models/User';
+import AudiocallController from './AudiocallController';
+import { setWordPropsVisible } from '../views/components/word-card/word-card';
 
 class SprintController {
   app: App;
@@ -20,10 +22,15 @@ class SprintController {
     this.app = app;
     this.timer = null;
 
+    this.app.subscribeOnAuthChange(() => {
+      setHardWordsVisible(this.app.isAuth);
+      setWordPropsVisible(this.app.isAuth);
+    });
+
     this.data = {
-      textbookClick: true,
+      textbookClick: false,
       curGroup: 0,
-      curPage: 1,
+      curPage: 0,
       wordsArr: [],
       curWord: null,
       curTranslation: null,
@@ -77,6 +84,7 @@ class SprintController {
   startGame() {
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
     const mainContainer = findHtmlElement(document, 'main');
+
 
     startBtn.onclick = async () => {
       startBtn.disabled = true;
@@ -150,7 +158,6 @@ class SprintController {
         for (let i = 0; i < midRes.length; i += 1) {
           this.data.wordsArr.push(midRes[i]);
         }
-        console.log(this.data.wordsArr);
       }
     } else {
       for (let i = 0; i < 30; i += 1) {
@@ -312,7 +319,7 @@ class SprintController {
   }
 
   showAnswerIcon(answer: string) {
-    const answerImageIcon = (<HTMLImageElement>document.querySelector('.answer-icon-image'))
+    const answerImageIcon = (<HTMLImageElement>document.querySelector('.answer-icon-image'));
     answerImageIcon.src = `./assets/images/${answer}-icon.png`;
     answerImageIcon.style.visibility = 'visible';
   }
@@ -380,7 +387,15 @@ class SprintController {
     const userWords = <IUserWord[]> await User.getUserWords();
     function checkAnswerMap(array1: Map<IWord, string>, array2: IUserWord[]) {
       const array2Id = array2.map((el) => <string> el.wordId);
+      let totalStreakSprint = 0;
+      let tempStreakSprint = 0;
       array1.forEach((val, result) => {
+        if (val === 'correct') {
+          tempStreakSprint += 1;
+        } else {
+          tempStreakSprint = 0;
+        }
+        totalStreakSprint = tempStreakSprint > totalStreakSprint ? tempStreakSprint : totalStreakSprint;
         if (array2.length > 0) {
           if (array2Id.includes(result.id)) {
             const newIds = array2.filter((el) => el.wordId === result.id);
@@ -402,6 +417,8 @@ class SprintController {
                 totalCorrectAudiocall: newIds[0].optional.totalCorrectAudiocall,
                 totalCountSprint: newIds[0].optional.totalCountSprint += 1,
                 totalCorrectSprint: +(`${val === 'correct' ? newIds[0].optional.totalCorrectSprint += 1 : newIds[0].optional.totalCorrectSprint}`),
+                totalStreakAudio: newIds[0].optional.totalStreakAudio,
+                totalStreakSprint,
               },
             });
           } else {
@@ -418,6 +435,8 @@ class SprintController {
                 totalCorrectAudiocall: 0,
                 totalCountSprint: 1,
                 totalCorrectSprint: +(`${val === 'correct' ? 1 : 0}`),
+                totalStreakAudio: 0,
+                totalStreakSprint,
               },
             });
           }
@@ -435,6 +454,8 @@ class SprintController {
               totalCorrectAudiocall: 0,
               totalCountSprint: 1,
               totalCorrectSprint: +(`${val === 'correct' ? 1 : 0}`),
+              totalStreakAudio: 0,
+              totalStreakSprint,
             },
           });
         }
@@ -509,10 +530,10 @@ class SprintController {
   buttonDownHandler(event: KeyboardEvent) {
     const btnTrue = <HTMLDivElement>document.getElementById('btn-true');
     const btnFalse = <HTMLDivElement>document.getElementById('btn-false');
-    if (event.key === '1') {
+    if (event.key === 'ArrowLeft') {
       btnTrue.click();
       btnTrue.classList.add('sprint-active');
-    } else if (event.key === '2') {
+    } else if (event.key === 'ArrowRight') {
       btnFalse.click();
       btnFalse.classList.add('sprint-active');
     }
