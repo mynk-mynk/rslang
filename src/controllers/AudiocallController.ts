@@ -367,7 +367,7 @@ class AudiocallController {
                 streakSprint: newIds[0].optional.streakSprint,
                 totalCountAudiocall: newIds[0].optional.totalCountAudiocall += 1,
                 totalCorrectAudiocall: +(`${val === 'correct' ? newIds[0].optional.totalCorrectAudiocall += 1 : newIds[0].optional.totalCorrectAudiocall}`),
-                totalCountSprint: +(`${val === 'correct' ? newIds[0].optional.totalCorrectAudiocall += 1 : newIds[0].optional.totalCorrectAudiocall}`),
+                totalCountSprint: newIds[0].optional.totalCountSprint,
                 totalCorrectSprint: newIds[0].optional.totalCorrectSprint,
                 totalStreakAudio,
               },

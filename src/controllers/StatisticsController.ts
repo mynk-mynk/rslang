@@ -101,6 +101,7 @@ class StatisticsController {
         totalStreaksAudioArray.push(userWord.optional.totalStreakAudio);
       }
 
+      console.log(userWord.optional.totalCountSprint);
       totalCountSprint += userWord.optional.totalCountSprint;
       totalCorrectSprint += userWord.optional.totalCorrectSprint;
       totalCountAudio += userWord.optional.totalCountAudiocall;
@@ -126,7 +127,7 @@ class StatisticsController {
         if (this.learnedWordsDates[i] === dateLearned) this.learnedWordsCounts[i] += 1;
       }
     });
-
+    console.log(totalCountSprint);
     this.correctTotal = (totalCorrectSprint + totalCorrectAudio)
       / (totalCountSprint + totalCountAudio);
     if (!this.correctTotal) this.correctTotal = 0;
@@ -217,6 +218,9 @@ class StatisticsController {
         scales: {
           y: {
             beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+            },
           },
         },
         plugins: {
