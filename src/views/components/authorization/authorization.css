@@ -77,6 +77,7 @@
   padding: 10px 15px;
   width: fit-content;
   background: transparent;
+  width: auto !important;
 }
 
 .login-btn:active, .registration-btn:active {

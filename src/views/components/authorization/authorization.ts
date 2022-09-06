@@ -13,9 +13,9 @@ export default function renderAuthorization() {
     <form class="registration-form auth-form" id="registration-form" style="display:none">
       <p class="registration-error error-msg"></p>
       <p class="registration-success success-msg">Пользователь успешно зарегистрирован!</p>
-      <input class="registration-name auth-input" name="name" type="text" placeholder="Имя" autofocus>
-      <input class="registration-email auth-input" name="email" type="email" placeholder="E-mail">
-      <input class="registration-password auth-input" name="password" type="password" placeholder="Пароль" minlength="8">
+      <input class="registration-name auth-input" name="name" type="text" placeholder="Имя" autocomplete="off" autofocus>
+      <input class="registration-email auth-input" name="email" type="email" placeholder="E-mail" autocomplete="off">
+      <input class="registration-password auth-input" name="password" type="password" placeholder="Пароль" minlength="8" autocomplete="off">
     </form>
     <div class="authorization-btns">
         <button class="login-btn btn-like-link">Войти</button>
