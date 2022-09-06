@@ -191,7 +191,7 @@ class TextbookController {
         newWord: true,
         dateNew: 0,
         dateLearned: 0,
-        newInGame: '',
+        newInGame: 'textbook',
         streakAudio: 0,
         streakSprint: 0,
         totalCountAudiocall: 0,
