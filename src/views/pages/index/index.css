@@ -54,7 +54,7 @@
 .start-menu {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   gap: 30px;
   padding: 100px 40px;
 }
