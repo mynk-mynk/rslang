@@ -88,17 +88,22 @@ class SprintView {
     </div>`;
   }
 
-  static renderQuestion(word: IWord, translation: IWord, answer: string) {
+  static renderQuestion(word: IWord, translation: IWord) {
     return `
         <p class="sprint-word">${word.word}</p>
         <p class="sprint-translation">${translation.wordTranslate}</p>
-        <img
-        style="visibility: hidden"
+        `
+  }
+
+  static renderAnswerCorrectIcon() {
+    return `
+    <img
+          style="visibility: hidden"
           class="answer-icon-image"
-          src="./assets/images/${answer}-icon.png"
+          src="./assets/images/right-icon.png"
           alt="Answer icon"
           width="30"
-        />`
+      />`;
   }
 
   static renderResults(correct: number, incorrect: number, accuracy: number) {

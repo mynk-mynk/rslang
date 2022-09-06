@@ -14,7 +14,7 @@ class SprintController {
 
   data: IDataSprint;
 
-  timer: number | null
+  timer: number | null;
 
   constructor(app: App) {
     this.app = app;
@@ -46,7 +46,13 @@ class SprintController {
       this.data.curGroup = difficulty;
       this.data.textbookClick = textBookClick;
     }
+
     this.data.answerMap.clear();
+    this.data.wordsArr = [];
+    this.data.totalScore = 0;
+    this.data.curStreak = 0;
+    this.data.pointsPerAnswer = 10;
+    this.data.multiplier = 1;
 
     mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription());
 
@@ -65,7 +71,6 @@ class SprintController {
         this.activateProp(e.target as HTMLElement, '.difficulty-btn');
       });
     }
-
     this.startGame();
   }
 
@@ -85,8 +90,8 @@ class SprintController {
         questionContainer.innerHTML = SprintView.renderQuestion(
         <IWord> this.data.curWord,
         <IWord> this.data.curTranslation,
-        'right',
         );
+        questionContainer.insertAdjacentHTML('afterend', SprintView.renderAnswerCorrectIcon())
         const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
         scoresContainer.innerHTML = SprintView.renderScores(
           this.data.totalScore,
@@ -160,7 +165,7 @@ class SprintController {
   wordsRandomizer() {
     this.data.curWord = this.data.wordsArr[Math.floor(Math.random() * this.data.wordsArr.length)];
     const random = this.data.wordsArr.sort(() => 0.5 - Math.random()).slice(0, 2);
-    if (random.includes(this.data.curWord) && random.length > 2) {
+    if (random.includes(this.data.curWord) && random.length >= 2) {
       this.wordsRandomizer();
     } else {
       this.data.curAnswers = random;
@@ -178,7 +183,7 @@ class SprintController {
     const mins = minutes;
     function tick() {
       const counter = document.getElementById('timer-container');
-      if (!counter) { return };
+      if (!counter) { return; }
       const currentMinutes = mins - 1;
       seconds -= 1;
       (<HTMLDivElement>counter).innerHTML = `${currentMinutes.toString()}:${(seconds < 10 ? '0' : '')}${String(seconds)}`;
@@ -195,10 +200,12 @@ class SprintController {
 
   decreaseMultiplier() {
     this.data.curStreak = 0;
-    //! (<HTMLImageElement>document.querySelector('.answer-icon-image')).style.visibility = 'visible';
+    this.showAnswerIcon('wrong');
     this.changeStreakColor('var(--color)');
-    this.data.answerMap.set(<IWord>this.data.curWord, 'incorrect');
-    this.data.pointsPerAnswer > 10 ? this.data.pointsPerAnswer /= 2 : this.data.pointsPerAnswer = 10;
+    this.data.answerMap.set(<IWord> this.data.curWord, 'incorrect');
+    this.data.pointsPerAnswer > 10
+      ? this.data.pointsPerAnswer /= 2 : this.data.pointsPerAnswer = 10;
+
     if (this.data.multiplier === 1) {
       this.data.multiplier = 1;
     } else {
@@ -208,6 +215,7 @@ class SprintController {
   }
 
   increaseMultiplier() {
+    this.showAnswerIcon('right');
     if (this.data.curStreak === 3 && this.data.multiplier === 4) {
       this.data.curStreak = 3;
     } else if (this.data.curStreak === 3 && this.data.multiplier < 4) {
@@ -217,12 +225,13 @@ class SprintController {
     } else {
       this.data.curStreak += 1;
     }
-    this.data.answerMap.set(<IWord>this.data.curWord, 'correct');
+    this.data.answerMap.set(<IWord> this.data.curWord, 'correct');
     this.data.totalScore += this.data.pointsPerAnswer;
     (<HTMLElement>document.getElementById(`${this.data.curStreak}-correct-answer`)).style.background = '#00a249';
 
     if (this.data.curStreak === 3) {
-      this.data.pointsPerAnswer < 80 ? this.data.pointsPerAnswer *= 2 : this.data.pointsPerAnswer = 80;
+      this.data.pointsPerAnswer < 80
+        ? this.data.pointsPerAnswer *= 2 : this.data.pointsPerAnswer = 80;
       this.changeStreakColor('#00a249');
       this.data.multiplier === 4 ? (this.data.multiplier = 4) : (this.data.multiplier += 1);
       (<HTMLElement>(document.getElementById(`level-${this.data.multiplier}`))).style.visibility = 'visible';
@@ -231,38 +240,31 @@ class SprintController {
 
   async checkGameEndHandler() {
     const counter = document.getElementById('timer-container');
-    
-    if (counter?.innerHTML !== '0:50') {
-      if(this.data.wordsArr.length <= 2) {
+    if (counter?.innerHTML !== '0:111') {
+      if (this.data.wordsArr.length <= 2) {
         if (this.data.curPage - 1 === -1) {
           if (this.timer) clearInterval(this.timer);
           this.finishGame();
-          console.log('3333333');
-
         } else {
           this.data.curPage -= 1;
-          console.log(this.data.curPage); 
           await this.generateWords();
-          console.log('44444444');
           this.nextQuestion();
         }
       }
-  } else {
-    if (this.timer) clearInterval(this.timer);
-    console.log('55555555');
-    this.finishGame()
-  }
+    } else {
+      if (this.timer) clearInterval(this.timer);
+      this.finishGame();
+    }
   }
 
   checkGameEndTimer() {
-    let timerId: number = window.setInterval(() => this.checkGameEndHandler(), 1000);
-    this.timer = timerId
+    const timerId: number = window.setInterval(() => this.checkGameEndHandler(), 1000);
+    this.timer = timerId;
   }
-  
 
   finishGame() {
     const mainContainer = findHtmlElement(document, 'main');
-    this.buttonPressRemove()
+    this.buttonPressRemove();
     mainContainer.innerHTML = '';
     const mapSort = new Map([...this.data.answerMap.entries()].sort());
     const mapCorrect = new Map(
@@ -305,15 +307,16 @@ class SprintController {
     this.prepareGameStatistics(
       this.data.answerMap.size,
       mapCorrect.size / mapSort.size,
-      <number> this.data.maxStreak,
+      this.data.maxStreak,
     );
-    // this.updateUserWords();
-    
+    this.updateUserWords();
   }
 
-  // showAnswerIcon() {
-  //   (<HTMLImageElement>document.querySelector('.answer-image-icon')).style.visibility = 'visible';
-  // }
+  showAnswerIcon(answer: string) {
+    const answerImageIcon = (<HTMLImageElement>document.querySelector('.answer-icon-image'))
+    answerImageIcon.src = `./assets/images/${answer}-icon.png`;
+    answerImageIcon.style.visibility = 'visible';
+  }
 
   checkAnswer() {
     const btnTrue = <HTMLButtonElement>document.getElementById('btn-true');
@@ -327,8 +330,8 @@ class SprintController {
       } else {
         this.decreaseMultiplier();
       }
-      if(this.data.wordsArr.length <= 2) {
-        return
+      if (this.data.wordsArr.length <= 2) {
+        return;
       } else {
         this.nextQuestion();
       }
@@ -341,31 +344,37 @@ class SprintController {
       } else {
         this.decreaseMultiplier();
       }
-      if(this.data.wordsArr.length <= 2) {
-        return
+      if (this.data.wordsArr.length <= 2) {
+        return;
       } else {
         this.nextQuestion();
       }
     };
   }
-  
+
+  hideAnswerImageIcon() {
+    const answerImageIcon = (<HTMLImageElement>document.querySelector('.answer-icon-image'))
+    answerImageIcon.style.visibility = 'hidden'
+  }
+
   nextQuestion() {
-    console.log(this.data.wordsArr);
     this.wordsRandomizer();
     const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
     questionContainer.innerHTML = SprintView.renderQuestion(
-      <IWord>this.data.curWord,
-      <IWord>this.data.curTranslation,
-      'right',
+      <IWord> this.data.curWord,
+      <IWord> this.data.curTranslation,
     );
     const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
-    scoresContainer.innerHTML = SprintView.renderScores(this.data.totalScore, this.data.pointsPerAnswer);
+    scoresContainer.innerHTML = SprintView.renderScores(
+      this.data.totalScore,
+      this.data.pointsPerAnswer,
+    );
     this.checkAnswer();
   }
 
   async deleteUserWords() {
     const userWords = <IUserWord[]> await User.getUserWords();
-    if(userWords) userWords.forEach((el: IUserWord) => User.deleteUserWord(<string>el.wordId));
+    if (userWords) userWords.forEach((el: IUserWord) => User.deleteUserWord(<string>el.wordId));
   }
 
   async updateUserWords() {
@@ -393,7 +402,7 @@ class SprintController {
                 totalCountAudiocall: newIds[0].optional.totalCountAudiocall,
                 totalCorrectAudiocall: newIds[0].optional.totalCorrectAudiocall,
                 totalCountSprint: newIds[0].optional.totalCountSprint += 1,
-                totalCorrectSprint: +(`${val === 'correct' ? newIds[0].optional.totalCorrectSprint += 1 : newIds[0].optional.totalCorrectSprint}`)
+                totalCorrectSprint: +(`${val === 'correct' ? newIds[0].optional.totalCorrectSprint += 1 : newIds[0].optional.totalCorrectSprint}`),
               },
             });
           } else {
@@ -404,7 +413,7 @@ class SprintController {
                 dateNew: Date.now(),
                 dateLearned: 0,
                 newInGame: 'sprint',
-                streakAudio: 0, 
+                streakAudio: 0,
                 streakSprint: +(`${val === 'correct' ? 1 : 0}`),
                 totalCountAudiocall: 0,
                 totalCorrectAudiocall: 0,
@@ -421,7 +430,7 @@ class SprintController {
               dateNew: Date.now(),
               dateLearned: 0,
               newInGame: 'sprint',
-              streakAudio: 0, 
+              streakAudio: 0,
               streakSprint: +(`${val === 'correct' ? 1 : 0}`),
               totalCountAudiocall: 0,
               totalCorrectAudiocall: 0,
@@ -481,7 +490,6 @@ class SprintController {
     }
   }
 
-
   playAudio(btn: HTMLElement) {
     if (btn) {
       const id = btn.id.split('-').reverse()[0];
@@ -504,10 +512,10 @@ class SprintController {
     const btnFalse = <HTMLDivElement>document.getElementById('btn-false');
     if (event.key === '1') {
       btnTrue.click();
-      btnTrue.classList.add('sprint-active')
+      btnTrue.classList.add('sprint-active');
     } else if (event.key === '2') {
       btnFalse.click();
-      btnFalse.classList.add('sprint-active')
+      btnFalse.classList.add('sprint-active');
     }
   }
 
@@ -515,12 +523,11 @@ class SprintController {
     const btnTrue = <HTMLDivElement>document.getElementById('btn-true');
     const btnFalse = <HTMLDivElement>document.getElementById('btn-false');
     if (event.key === '1') {
-      btnTrue.classList.remove('sprint-active')
+      btnTrue.classList.remove('sprint-active');
     } else if (event.key === '2') {
-      btnFalse.classList.remove('sprint-active')
+      btnFalse.classList.remove('sprint-active');
     }
   }
 }
-
 
 export default SprintController;
