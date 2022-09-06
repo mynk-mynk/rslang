@@ -1,15 +1,17 @@
 import { IWord } from "./IWord";
 
 export interface IDataSprint {
-  currentDifficulty: number;
-  data2: string;
+  textbookClick: boolean,
+  curGroup: number;
+  curPage: number;
   wordsArr: IWord[];
-  currentWord: IWord | null;
-  currentTranslation: IWord | null;
-  currentAnswers: IWord[];
+  curWord: IWord | null;
+  curTranslation: IWord | null;
+  curAnswers: IWord[];
   pointsPerAnswer: number;
-  streak: number;
+  curStreak: number;
   multiplier: number;
   totalScore: number;
   answerMap: Map<IWord, string>;
+  maxStreak: number;
 };

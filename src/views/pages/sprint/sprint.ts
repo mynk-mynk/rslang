@@ -6,6 +6,7 @@ class SprintView {
   static renderStartBtn() {
     return `
     <button class="start-btn" disabled>Start</button>
+    <h4 class='insufficient-words-message' style='color: red; visibility: hidden; text-align: center'>Для выбранной вами страницы слишком мало слов. Пожалуйста, вернитесь в учебник и добавьте больше слов либо выберите другой раздел</h4>
     `;
   }
 
@@ -88,7 +89,7 @@ class SprintView {
     </div>`;
   }
 
-  static renderQuestion(word: IWord, translation: IWord, score: number, answer: string) {
+  static renderQuestion(word: IWord, translation: IWord, answer: string) {
     return `
         <p class="sprint-word">${word.word}</p>
         <p class="sprint-translation">${translation.wordTranslate}</p>

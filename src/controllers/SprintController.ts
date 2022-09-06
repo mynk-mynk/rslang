@@ -1,316 +1,500 @@
-import Chart, { ChartType } from 'chart.js/auto';
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import SprintView from '../views/pages/sprint/sprint';
 import { IDataSprint } from '../common/interfaces/IDataSprint';
 import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
 import { IWord, IWords } from '../common/interfaces/IWord';
 import Word from '../models/Word';
+import App from '../models/App';
+import { createPieChart } from '../views/components/pie-chart/pie-chart';
+import { IUserWord } from '../common/interfaces/IUserWord';
+import User from '../models/User';
 
 class SprintController {
-  static actionIndex() {
-    const data: IDataSprint = {
-      currentDifficulty: 0,
-      data2: 'audiocall',
+
+  app: App;
+
+  data: IDataSprint;
+
+  constructor(app: App) {
+    this.app = app;
+
+    this.data = {
+      textbookClick: true,
+      curGroup: 0,
+      curPage: 1,
       wordsArr: [],
-      currentWord: null,
-      currentTranslation: null,
-      currentAnswers: [],
+      curWord: null,
+      curTranslation: null,
+      curAnswers: [],
       pointsPerAnswer: 10,
-      streak: 0,
+      curStreak: 0,
       multiplier: 1,
       totalScore: 0,
       answerMap: new Map(),
+      maxStreak: 0,
     };
+  }
 
-    
+  actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
 
     const mainContainer = <HTMLElement>document.querySelector('main');
     mainContainer.innerHTML = '';
+    
+    if (page && difficulty && textBookClick) {
+      this.data.curPage = page;
+      this.data.curGroup = difficulty;
+      this.data.textbookClick = textBookClick;
+    }
+    this.data.answerMap.clear();
+    console.log(this.app.isAuth);
+
     mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription());
+
     const gameContainer = <HTMLElement>document.querySelector('.main-container-sprint');
-    gameContainer.append(renderDifficultyBar());
-    gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
 
+    if (this.data.textbookClick === true) {
+      gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
+      (<HTMLButtonElement>document.querySelector('.start-btn')).disabled = false;
+    } else {
+      gameContainer.append(renderDifficultyBar());
+      gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
+      
+      const difficultyContainer = document.querySelector('.difficulty-container');
+      difficultyContainer?.addEventListener('click', (e) => {
+        this.activateProp(e.target as HTMLElement, '.difficulty-btn');
+      });
+    }
+
+    this.startGame()
+  }
+
+  startGame() {
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
-
-    const difficultyContainer = document.querySelector('.difficulty-container');
-
-    function activateProp(el: HTMLElement, selector: string) {
-      if (el) {
-        const elements = document.querySelectorAll(selector);
-        elements?.forEach((element) => element.classList.remove('active'));
-        el.classList.add('active');
-        startBtn.disabled = false;
-        data.currentDifficulty = Number(el.innerText) - 1;
-      }
-    }
-
-    difficultyContainer?.addEventListener('click', (e) => {
-      activateProp(e.target as HTMLElement, '.difficulty-btn');
-    });
-
-    function countdown(minutes: number) {
-      let seconds = 60;
-      const mins = minutes;
-      function tick() {
-        const counter = document.getElementById('timer-container');
-        const currentMinutes = mins - 1;
-        seconds -= 1;
-        (<HTMLDivElement>counter).innerHTML = `${currentMinutes.toString()}:${(seconds < 10 ? '0' : '')}${String(seconds)}`;
-        if (seconds > 0) {
-          setTimeout(tick, 1000);
-        } else if (mins > 1) {
-          countdown(mins - 1);
-        }
-      }
-      tick();
-    }
-
-    function createPieChart(incorrect: number, correct: number) {
-      const labels = [
-        'Ошибка',
-        'Правильно',
-      ];
-
-      const pieColors = ['#ff6969', '#00a249'];
-      const pieResultsData = {
-        labels,
-        datasets: [{
-          label: 'Результаты игры',
-          backgroundColor: pieColors,
-          borderColor: 'var(--color)',
-          data: [incorrect, correct],
-          borderAlign: 'inner',
-          borderWidth: 1,
-        }],
-      };
-
-      const chartConfig = {
-        type: <ChartType>'pie',
-        data: pieResultsData,
-        options: {
-          responsive: true,
-          responsiveAnimationDuration: 3000,
-          plugins: {
-            legend: {
-              position: 'top' as const,
-            },
-            title: {
-              display: true,
-              text: 'Результаты игры',
-            },
-          },
-        },
-      };
-      const myChart = new Chart(
-        <HTMLCanvasElement>document.getElementById('sprint-results-chart'),
-        chartConfig,
-      );
-    }
-
-    function checkGameEnd() {
-      let timerId = setTimeout(function gameEnd() {
-        const counter = document.getElementById('timer-container');
-        if (counter?.innerHTML === '0:111') {
-          mainContainer.innerHTML = '';
-          const mapSort = new Map([...data.answerMap.entries()].sort());
-          const mapCorrect = new Map(
-            [...mapSort].filter(([_, v]) => v === 'correct'),
-          );
-          const mapIncorrect = new Map(
-            [...mapSort].filter(([_, v]) => v === 'incorrect'),
-          );
-
-          mainContainer.insertAdjacentHTML(
-            'afterbegin',
-            SprintView.renderResults(
-              mapCorrect.size,
-              mapIncorrect.size,
-              mapIncorrect.size === 0 ? 100 : +((mapCorrect.size / mapSort.size) * 100).toFixed(0),
-            ),
-          );
-          createPieChart(mapIncorrect.size, mapCorrect.size);
-          mapCorrect.forEach((_, k) => {
-            (<HTMLDivElement>(
-              document.querySelector('.correct-results')
-            )).insertAdjacentHTML(
-              'beforeend',
-              SprintView.renderCorrectResults(k),
-            );
-          });
-          mapIncorrect.forEach((_, k) => {
-            (<HTMLDivElement>(
-              document.querySelector('.incorrect-results')
-            )).insertAdjacentHTML(
-              'beforeend',
-              SprintView.renderIncorrectResults(k),
-            );
-          });
-          document.querySelectorAll('.sprint-audio-icon').forEach((icon) => {
-            icon.addEventListener('click', (e) => playAudio(e.target as HTMLElement));
-          });
-        }
-        timerId = setTimeout(gameEnd, 1000);
-      }, 1000);
-    }
-
-    function buttonPress() {
-      const btnTrue = <HTMLDivElement>document.getElementById('btn-true');
-      const btnFalse = <HTMLDivElement>document.getElementById('btn-false');
-      document.addEventListener('keydown', (event: KeyboardEvent) => {
-        if (event.key === '1') {
-          btnTrue.click();
-          btnTrue.classList.add('sprint-active')
-        } else if (event.key === '2') {
-          btnFalse.click();
-          btnFalse.classList.add('sprint-active')
-        }
-      });
-      document.addEventListener('keyup', (event: KeyboardEvent) => {
-        if (event.key === '1') {
-          btnTrue.classList.remove('sprint-active')
-        } else if (event.key === '2') {
-          btnFalse.classList.remove('sprint-active')
-        }
-      });
-
-    }
-
-    async function generateWords() {
-      const temporaryResult: IWords[] = [];
-      for (let i = 0; i < 30; i += 1) {
-        const midRes: IWords = await Word.getWords(i, data.currentDifficulty)
-          .then((words) => words)
-          .catch((e) => console.log(e));
-        temporaryResult.push(midRes.flat());
-      }
-      data.wordsArr = temporaryResult.flat();
-    }
-
-    function wordsRandomizer() {
-      data.currentWord = data.wordsArr[Math.floor(Math.random() * 601)];
-      const randomWord = () => {
-        return data.wordsArr[Math.floor(Math.random() * 601)];
-      };
-      const randomArray: () => IWord[] = () => {
-        const arr = [];
-        for (let i = 0; i < 2; i += 1) {
-          arr.push(randomWord());
-        }
-        return arr;
-      };
-      data.currentAnswers = randomArray();
-      data.currentAnswers.splice(
-        Math.floor(Math.random() * 2),
-        1,
-        data.currentWord,
-      );
-      data.currentTranslation = data.currentAnswers[Math.round(Math.random())];
-    }
-
-    function changeStreakColor(color: string) {
-      document.querySelectorAll('.streak-mark').forEach((el) => el.setAttribute('style', `background:${color}`));
-    }
-
-    function increaseMultiplier() {
-      if (data.streak === 3 && data.multiplier === 4) {
-        data.streak = 3;
-      } else if (data.streak === 3 && data.multiplier < 4) {
-        data.streak = 0;
-        changeStreakColor('var(--color)');
-        data.streak += 1;
-      } else {
-        data.streak += 1;
-      }
-      data.answerMap.set(<IWord>data.currentWord, 'correct');
-      data.totalScore += data.pointsPerAnswer;
-      (<HTMLElement>document.getElementById(`${data.streak}-correct-answer`)).style.background = '#00a249';
-
-      if (data.streak === 3) {
-        data.pointsPerAnswer < 80 ? data.pointsPerAnswer *= 2 : data.pointsPerAnswer = 80;
-        changeStreakColor('#00a249');
-        data.multiplier === 4 ? (data.multiplier = 4) : (data.multiplier += 1);
-        (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.visibility = 'visible';
-      }
-    }
-
-    function decreaseMultiplier() {
-      data.streak = 0;
-      (<HTMLImageElement>document.querySelector('.answer-icon-image')).src = 'wrong';
-      (<HTMLImageElement>document.querySelector('.answer-icon-image')).style.visibility = 'visible';
-      changeStreakColor('var(--color)');
-      data.answerMap.set(<IWord>data.currentWord, 'incorrect');
-      data.pointsPerAnswer > 10 ? data.pointsPerAnswer /= 2 : data.pointsPerAnswer = 10;
-      if (data.multiplier === 1) {
-        data.multiplier = 1;
-      } else {
-        (<HTMLElement>(document.getElementById(`level-${data.multiplier}`))).style.visibility = 'hidden';
-        data.multiplier -= 1;
-      }
-    }
-
-    function playAudio(btn: HTMLElement) {
-      if (btn) {
-        const id = btn.id.split('-').reverse()[0];
-        (<HTMLAudioElement>document.getElementById(`audio-word-${id}`)).play().then((res) => res).catch((e: Error) => e);
-      }
-    }
+    const mainContainer = findHtmlElement(document, 'main');
 
     startBtn.onclick = async () => {
+    
       startBtn.disabled = true;
-      await generateWords();
-      wordsRandomizer();
-      mainContainer.innerHTML = SprintView.renderGameContainer();
-      const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
-      questionContainer.innerHTML = SprintView.renderQuestion(
-        <IWord>data.currentWord,
-        <IWord>data.currentTranslation,
-        data.totalScore,
+      await this.generateWords();
+      if (this.data.wordsArr.length <= 2) {
+        (<HTMLHeadingElement>document.querySelector('.insufficient-words-message')).style.visibility = 'visible';
+      } else {
+        this.wordsRandomizer();
+        mainContainer.innerHTML = SprintView.renderGameContainer();
+        const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
+        questionContainer.innerHTML = SprintView.renderQuestion(
+        <IWord>this.data.curWord,
+        <IWord>this.data.curTranslation,
         'right',
       );
       const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
-      scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
-      checkAnswer();
-      buttonPress();
-      countdown(1);
-      checkGameEnd();
-    };
+      scoresContainer.innerHTML = SprintView.renderScores(this.data.totalScore, this.data.pointsPerAnswer);
+      this.checkAnswer();
+      this.buttonPress();
+      this.countdown(1);
+      this.checkGameEndHandler();
+      }
+    
+  };
+  } 
 
-    function checkAnswer() {
-      const btnTrue = <HTMLButtonElement>document.getElementById('btn-true');
-      const btnFalse = <HTMLButtonElement>document.getElementById('btn-false');
-      btnTrue.onclick = () => {
-        if (data.currentWord === data.currentTranslation) {
-          increaseMultiplier();
-        } else {
-          decreaseMultiplier();
+  removeLearnedUserWords(array1: IWord[], array2: IUserWord[]) {
+    for (let i = 0; i < array1.length; i += 1) {
+      for (let j = 0; j < array2.length; j += 1) {
+        if (array1[i].id === array2[j].wordId && array2[j].difficulty === 'learned') {
+          array1.splice(i, 1);
         }
-        nextQuestion();
-      };
-      btnFalse.onclick = () => {
-        if (data.currentWord !== data.currentTranslation) {
-          increaseMultiplier();
-        } else {
-          decreaseMultiplier();
-        }
-        nextQuestion();
-      };
+      }
     }
+    return false;
+  }
 
-    function nextQuestion() {
-      wordsRandomizer();
-      const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
-      questionContainer.innerHTML = SprintView.renderQuestion(
-        <IWord>data.currentWord,
-        <IWord>data.currentTranslation,
-        data.totalScore,
-        'right',
+  async generateWords() {
+    const temporaryResult: IWords[] = [];
+    if (this.data.textbookClick === true) {
+      if (this.app.isAuth === true) {
+        const userWords = <IUserWord[]> await User.getUserWords();
+        console.log(userWords);
+        if (this.data.curGroup === 6) {
+          const userCustomWords: IWords = [];
+          for (let i = 0; i < userWords.length; i += 1) {
+            const userWordId = <string> userWords[i].wordId;
+            const midRes = <IWord> await Word.getWord(userWordId);
+            if (midRes) {
+              userCustomWords.push(midRes);
+            }
+          }
+          this.data.wordsArr = userCustomWords;
+        } else {
+          const midRes = <IWord[]> await Word.getWords(
+            <number> this.data.curPage,
+            <number> this.data.curGroup,
+          );
+          this.data.wordsArr = midRes.flat();
+          this.removeLearnedUserWords(this.data.wordsArr, userWords);
+        }
+      } else {
+        const midRes = <IWord[]> await Word.getWords(
+          <number> this.data.curPage,
+          <number> this.data.curGroup,
+        );
+        this.data.wordsArr = midRes.flat();
+      }
+    } else {
+      for (let i = 0; i < 30; i += 1) {
+        const midRes = <IWord[]> await Word.getWords(i, <number> this.data.curGroup);
+        temporaryResult.push(midRes.flat());
+      }
+      this.data.wordsArr = temporaryResult.flat();
+    }
+  }
+  
+  wordsRandomizer() {
+    this.data.curWord = this.data.wordsArr[Math.floor(Math.random() * this.data.wordsArr.length)];
+    const random = this.data.wordsArr.sort(() => 0.5 - Math.random()).slice(0, 2);
+    if (random.includes(<IWord> this.data.curWord)) {
+      this.wordsRandomizer();
+    } else {
+      this.data.curAnswers = random;
+      <IWords> this.data.curAnswers.splice(
+        Math.floor(Math.random() * 2),
+        1,
+        <IWord> this.data.curWord,
       );
-      const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
-      scoresContainer.innerHTML = SprintView.renderScores(data.totalScore, data.pointsPerAnswer);
-      checkAnswer();
+      this.data.curTranslation = this.data.curAnswers[Math.round(Math.random())];
+    }
+  }
+
+  countdown(minutes: number) {
+    let seconds = 60;
+    const mins = minutes;
+    function tick() {
+      const counter = document.getElementById('timer-container');
+      const currentMinutes = mins - 1;
+      seconds -= 1;
+      (<HTMLDivElement>counter).innerHTML = `${currentMinutes.toString()}:${(seconds < 10 ? '0' : '')}${String(seconds)}`;
+      if (seconds > 0) {
+        setTimeout(tick, 1000);
+      }
+    }
+    tick();
+  }
+
+  changeStreakColor(color: string) {
+    document.querySelectorAll('.streak-mark').forEach((el) => el.setAttribute('style', `background:${color}`));
+  }
+
+  decreaseMultiplier() {
+    this.data.curStreak = 0;
+    (<HTMLImageElement>document.querySelector('.answer-icon-image')).src = 'wrong';
+    (<HTMLImageElement>document.querySelector('.answer-icon-image')).style.visibility = 'visible';
+    this.changeStreakColor('var(--color)');
+    this.data.answerMap.set(<IWord>this.data.curWord, 'incorrect');
+    this.data.pointsPerAnswer > 10 ? this.data.pointsPerAnswer /= 2 : this.data.pointsPerAnswer = 10;
+    if (this.data.multiplier === 1) {
+      this.data.multiplier = 1;
+    } else {
+      (<HTMLElement>(document.getElementById(`level-${this.data.multiplier}`))).style.visibility = 'hidden';
+      this.data.multiplier -= 1;
+    }
+  }
+
+  increaseMultiplier() {
+    if (this.data.curStreak === 3 && this.data.multiplier === 4) {
+      this.data.curStreak = 3;
+    } else if (this.data.curStreak === 3 && this.data.multiplier < 4) {
+      this.data.curStreak = 0;
+      this.changeStreakColor('var(--color)');
+      this.data.curStreak += 1;
+    } else {
+      this.data.curStreak += 1;
+    }
+    this.data.answerMap.set(<IWord>this.data.curWord, 'correct');
+    this.data.totalScore += this.data.pointsPerAnswer;
+    (<HTMLElement>document.getElementById(`${this.data.curStreak}-correct-answer`)).style.background = '#00a249';
+
+    if (this.data.curStreak === 3) {
+      this.data.pointsPerAnswer < 80 ? this.data.pointsPerAnswer *= 2 : this.data.pointsPerAnswer = 80;
+      this.changeStreakColor('#00a249');
+      this.data.multiplier === 4 ? (this.data.multiplier = 4) : (this.data.multiplier += 1);
+      (<HTMLElement>(document.getElementById(`level-${this.data.multiplier}`))).style.visibility = 'visible';
+    }
+  }
+
+  async checkGameEndHandler() {
+    const counter = document.getElementById('timer-container');
+    let timerId = setInterval(() => this.checkGameEndHandler(), 1000);
+    
+    if (counter?.innerHTML !== '0:50') {
+      if(this.data.wordsArr.length <= 2) {
+        if (this.data.curPage - 1 === -1) {
+          clearInterval(timerId);
+          this.finishGame();
+
+        } else {
+          this.data.curPage -= 1;
+          await this.generateWords();
+          this.nextQuestion();
+        }
+      }
+  } else {
+    clearInterval(timerId);
+    this.finishGame()
+  }
+  }
+
+  
+
+  finishGame() {
+    const mainContainer = findHtmlElement(document, 'main');
+
+    this.buttonPressRemove()
+    mainContainer.innerHTML = '';
+    const mapSort = new Map([...this.data.answerMap.entries()].sort());
+    const mapCorrect = new Map(
+      [...mapSort].filter(([_, v]) => v === 'correct'),
+    );
+    const mapIncorrect = new Map(
+      [...mapSort].filter(([_, v]) => v === 'incorrect'),
+    );
+
+    mainContainer.insertAdjacentHTML(
+      'afterbegin',
+      SprintView.renderResults(
+        mapCorrect.size,
+        mapIncorrect.size,
+        mapIncorrect.size === 0 ? 100 : +((mapCorrect.size / mapSort.size) * 100).toFixed(0),
+      ),
+    );
+    createPieChart(mapIncorrect.size, mapCorrect.size, 'sprint');
+    mapCorrect.forEach((_, k) => {
+      (<HTMLDivElement>(
+        document.querySelector('.correct-results')
+      )).insertAdjacentHTML(
+        'beforeend',
+        SprintView.renderCorrectResults(k),
+      );
+    });
+    mapIncorrect.forEach((_, k) => {
+      (<HTMLDivElement>(
+        document.querySelector('.incorrect-results')
+      )).insertAdjacentHTML(
+        'beforeend',
+        SprintView.renderIncorrectResults(k),
+      );
+    });
+    document.querySelectorAll('.sprint-audio-icon').forEach((icon) => {
+      icon.addEventListener('click', (e) => this.playAudio(e.target as HTMLElement));
+    });
+
+    this.countBestStreak();
+    this.prepareGameStatistics(
+      this.data.answerMap.size,
+      mapCorrect.size / mapSort.size,
+      <number> this.data.maxStreak,
+    );
+    this.updateUserWords();
+  }
+
+  // showAnswerIcon() {
+  //   (<HTMLImageElement>document.querySelector('.answer-image-icon')).style.visibility = 'visible';
+  // }
+
+  checkAnswer() {
+    const btnTrue = <HTMLButtonElement>document.getElementById('btn-true');
+    const btnFalse = <HTMLButtonElement>document.getElementById('btn-false');
+
+    btnTrue.onclick = () => {
+      if (this.data.curWord === this.data.curTranslation) {
+        this.increaseMultiplier();
+      } else {
+        this.decreaseMultiplier();
+      }
+      this.nextQuestion();
+    };
+    btnFalse.onclick = () => {
+      if (this.data.curWord !== this.data.curTranslation) {
+        this.increaseMultiplier();
+      } else {
+        this.decreaseMultiplier();
+      }
+      this.nextQuestion();
+    };
+  }
+  
+  nextQuestion() {
+    const currentWordIndex: number = this.data.wordsArr.indexOf(<IWord> this.data.curWord);
+    this.data.wordsArr.splice(currentWordIndex, 1);
+    this.wordsRandomizer();
+    const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
+    questionContainer.innerHTML = SprintView.renderQuestion(
+      <IWord>this.data.curWord,
+      <IWord>this.data.curTranslation,
+      'right',
+    );
+    const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
+    scoresContainer.innerHTML = SprintView.renderScores(this.data.totalScore, this.data.pointsPerAnswer);
+    this.checkAnswer();
+  }
+
+  async deleteUserWords() {
+    const userWords = <IUserWord[]> await User.getUserWords();
+    userWords.forEach((el: IUserWord) => User.deleteUserWord(<string>el.wordId));
+  }
+
+  async updateUserWords() {
+    const userWords = <IUserWord[]> await User.getUserWords();
+    function checkAnswerMap(array1: Map<IWord, string>, array2: IUserWord[]) {
+      const array2Id = array2.map((el) => <string> el.wordId);
+      array1.forEach((val, result) => {
+        if (array2.length > 0) {
+          if (array2Id.includes(result.id)) {
+            const newIds = array2.filter((el) => el.wordId === result.id);
+            let learnDate = 0;
+            if (newIds[0].optional.streakSprint === 3) {
+              learnDate = Date.now();
+            }
+
+            User.updateUserWord(<string>newIds[0].wordId, {
+              difficulty: `${newIds[0].optional.streakSprint >= 3 ? 'learned' : newIds[0].difficulty}`,
+              optional: {
+                newWord: false,
+                dateNew: newIds[0].optional.dateNew,
+                dateLearned: learnDate ? learnDate : newIds[0].optional.dateLearned,
+                newInGame: newIds[0].optional.newInGame,
+                streakAudio: newIds[0].optional.streakAudio,
+                streakSprint: +(`${val === 'correct' ? newIds[0].optional.streakSprint += 1 : 0}`),
+                totalCountAudiocall: newIds[0].optional.totalCountAudiocall,
+                totalCorrectAudiocall: newIds[0].optional.totalCorrectAudiocall,
+                totalCountSprint: newIds[0].optional.totalCountSprint += 1,
+                totalCorrectSprint: +(`${val === 'correct' ? newIds[0].optional.totalCorrectSprint += 1 : newIds[0].optional.totalCorrectSprint}`)
+              },
+            });
+          } else {
+            User.createUserWord(result.id, {
+              difficulty: 'none',
+              optional: {
+                newWord: true,
+                dateNew: Date.now(),
+                dateLearned: 0,
+                newInGame: 'sprint',
+                streakAudio: 0, 
+                streakSprint: +(`${val === 'correct' ? 1 : 0}`),
+                totalCountAudiocall: 0,
+                totalCorrectAudiocall: 0,
+                totalCountSprint: 1,
+                totalCorrectSprint: +(`${val === 'correct' ? 1 : 0}`),
+              },
+            });
+          }
+        } else {
+          User.createUserWord(result.id, {
+            difficulty: 'none',
+            optional: {
+              newWord: true,
+              dateNew: Date.now(),
+              dateLearned: 0,
+              newInGame: 'sprint',
+              streakAudio: 0, 
+              streakSprint: +(`${val === 'correct' ? 1 : 0}`),
+              totalCountAudiocall: 0,
+              totalCorrectAudiocall: 0,
+              totalCountSprint: 1,
+              totalCorrectSprint: +(`${val === 'correct' ? 1 : 0}`),
+            },
+          });
+        }
+      });
+    }
+    checkAnswerMap(this.data.answerMap, userWords);
+  }
+
+  countBestStreak() {
+    let counter = 0;
+    let streak = 0;
+    this.data.answerMap.forEach((k, _) => {
+      k === 'correct' ? counter += 1 : counter = 0;
+      if (counter > streak) streak = counter;
+    });
+    this.data.maxStreak = streak;
+  }
+
+  prepareGameStatistics(total: number, percentage: number, streak: number) {
+    if (!localStorage.getItem('SprintGameTotal') && !localStorage.getItem('SprintCorrectPercentage') && !localStorage.getItem('SprintGameStreak')) {
+      this.saveResults(total, percentage, streak);
+    } else {
+      const sprintTotal = <number> JSON.parse(<string>localStorage.getItem('SprintGameTotal'));
+      const sprintCorrectPercentage = <number> JSON.parse(<string>localStorage.getItem('SprintCorrectPercentage'));
+      const sprintStreak = <number> JSON.parse(<string>localStorage.getItem('SprintGameStreak'));
+
+      localStorage.setItem('SprintGameTotal', JSON.stringify(sprintTotal + total));
+      localStorage.setItem('SprintCorrectPercentage', JSON.stringify((sprintCorrectPercentage + percentage) / 2));
+      localStorage.setItem('SprintGameStreak', JSON.stringify(sprintStreak > streak ? sprintStreak : streak));
+    }
+  }
+
+  saveResults(total: number, percentage: number, streak: number) {
+    localStorage.setItem('SprintGameTotal', JSON.stringify(total));
+    localStorage.setItem('SprintCorrectPercentage', JSON.stringify(percentage));
+    localStorage.setItem('SprintGameStreak', JSON.stringify(streak));
+  }
+
+  getResults() {
+    const totalScore = <number> JSON.parse(<string>localStorage.getItem('SprintGameTotal'));
+    const correctPercentage = <number> JSON.parse(<string>localStorage.getItem('SprintCorrectPercentage'));
+    const gameStreak = <number> JSON.parse(<string>localStorage.getItem('SprintGameStreak'));
+  }
+
+  activateProp(el: HTMLElement, selector: string) {
+    if (el) {
+      const elements = document.querySelectorAll(selector);
+      (<HTMLButtonElement>document.querySelector('.start-btn')).disabled = false;
+      elements?.forEach((element) => element.classList.remove('active'));
+      el.classList.add('active');
+      this.data.curGroup = Number(el.innerText) - 1;
+    }
+  }
+
+
+  playAudio(btn: HTMLElement) {
+    if (btn) {
+      const id = btn.id.split('-').reverse()[0];
+      (<HTMLAudioElement>document.getElementById(`audio-word-${id}`)).play().then((res) => res).catch((e: Error) => e);
+    }
+  }
+
+  buttonPress() {
+    document.addEventListener('keydown', this.buttonDownHandler);
+    document.addEventListener('keyup', this.buttonUpHandler);
+  }
+
+  buttonPressRemove() {
+    document.addEventListener('keydown', this.buttonDownHandler);
+    document.addEventListener('keyup', this.buttonUpHandler);
+  }
+
+  buttonDownHandler(event: KeyboardEvent) {
+    const btnTrue = <HTMLDivElement>document.getElementById('btn-true');
+    const btnFalse = <HTMLDivElement>document.getElementById('btn-false');
+    if (event.key === '1') {
+      btnTrue.click();
+      btnTrue.classList.add('sprint-active')
+    } else if (event.key === '2') {
+      btnFalse.click();
+      btnFalse.classList.add('sprint-active')
+    }
+  }
+
+  buttonUpHandler(event: KeyboardEvent) {
+    const btnTrue = <HTMLDivElement>document.getElementById('btn-true');
+    const btnFalse = <HTMLDivElement>document.getElementById('btn-false');
+    if (event.key === '1') {
+      btnTrue.classList.remove('sprint-active')
+    } else if (event.key === '2') {
+      btnFalse.classList.remove('sprint-active')
     }
   }
 }
+
 
 export default SprintController;
