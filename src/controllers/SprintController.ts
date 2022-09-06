@@ -44,7 +44,16 @@ class SprintController {
     };
   }
 
+  removeRandomListeners() {
+    window.addEventListener('keyup', function (e) {
+      if (e.key === '1' || e.key === '2' || e.key === '3' || e.key === '4' || e.key === '5' || e.key === 'Enter'){
+        e.stopImmediatePropagation();
+      }
+    }, true);
+  }
+
   actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
+    this.removeRandomListeners();
     const mainContainer = <HTMLElement>document.querySelector('main');
     mainContainer.innerHTML = '';
 
@@ -84,7 +93,6 @@ class SprintController {
   startGame() {
     const startBtn = <HTMLButtonElement>document.querySelector('.start-btn');
     const mainContainer = findHtmlElement(document, 'main');
-
 
     startBtn.onclick = async () => {
       startBtn.disabled = true;

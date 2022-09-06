@@ -12,7 +12,6 @@ import { IUserWord } from '../common/interfaces/IUserWord';
 import { setWordPropsVisible } from '../views/components/word-card/word-card';
 
 class AudiocallController {
-
   app: App;
 
   data: IDataAudio;
@@ -37,8 +36,16 @@ class AudiocallController {
     };
   }
 
+  removeRandomListeners() {
+    window.addEventListener('keyup', function (e) {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.stopImmediatePropagation();
+      }
+    }, true);
+  }
 
   actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
+    this.removeRandomListeners();
     const mainContainer = findHtmlElement(document, 'main');
     mainContainer.innerHTML = '';
     if (page && difficulty && textBookClick) {
@@ -90,8 +97,8 @@ class AudiocallController {
     if (event.key === 'Enter') {
       (<HTMLButtonElement>document.getElementById('btn-next')).click();
     } else {
-      (<HTMLButtonElement>(
-        document.querySelector(`.answer${event.key}`)
+      if ((<HTMLButtonElement>(document.querySelector(`.answer${event.key}`))))
+        (<HTMLButtonElement>(document.querySelector(`.answer${event.key}`)
       )).click();
     }
   }
