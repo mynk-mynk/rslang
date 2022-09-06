@@ -38,6 +38,8 @@ class StatisticsController {
 
   private totalStreaksAudio: number;
 
+  private totalStreaksSprint: number;
+
   constructor(app: App) {
     this.app = app;
     this.userWords = [];
@@ -58,6 +60,7 @@ class StatisticsController {
     this.learnedWordsDates = [];
     this.learnedWordsCounts = [];
     this.totalStreaksAudio = 0;
+    this.totalStreaksSprint = 0;
   }
 
   async actionIndex() {
@@ -78,9 +81,10 @@ class StatisticsController {
     this.learnedWordsDates = [];
     this.learnedWordsCounts = [];
     this.totalStreaksAudio = 0;
+    this.totalStreaksSprint = 0;
 
     this.getUserStatistics();
-    main.innerHTML = StatisticsView.draw(this.newSprint, Math.round(this.correctSprint), 0, this.newAudio, Math.round(this.correctAudio), this.totalStreaksAudio, this.newWords, Math.round(this.correctTotal), this.learnedWords);
+    main.innerHTML = StatisticsView.draw(this.newSprint, Math.round(this.correctSprint), this.totalStreaksSprint, this.newAudio, Math.round(this.correctAudio), this.totalStreaksAudio, this.newWords, Math.round(this.correctTotal), this.learnedWords);
     StatisticsController.graphicNewWords(this.newWordsDates, this.newWordsCounts);
     StatisticsController.graphicLearnedWords(this.learnedWordsDates, this.learnedWordsCounts);
   }
@@ -91,6 +95,7 @@ class StatisticsController {
     let totalCountAudio = 0;
     let totalCorrectAudio = 0;
     const totalStreaksAudioArray: number[] = [];
+    const totalStreaksSprintArray: number[] = [];
     this.userWords.forEach((userWord) => {
       if (userWord.difficulty === 'learned') this.learnedWords += 1;
       if (userWord.optional.newWord && StatisticsController.chechDate(userWord.optional.dateNew)) {
@@ -100,6 +105,9 @@ class StatisticsController {
       }
       if (userWord.optional.totalStreakAudio) {
         totalStreaksAudioArray.push(userWord.optional.totalStreakAudio);
+      }
+      if (userWord.optional.totalStreakSprint) {
+        totalStreaksSprintArray.push(userWord.optional.totalStreakSprint);
       }
 
       totalCountSprint += userWord.optional.totalCountSprint;
@@ -149,6 +157,9 @@ class StatisticsController {
 
     this.totalStreaksAudio = totalStreaksAudioArray.length > 0
       ? Math.max(...totalStreaksAudioArray) : 0;
+
+    this.totalStreaksSprint = totalStreaksSprintArray.length > 0
+      ? Math.max(...totalStreaksSprintArray) : 0;
   }
 
   private static chechDate(date: number) {
