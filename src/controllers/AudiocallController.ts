@@ -33,6 +33,7 @@ class AudiocallController {
     };
   }
 
+
   actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
     const mainContainer = findHtmlElement(document, 'main');
     mainContainer.innerHTML = '';
@@ -301,7 +302,7 @@ class AudiocallController {
         mapIncorrect.size === 0 ? 100 : +((mapCorrect.size / mapSort.size) * 100).toFixed(0),
       ),
     );
-    createPieChart(mapIncorrect.size, mapCorrect.size);
+    // createPieChart(mapIncorrect.size, mapCorrect.size);
     mapCorrect.forEach((_, k) => {
       (<HTMLDivElement>(
         document.querySelector('.correct-results')

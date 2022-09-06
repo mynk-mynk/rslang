@@ -191,13 +191,14 @@ class TextbookController {
         newWord: true,
         dateNew: 0,
         dateLearned: 0,
-        newInGame: '',
+        newInGame: 'textbook',
         streakAudio: 0,
         streakSprint: 0,
         totalCountAudiocall: 0,
         totalCorrectAudiocall: 0,
         totalCountSprint: 0,
         totalCorrectSprint: 0,
+        totalStreakAudio: 0,
       },
     };
     return word;

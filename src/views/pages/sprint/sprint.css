@@ -1,3 +1,25 @@
+.start-btn {
+  display: inline-block;
+  width: 100px;
+  padding: 10px;
+  margin: 0 10px;
+  border: 2px solid var(--color);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.start-btn:hover {
+  cursor: pointer;
+  background: var(--color);
+  color: var(--ligth-color);
+}
+
+.start-btn:active {
+  transform: scale(0.98);
+}
+
+
 .main-container-sprint {
   position: relative;
   width: 100%;
@@ -5,9 +27,14 @@
   font-family: 'Comfortaa';
   margin: auto;
   display: flex;
+  gap: 40px;
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
+}
+
+h1 {
+  font-family: 'Comfortaa';
 }
 
 .game-container {
@@ -16,6 +43,20 @@
   flex-direction: column;
   align-items: center;
   padding-top: 50px;
+}
+
+.rules-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 70%;
+
+}
+
+.control-keys {
+  display: flex;
+  justify-content: center;
 }
 
 .sprint-timer {
@@ -42,32 +83,37 @@
 
 .correct-answers p {
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 6px;
   background: var(--color);
-  opacity: 20%;
+  opacity: 90%;
   margin: 3px;
 }
 
 .points-per-answer {
   font-size: 1.1rem;
   margin-top: 5px;
+
 }
 
 .progress {
   margin-bottom: 10px;
-  border-bottom: 2px solid var(--color);
+  /* border-bottom: 2px solid var(--color); */
+  height: 55px;
 }
 
 .word-props {
   text-align: center;
   margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .sprint-word {
   font-family: var(--font-primary);
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .sprint-translation {
@@ -112,6 +158,12 @@
 
 .btns-container div:active {
   transform: scale(0.95);
+  box-shadow: 5px 5px #000;
+}
+
+.sprint-active {
+  transform: scale(0.95);
+  box-shadow: 5px 5px #000;
 }
 
 .result-container {
@@ -144,6 +196,12 @@
   gap: 50px;
 }
 
+.results-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .results-description p {
   margin: 5px;
 }
@@ -156,17 +214,26 @@
   margin: 10px 0;
 }
 
-.word-list li {
+.word-list-item {
   height: 30px;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 10px;
+  text-align: left;
 }
 
-.word-list li span {
-  font-family: var(--font-primary);
+.word-sprint {
+  /* font-family: var(--font-primary); */
   font-weight: 500;
   font-size: 1.1rem;
+}
+
+.result-answers-container {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 
