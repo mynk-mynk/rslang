@@ -9,7 +9,7 @@ class TeamView {
       <div class="card-container">
         <img class="card-img" src="./assets/images/team/dasha.png" alt="Team member picture 1" width="200">
         <div class="card-description">
-          <p class="card-name">Name</p>
+          <p class="card-name">Dasha</p>
           <p>Frontend developer</p>
           <ul class="card-contribution">
           <li>Team lead</li>
@@ -23,7 +23,7 @@ class TeamView {
       <div class="card-container">
         <img class="card-img" src="./assets/images/team/rustam.jpg" alt="Team member picture 1" width="200">
         <div class="card-description">
-          <p class="card-name">Name</p>
+          <p class="card-name">Rustam</p>
           <p>Frontend developer</p>
           <ul class="card-contribution">
           <li>Backend</li>
@@ -37,7 +37,7 @@ class TeamView {
       <div class="card-container">
       <img class="card-img" src="./assets/images/team/ann.png" alt="Team member picture 1" width="200">
       <div class="card-description">
-        <p class="card-name">Name</p>
+        <p class="card-name">Ann</p>
         <p>Frontend developer</p>
         <ul class="card-contribution">
           <li>App architecture</li>
