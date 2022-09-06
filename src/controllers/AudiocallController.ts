@@ -47,10 +47,14 @@ class AudiocallController {
     this.removeRandomListeners();
     const mainContainer = findHtmlElement(document, 'main');
     mainContainer.innerHTML = '';
-    if (page && difficulty && textBookClick) {
+    if ((page || page === 0) && difficulty && textBookClick) {
       this.data.curPage = page;
       this.data.curGroup = difficulty;
       this.data.textbookClick = textBookClick;
+    } else {
+      this.data.curPage = 0;
+      this.data.curGroup = 0;
+      this.data.textbookClick = false;
     }
     this.data.answerMap.clear();
 
