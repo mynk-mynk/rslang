@@ -36,6 +36,8 @@ class StatisticsController {
 
   private learnedWordsCounts: number[];
 
+  private totalStreaksAudio: number;
+
   constructor(app: App) {
     this.app = app;
     this.userWords = [];
@@ -55,6 +57,7 @@ class StatisticsController {
 
     this.learnedWordsDates = [];
     this.learnedWordsCounts = [];
+    this.totalStreaksAudio = 0;
   }
 
   async actionIndex() {
@@ -72,14 +75,13 @@ class StatisticsController {
     this.newWordsCounts = [];
     this.learnedWordsDates = [];
     this.learnedWordsCounts = [];
+    this.totalStreaksAudio = 0;
 
     this.getUserStatistics();
     const main = findHtmlElement(document, 'main');
-    main.innerHTML = StatisticsView.draw(this.newSprint, Math.round(this.correctSprint), 3, this.newAudio, Math.round(this.correctAudio), 6, this.newWords, Math.round(this.correctTotal), this.learnedWords);
+    main.innerHTML = StatisticsView.draw(this.newSprint, Math.round(this.correctSprint), 0, this.newAudio, Math.round(this.correctAudio), this.totalStreaksAudio, this.newWords, Math.round(this.correctTotal), this.learnedWords);
     StatisticsController.graphicNewWords(this.newWordsDates, this.newWordsCounts);
-    // ['01.09', '02.09', '03.09', '04.09', '05.09', '06.09'], [12, 19, 3, 5, 2, 3]);
     StatisticsController.graphicLearnedWords(this.learnedWordsDates, this.learnedWordsCounts);
-    // ['01.09', '02.09', '03.09', '04.09', '05.09', '06.09'], [1, 2, 3, 5, 7, 9]);
   }
 
   getUserStatistics() {
@@ -87,6 +89,7 @@ class StatisticsController {
     let totalCorrectSprint = 0;
     let totalCountAudio = 0;
     let totalCorrectAudio = 0;
+    const totalStreaksAudioArray: number[] = [];
     this.userWords.forEach((userWord) => {
       if (userWord.difficulty === 'learned') this.learnedWords += 1;
       if (userWord.optional.newWord && StatisticsController.chechDate(userWord.optional.dateNew)) {
@@ -94,8 +97,10 @@ class StatisticsController {
         if (userWord.optional.newInGame === 'audiocall') this.newAudio += 1;
         if (userWord.optional.newInGame === 'sprint') this.newSprint += 1;
       }
+      if (userWord.optional.totalStreakAudio) {
+        totalStreaksAudioArray.push(userWord.optional.totalStreakAudio);
+      }
 
-      if (userWord.optional.totalCountSprint) console.log(userWord);
       totalCountSprint += userWord.optional.totalCountSprint;
       totalCorrectSprint += userWord.optional.totalCorrectSprint;
       totalCountAudio += userWord.optional.totalCountAudiocall;
@@ -136,6 +141,9 @@ class StatisticsController {
       }
       return val;
     });
+
+    this.totalStreaksAudio = totalStreaksAudioArray.length > 0
+      ? Math.max(...totalStreaksAudioArray) : 0;
   }
 
   private static chechDate(date: number) {
