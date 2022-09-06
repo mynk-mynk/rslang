@@ -243,8 +243,12 @@ class TextbookController {
       const userWord = userWords.find((el) => el.wordId === word.id);
       if (userWord) {
         const prop = word.querySelector<HTMLElement>(`.word-${userWord.difficulty}`);
+        const audiocallCount = findHtmlElement(word, '#game-progress-audiocall');
+        const sprintCount = findHtmlElement(word, '#game-progress-sprint');
         if (prop) {
           prop.classList.add('active');
+          audiocallCount.innerText = `${userWord.optional.totalCorrectAudiocall} / ${userWord.optional.totalCountAudiocall}`;
+          sprintCount.innerText = `${userWord.optional.totalCorrectSprint} / ${userWord.optional.totalCountSprint}`;
         }
       }
     });

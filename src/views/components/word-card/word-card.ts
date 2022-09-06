@@ -35,6 +35,10 @@ export function renderWordCard(word: IWord) {
       </p>
       <p class="example-translation">${word.textExampleTranslate}</p>
     </div>
+    <div class="word-progress">
+      <p>Аудиовызов: <span id="game-progress-audiocall">0 / 0</span></p>
+      <p>Спринт: <span id="game-progress-sprint">0 / 0</span></p>
+    </div>
   </div>`;
   return wordContainer;
 }
@@ -74,8 +78,15 @@ export function changeCardBoxshadow(difficulty: number) {
 
 export function setWordPropsVisible(auth: boolean) {
   const props = document.querySelectorAll<HTMLElement>('.word-properties');
+  const progress = document.querySelectorAll<HTMLElement>('.word-progress');
+  
   props.forEach((prop) => {
     const prop2 = prop;
     prop2.style.display = auth ? 'flex' : 'none';
+  });
+
+  progress.forEach((prop) => {
+    const prop2 = prop;
+    prop2.style.display = auth ? 'block' : 'none';
   });
 }
