@@ -1,7 +1,7 @@
 import { findHtmlElement, showBurgerMenu } from '../common/utils/utils';
 import SprintView from '../views/pages/sprint/sprint';
 import { IDataSprint } from '../common/interfaces/IDataSprint';
-import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
+import { renderDifficultyBar, setHardWordsVisible } from '../views/components/difficulty-bar/difficulty-bar';
 import { IWord, IWords } from '../common/interfaces/IWord';
 import Word from '../models/Word';
 import App from '../models/App';
@@ -15,8 +15,11 @@ class SprintController {
 
   data: IDataSprint;
 
+  // timer: NodeJS.Timer | null
+
   constructor(app: App) {
     this.app = app;
+    // this.timer = null;
 
     this.data = {
       textbookClick: true,
@@ -46,6 +49,7 @@ class SprintController {
       this.data.textbookClick = textBookClick;
     }
     this.data.answerMap.clear();
+    this.deleteUserWords()
 
     mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription());
 
@@ -56,6 +60,7 @@ class SprintController {
       (<HTMLButtonElement>document.querySelector('.start-btn')).disabled = false;
     } else {
       gameContainer.append(renderDifficultyBar());
+      setHardWordsVisible(this.app.isAuth)
       gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
       
       const difficultyContainer = document.querySelector('.difficulty-container');
@@ -90,7 +95,7 @@ class SprintController {
       this.checkAnswer();
       this.buttonPress();
       this.countdown(1);
-      this.checkGameEndHandler();
+      this.checkGameEndTimer();
       }
     
   };
@@ -128,7 +133,9 @@ class SprintController {
             <number> this.data.curPage,
             <number> this.data.curGroup,
           );
-          this.data.wordsArr = midRes.flat();
+          
+          this.data.wordsArr = midRes;
+          console.log(this.data.wordsArr);
           this.removeLearnedUserWords(this.data.wordsArr, userWords);
         }
       } else {
@@ -136,7 +143,8 @@ class SprintController {
           <number> this.data.curPage,
           <number> this.data.curGroup,
         );
-        this.data.wordsArr = midRes.flat();
+        this.data.wordsArr = midRes;
+        console.log(this.data.wordsArr);
       }
     } else {
       for (let i = 0; i < 30; i += 1) {
@@ -150,7 +158,7 @@ class SprintController {
   wordsRandomizer() {
     this.data.curWord = this.data.wordsArr[Math.floor(Math.random() * this.data.wordsArr.length)];
     const random = this.data.wordsArr.sort(() => 0.5 - Math.random()).slice(0, 2);
-    if (random.includes(<IWord> this.data.curWord)) {
+    if (random.includes(<IWord> this.data.curWord) && random.length > 2) {
       this.wordsRandomizer();
     } else {
       this.data.curAnswers = random;
@@ -184,7 +192,6 @@ class SprintController {
 
   decreaseMultiplier() {
     this.data.curStreak = 0;
-    (<HTMLImageElement>document.querySelector('.answer-icon-image')).src = 'wrong';
     (<HTMLImageElement>document.querySelector('.answer-icon-image')).style.visibility = 'visible';
     this.changeStreakColor('var(--color)');
     this.data.answerMap.set(<IWord>this.data.curWord, 'incorrect');
@@ -225,23 +232,28 @@ class SprintController {
     if (counter?.innerHTML !== '0:50') {
       if(this.data.wordsArr.length <= 2) {
         if (this.data.curPage - 1 === -1) {
-          // clearInterval(timerId);
+          // clearInterval(this.timer);
           this.finishGame();
+          console.log('3333333');
 
         } else {
           this.data.curPage -= 1;
+          console.log(this.data.curPage); 
           await this.generateWords();
+          console.log('44444444');
           this.nextQuestion();
         }
       }
   } else {
     // clearInterval(timerId);
+    console.log('55555555');
     this.finishGame()
   }
   }
 
   checkGameEndTimer() {
     let timerId = setInterval(() => this.checkGameEndHandler(), 1000);
+    // this.timer = timerId
   }
   
 
@@ -292,8 +304,8 @@ class SprintController {
       mapCorrect.size / mapSort.size,
       <number> this.data.maxStreak,
     );
-    this.updateUserWords();
-    // this.deleteUserWords()
+    // this.updateUserWords();
+    
   }
 
   // showAnswerIcon() {
@@ -305,26 +317,37 @@ class SprintController {
     const btnFalse = <HTMLButtonElement>document.getElementById('btn-false');
 
     btnTrue.onclick = () => {
+      const currentWordIndex: number = this.data.wordsArr.indexOf(<IWord> this.data.curWord);
+      this.data.wordsArr.splice(currentWordIndex, 1);
       if (this.data.curWord === this.data.curTranslation) {
         this.increaseMultiplier();
       } else {
         this.decreaseMultiplier();
       }
-      this.nextQuestion();
+      if(this.data.wordsArr.length <= 2) {
+        return
+      } else {
+        this.nextQuestion();
+      }
     };
     btnFalse.onclick = () => {
+      const currentWordIndex: number = this.data.wordsArr.indexOf(<IWord> this.data.curWord);
+      this.data.wordsArr.splice(currentWordIndex, 1);
       if (this.data.curWord !== this.data.curTranslation) {
         this.increaseMultiplier();
       } else {
         this.decreaseMultiplier();
       }
-      this.nextQuestion();
+      if(this.data.wordsArr.length <= 2) {
+        return
+      } else {
+        this.nextQuestion();
+      }
     };
   }
   
   nextQuestion() {
-    const currentWordIndex: number = this.data.wordsArr.indexOf(<IWord> this.data.curWord);
-    this.data.wordsArr.splice(currentWordIndex, 1);
+    console.log(this.data.wordsArr);
     this.wordsRandomizer();
     const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
     questionContainer.innerHTML = SprintView.renderQuestion(

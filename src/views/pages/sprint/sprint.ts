@@ -26,7 +26,6 @@ class SprintView {
           <img src="./assets/images/sprint/right-arrow.png">
         </div>
       </div>
-      <h3>Пожалуйста, выберите раздел</h3>
     </div>`;
   }
 
