@@ -352,7 +352,6 @@ class App {
   }
 
   openGamePage(page: keyof IAppPages, params: IGameParams) {
-    console.log(page);
     this.pages[page].actionIndex(params.page, params.difficulty, true);
   }
 }
