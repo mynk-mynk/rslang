@@ -199,6 +199,7 @@ class TextbookController {
         totalCountSprint: 0,
         totalCorrectSprint: 0,
         totalStreakAudio: 0,
+        totalStreakSprint: 0,
       },
     };
     return word;

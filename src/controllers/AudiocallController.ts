@@ -4,21 +4,24 @@ import { IDataAudio } from '../common/interfaces/IDataAudio';
 import config from '../config';
 import Word from '../models/Word';
 import AudiocallView from '../views/pages/audiocall/audiocall';
-import { renderDifficultyBar } from '../views/components/difficulty-bar/difficulty-bar';
+import { renderDifficultyBar, setHardWordsVisible } from '../views/components/difficulty-bar/difficulty-bar';
 import App from '../models/App';
 import { createPieChart } from '../views/components/pie-chart/pie-chart';
 import User from '../models/User';
 import { IUserWord } from '../common/interfaces/IUserWord';
+import { setWordPropsVisible } from '../views/components/word-card/word-card';
 
 class AudiocallController {
-
   app: App;
 
   data: IDataAudio;
 
   constructor(app: App) {
     this.app = app;
-    // this.app.subscribeOnAuthChange(() => setHardWordsVisible(this.app.isAuth));
+    this.app.subscribeOnAuthChange(() => {
+      setHardWordsVisible(this.app.isAuth);
+      setWordPropsVisible(this.app.isAuth);
+    });
 
     this.data = {
       textbookClick: false,
@@ -33,8 +36,16 @@ class AudiocallController {
     };
   }
 
+  removeRandomListeners() {
+    window.addEventListener('keyup', function (e) {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.stopImmediatePropagation();
+      }
+    }, true);
+  }
 
   actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
+    this.removeRandomListeners();
     const mainContainer = findHtmlElement(document, 'main');
     mainContainer.innerHTML = '';
     if (page && difficulty && textBookClick) {
@@ -52,6 +63,7 @@ class AudiocallController {
       (<HTMLButtonElement>document.querySelector('.start-btn')).disabled = false;
     } else {
       gameContainer.append(renderDifficultyBar());
+      setHardWordsVisible(this.app.isAuth);
       gameContainer.insertAdjacentHTML('beforeend', AudiocallView.renderStartBtn());
 
       const difficultyContainer = document.querySelector('.difficulty-container');
@@ -61,7 +73,6 @@ class AudiocallController {
     }
 
     this.startGame();
-    // setHardWordsVisible(this.app.isAuth);
   }
 
   activateProp(el: HTMLElement, selector: string) {
@@ -86,8 +97,8 @@ class AudiocallController {
     if (event.key === 'Enter') {
       (<HTMLButtonElement>document.getElementById('btn-next')).click();
     } else {
-      (<HTMLButtonElement>(
-        document.querySelector(`.answer${event.key}`)
+      if ((<HTMLButtonElement>(document.querySelector(`.answer${event.key}`))))
+        (<HTMLButtonElement>(document.querySelector(`.answer${event.key}`)
       )).click();
     }
   }
@@ -120,18 +131,22 @@ class AudiocallController {
           this.data.wordsArr = userCustomWords;
         } else {
           const midRes = <IWord[]> await Word.getWords(
-            <number> this.data.curPage,
-            <number> this.data.curGroup,
+            this.data.curPage,
+            this.data.curGroup,
           );
-          this.data.wordsArr = midRes.flat();
+          for (let i = 0; i < midRes.length; i += 1) {
+            this.data.wordsArr.push(midRes[i]);
+          }
           this.removeLearnedUserWords(this.data.wordsArr, userWords);
         }
       } else {
         const midRes = <IWord[]> await Word.getWords(
-          <number> this.data.curPage,
-          <number> this.data.curGroup,
+          this.data.curPage,
+          this.data.curGroup,
         );
-        this.data.wordsArr = midRes.flat();
+        for (let i = 0; i < midRes.length; i += 1) {
+          this.data.wordsArr.push(midRes[i]);
+        }
       }
     } else {
       for (let i = 0; i < 30; i += 1) {
@@ -302,7 +317,7 @@ class AudiocallController {
         mapIncorrect.size === 0 ? 100 : +((mapCorrect.size / mapSort.size) * 100).toFixed(0),
       ),
     );
-    // createPieChart(mapIncorrect.size, mapCorrect.size);
+    createPieChart(mapIncorrect.size, mapCorrect.size, 'audiocall');
     mapCorrect.forEach((_, k) => {
       (<HTMLDivElement>(
         document.querySelector('.correct-results')
@@ -372,6 +387,7 @@ class AudiocallController {
                 totalCountSprint: newIds[0].optional.totalCountSprint,
                 totalCorrectSprint: newIds[0].optional.totalCorrectSprint,
                 totalStreakAudio,
+                totalStreakSprint: newIds[0].optional.totalStreakSprint,
               },
             });
           } else {
@@ -389,6 +405,7 @@ class AudiocallController {
                 totalCountSprint: 0,
                 totalCorrectSprint: 0,
                 totalStreakAudio,
+                totalStreakSprint: 0,
               },
             });
           }
@@ -407,6 +424,7 @@ class AudiocallController {
               totalCountSprint: 0,
               totalCorrectSprint: 0,
               totalStreakAudio,
+              totalStreakSprint: 0,
             },
           });
         }

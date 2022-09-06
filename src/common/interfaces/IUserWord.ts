@@ -12,6 +12,7 @@ export interface IUserWord {
     totalCountSprint: number,
     totalCorrectSprint: number,
     totalStreakAudio: number,
+    totalStreakSprint: number,
   },
   wordId?: string,
   id?: string,
