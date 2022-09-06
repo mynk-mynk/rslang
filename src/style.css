@@ -81,6 +81,14 @@ input {
   -moz-appearance: none;
 }
 
+button[disabled="true"]:hover {
+  cursor: auto;
+  transform: scale(1);
+  color: #9caa93;
+  font-weight: 400;
+  opacity: 40%;
+}
+
 ul {
   list-style: none;
 }

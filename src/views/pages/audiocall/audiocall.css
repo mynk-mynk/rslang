@@ -1,13 +1,14 @@
 .start-btn {
   background: none;
   font-family: var(--font-secondary);
+  color: var(--color);
+  font-size: 1rem;
   display: inline-block;
   width: 100px;
   padding: 10px;
   margin: 20px 10px;
   border: 2px solid var(--color);
   border-radius: 10px;
-  font-size: 0.8rem;
   transition: 0.2s;
 }
 
@@ -25,13 +26,14 @@
 .next-btn {
   background: none;
   font-family: var(--font-secondary);
+  color: var(--color);
+  font-size: 1rem;
   display: inline-block;
   width: 100px;
   padding: 10px;
   margin: 0 10px;
   border: 2px solid var(--color);
   border-radius: 10px;
-  font-size: 0.8rem;
   transition: 0.2s;
 }
 
@@ -63,7 +65,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 80px;
+  gap: 50px;
   padding-top: 100px;
 }
 
@@ -92,12 +94,33 @@
 .audiocall-image-container {
   width: 320px;
   height: 220px;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.sound-icon,
-.word-img {
-  width: 100%;
-  height: 100%;
+
+.sound-icon {
+  width: 130px;
+  height: 110px;
+  transition: width 0.1s ease-in-out;
+}
+
+.sound-icon.show-answer {
+  width: 320px;
+  height: 220px;
+}
+
+.audio-btn-img {
+  cursor: pointer;
+  filter: var(--filter-light);
+}
+
+.audio-btn-img:hover {
+  transform: scale(1.05);
+}
+
+.audio-btn-img:active {
+  transform: scale(0.95);
 }
 
 .audiocall-word-description {
@@ -183,6 +206,14 @@
 
 }
 
+button[disabled="true"].correct-answer:hover,
+button[disabled="true"].wrong-answer:hover {
+  text-shadow: 0 0 1px var(--color);
+  opacity: 100%;
+  transform: scale(1.05);
+  color: var(--color);
+} 
+
 .answer-img {
   display: none;
   position: absolute;
@@ -253,4 +284,3 @@
   flex-direction: column;
   align-items: flex-start;
 }
-

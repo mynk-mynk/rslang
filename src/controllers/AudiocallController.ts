@@ -194,6 +194,7 @@ class AudiocallController {
       ];
       if ((<HTMLElement>e.target).classList.contains('answer-item')) {
         const answerImage = document.querySelector('.sound-icon');
+        answerImage?.classList.add('show-answer');
         (<HTMLImageElement>answerImage).src = `${config.api.url}${
           (<IWord> this.data.curWord).image
         }`;
