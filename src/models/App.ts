@@ -251,6 +251,7 @@ class App {
       if (token) {
         localStorage.clear();
         this.isAuth = false;
+        window.location.reload();
       } else {
         this.openAuthorizationBlock();
       }
@@ -302,6 +303,7 @@ class App {
           this.closeAuthorizationBlock();
           (this.htmlElemets.authIcon as HTMLImageElement).src = './assets/images/verified.png';
           this.isAuth = true;
+          window.location.reload();
         } else {
           this.htmlElemets.loginError.style.display = 'block';
           (this.htmlElemets.loginPassword as HTMLInputElement).value = '';

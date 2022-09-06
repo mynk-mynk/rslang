@@ -1,5 +1,5 @@
 import './statistics.css';
-// import { IObject } from '../../../common/interfaces/IObject';
+// import { IObject } from './../common/interfaces/IObject';
 
 class StatisticsView {
   // static draw(data: IObject<string>)
@@ -35,17 +35,17 @@ class StatisticsView {
         <div class="sprint-statistics statistics-container">
           <h2>Игра "Спринт"</h2>
           <div class="statistics-content">               
-              <div class="statistics-content-item"><img src="../../assets/images/statistics/learned-icon.png" alt="New words"><p>Новых слов: ${newSprint}</p></div>
-              <div class="statistics-content-item"><img src="../../assets/images/right-icon.png" alt="Correct words"><p>Правильных ответов: ${correctSprint}%</p></div>
-              <div class="statistics-content-item"><img src="../../assets/images/statistics/streak-icon.png" alt="Streak words"><p>Самая длинная серия ответов: ${streakSprint}</p></div>
+              <div class="statistics-content-item"><img src="./assets/images/statistics/learned-icon.png" alt="New words"><p>Новых слов: ${newSprint}</p></div>
+              <div class="statistics-content-item"><img src="./assets/images/right-icon.png" alt="Correct words"><p>Правильных ответов: ${correctSprint}%</p></div>
+              <div class="statistics-content-item"><img src="./assets/images/statistics/streak-icon.png" alt="Streak words"><p>Самая длинная серия ответов: ${streakSprint}</p></div>
           </div>
         </div>
         <div class="audiocall-statistics statistics-container">
           <h2>Игра "Аудиозвонок"</h2>
           <div class="statistics-content">
-              <div class="statistics-content-item"><img src="../../assets/images/statistics/learned-icon.png" alt="New words"><p>Новых слов: ${newAudio}</p></div>
-              <div class="statistics-content-item"><img src="../../assets/images/right-icon.png" alt="Correct words"><p>Правильных ответов: ${correctAudio}%</p></div>
-              <div class="statistics-content-item"><img src="../../assets/images/statistics/streak-icon.png" alt="Streak words"><p>Самая длинная серия ответов: ${streakAudio}</p></div>
+              <div class="statistics-content-item"><img src="./assets/images/statistics/learned-icon.png" alt="New words"><p>Новых слов: ${newAudio}</p></div>
+              <div class="statistics-content-item"><img src="./assets/images/right-icon.png" alt="Correct words"><p>Правильных ответов: ${correctAudio}%</p></div>
+              <div class="statistics-content-item"><img src="./assets/images/statistics/streak-icon.png" alt="Streak words"><p>Самая длинная серия ответов: ${streakAudio}</p></div>
           </div>
         </div>
     </div>
