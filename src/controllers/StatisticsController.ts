@@ -133,8 +133,12 @@ class StatisticsController {
     if (!this.correctTotal) this.correctTotal = 0;
     this.correctTotal *= 100;
 
-    this.correctSprint = totalCorrectSprint / totalCountSprint * 100;
-    this.correctAudio = totalCorrectAudio / totalCountAudio * 100;
+    this.correctSprint = totalCorrectSprint / totalCountSprint;
+    if (!this.correctSprint) this.correctSprint = 0;
+    this.correctSprint *= 100;
+    this.correctAudio = totalCorrectAudio / totalCountAudio;
+    if (!this.correctAudio) this.correctAudio = 0;
+    this.correctAudio *= 100;
 
     this.learnedWordsCounts = this.learnedWordsCounts.map((val, index, array) => {
       for (let i = 0; i < index; i += 1) {
