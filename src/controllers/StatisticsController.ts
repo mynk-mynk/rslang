@@ -61,6 +61,8 @@ class StatisticsController {
   }
 
   async actionIndex() {
+    const main = findHtmlElement(document, 'main');
+    if (!this.app.isAuth) main.innerHTML = '<p class="main-container-index">Данный раздел доступен только для авторизованных пользователей</p>';
     this.userWords = await User.getUserWords();
     this.learnedWords = 0;
     this.newWords = 0;
@@ -78,7 +80,6 @@ class StatisticsController {
     this.totalStreaksAudio = 0;
 
     this.getUserStatistics();
-    const main = findHtmlElement(document, 'main');
     main.innerHTML = StatisticsView.draw(this.newSprint, Math.round(this.correctSprint), 0, this.newAudio, Math.round(this.correctAudio), this.totalStreaksAudio, this.newWords, Math.round(this.correctTotal), this.learnedWords);
     StatisticsController.graphicNewWords(this.newWordsDates, this.newWordsCounts);
     StatisticsController.graphicLearnedWords(this.learnedWordsDates, this.learnedWordsCounts);
@@ -101,7 +102,6 @@ class StatisticsController {
         totalStreaksAudioArray.push(userWord.optional.totalStreakAudio);
       }
 
-      console.log(userWord.optional.totalCountSprint);
       totalCountSprint += userWord.optional.totalCountSprint;
       totalCorrectSprint += userWord.optional.totalCorrectSprint;
       totalCountAudio += userWord.optional.totalCountAudiocall;
@@ -127,7 +127,7 @@ class StatisticsController {
         if (this.learnedWordsDates[i] === dateLearned) this.learnedWordsCounts[i] += 1;
       }
     });
-    console.log(totalCountSprint);
+
     this.correctTotal = (totalCorrectSprint + totalCorrectAudio)
       / (totalCountSprint + totalCountAudio);
     if (!this.correctTotal) this.correctTotal = 0;
