@@ -204,11 +204,13 @@ class TextbookController {
     if (userWord) {
       userWord.difficulty = difficulty;
       // to match PUT IUserWord interface (fails with them)
+      if ((userWord.difficulty) === 'learned' && !userWord.optional.dateLearned) userWord.optional.dateLearned = Date.now();
       delete userWord.wordId;
       delete userWord.id;
       await User.updateUserWord(id, userWord);
     } else {
       userWord = this.createUserWord(difficulty);
+      if ((userWord.difficulty) === 'learned' && !userWord.optional.dateLearned) userWord.optional.dateLearned = Date.now();
       User.createUserWord(id, userWord);
     }
   }
