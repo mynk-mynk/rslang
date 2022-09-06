@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-primary);
-  font-size: 1.8rem;
+  font-size: 1.8rem; 
   width: 50px;
   height: 50px;
   border-radius: 25px;
@@ -19,31 +19,31 @@
 }
 
 .level1 {
-  background: #f06969;
+  background: var(--diff1);
 }
 
 .level2 {
-  background: #ec7d3d;
+  background: var(--diff2);
 }
 
 .level3 {
-  background: #e4e713;
+  background: var(--diff3);
 }
 
 .level4 {
-  background: #50a150;
+  background: var(--diff4);
 }
 
 .level5 {
-  background: #69d0f0;
+  background: var(--diff5);
 }
 
 .level6 {
-  background: #4183c0;
+  background: var(--diff6);
 }
 
 .level7 {
-  background: #906bb3;
+  background: var(--diff7)
 }
 
 .difficulty-btn:hover {

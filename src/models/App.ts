@@ -1,8 +1,9 @@
 import { IErrorApi } from '../common/interfaces/IErrorApi';
 import { IHtmlElements } from '../common/interfaces/IHtmlElemets';
 import { IUser } from '../common/interfaces/IUser';
+import { IGameParams } from '../common/interfaces/IGameParams';
 import {
-  closeBurgerMenu, findHtmlElement, hideBurgerMenu, showBurgerMenu, toggleBurgerMenu,
+  closeBurgerMenu, findHtmlElement, hideBurgerMenu, showBurgerMenu,
 } from '../common/utils/utils';
 import config from '../config';
 import AudiocallController from '../controllers/AudiocallController';
@@ -17,18 +18,30 @@ import renderAuthorization from '../views/components/authorization/authorization
 import EventObserver from './EventObserver';
 import User from './User';
 
+interface IAppPages {
+  index: IndexController,
+  team: TeamController,
+  textbook: TextbookController,
+  sprint: SprintController,
+  audiocall: AudiocallController,
+  statistics: StatisticsController,
+  error: ErrorController,
+}
+
 class App {
   private _url: string;
 
   private page: string;
 
-  private readonly pages;
+  private readonly pages: IAppPages;
 
   private urlObserver: EventObserver<string>;
 
   private readonly htmlElemets: IHtmlElements;
 
   private _isAuth: boolean;
+
+  private authObserver: EventObserver<boolean>;
 
   constructor() {
     this._url = window.location.pathname;
@@ -43,14 +56,17 @@ class App {
       showBurgerMenu();
     }
 
+    this._isAuth = !!localStorage.getItem('token');
+    this.authObserver = new EventObserver<boolean>();
+
     this.pages = {
       index: new IndexController(this),
-      team: TeamController,
-      textbook: TextbookController,
-      sprint: SprintController,
-      audiocall: AudiocallController,
+      team: new TeamController(),
+      textbook: new TextbookController(this),
+      sprint: new SprintController(),
+      audiocall: new AudiocallController(this),
       statistics: new StatisticsController(this),
-      error: ErrorController,
+      error: new ErrorController(),
     };
     this.urlObserver = new EventObserver<string>();
     this.htmlElemets = {
@@ -87,9 +103,14 @@ class App {
 
   set isAuth(value: boolean) {
     this._isAuth = value;
-    const imgUrl = `./assets/svg/${value ? '' : 'un'}verified.svg`;
+    const imgUrl = `./assets/images/${value ? '' : 'un'}verified.png`;
     (this.htmlElemets.authIcon as HTMLImageElement).src = imgUrl;
     this.htmlElemets.tooltipText.innerHTML = value ? 'Выйти' : 'Войти?';
+    this.authObserver.broadcast(this.isAuth);
+  }
+
+  subscribeOnAuthChange(callback: () => void) {
+    this.authObserver.subscribe(callback);
   }
 
   start() {
@@ -107,7 +128,7 @@ class App {
     this.setRouterToElements('.logo');
 
     const burgerIcon = findHtmlElement(document, '.burger');
-    burgerIcon.addEventListener('click', toggleBurgerMenu);
+    burgerIcon.addEventListener('click', () => App.toggleBurgerMenu());
 
     // add event listener to browser history buttons
     window.addEventListener('popstate', () => {
@@ -136,7 +157,7 @@ class App {
 
   private getContent() {
     closeBurgerMenu();
-    const controller = this.pages[this.page as keyof typeof this.pages];
+    const controller = this.pages[this.page as keyof IAppPages];
     if (controller) {
       controller.actionIndex();
     } else {
@@ -279,7 +300,8 @@ class App {
           this.clearLoginForm();
           this.clearRegistrationForm();
           this.closeAuthorizationBlock();
-          (this.htmlElemets.authIcon as HTMLImageElement).src = './assets/svg/verified.svg';
+          (this.htmlElemets.authIcon as HTMLImageElement).src = './assets/images/verified.png';
+          this.isAuth = true;
         } else {
           this.htmlElemets.loginError.style.display = 'block';
           (this.htmlElemets.loginPassword as HTMLInputElement).value = '';
@@ -325,6 +347,11 @@ class App {
     this.addLoginLinkBtnListener();
     this.addLoginBtnListener();
     this.addRegistrationBtnListener();
+  }
+
+  openGamePage(page: keyof IAppPages, params: IGameParams) {
+    console.log(page);
+    this.pages[page].actionIndex(params.page, params.difficulty, true);
   }
 }
 

@@ -42,10 +42,11 @@ class StatisticsController {
     this.streakAudio = 0;
   }
 
-  async actionIndex() {
-    this.userWords = await User.getUserWords();
-    this.getUserStatistics();
+  // async actionIndex() {
+  //   this.userWords = await User.getUserWords();
+  //   this.getUserStatistics();
 
+  actionIndex() {
     const main = findHtmlElement(document, 'main');
     main.innerHTML = StatisticsView.draw(1, 2, 3, 4, 5, 6, 7, 8, this.learnedWords);
     StatisticsController.graphicNewWords(['01.09', '02.09', '03.09', '04.09', '05.09', '06.09'], [12, 19, 3, 5, 2, 3]);

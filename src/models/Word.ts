@@ -1,3 +1,4 @@
+import { IUserWord } from '../common/interfaces/IUserWord';
 import { IWord } from '../common/interfaces/IWord';
 import config from '../config';
 
@@ -28,6 +29,16 @@ class Word {
       .then((data: IWord) => data)
       .catch((err) => console.log(err));
     return word;
+  }
+
+  static async convertIUserWordToIWord(userWord: IUserWord) {
+    const id = userWord.wordId || '';
+    let res: IWord;
+    if (id) {
+      res = await Word.getWord(id) as IWord;
+      return res;
+    }
+    return undefined;
   }
 }
 
