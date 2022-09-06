@@ -10,16 +10,15 @@ import { IUserWord } from '../common/interfaces/IUserWord';
 import User from '../models/User';
 
 class SprintController {
-
   app: App;
 
   data: IDataSprint;
 
-  // timer: NodeJS.Timer | null
+  timer: number | null
 
   constructor(app: App) {
     this.app = app;
-    // this.timer = null;
+    this.timer = null;
 
     this.data = {
       textbookClick: true,
@@ -39,17 +38,15 @@ class SprintController {
   }
 
   actionIndex(page?: number, difficulty?: number, textBookClick?: boolean) {
-
     const mainContainer = <HTMLElement>document.querySelector('main');
     mainContainer.innerHTML = '';
-    
+
     if (page && difficulty && textBookClick) {
       this.data.curPage = page;
       this.data.curGroup = difficulty;
       this.data.textbookClick = textBookClick;
     }
     this.data.answerMap.clear();
-    this.deleteUserWords()
 
     mainContainer.insertAdjacentHTML('afterbegin', SprintView.renderSprintDescription());
 
@@ -60,16 +57,16 @@ class SprintController {
       (<HTMLButtonElement>document.querySelector('.start-btn')).disabled = false;
     } else {
       gameContainer.append(renderDifficultyBar());
-      setHardWordsVisible(this.app.isAuth)
+      setHardWordsVisible(this.app.isAuth);
       gameContainer.insertAdjacentHTML('beforeend', SprintView.renderStartBtn());
-      
+
       const difficultyContainer = document.querySelector('.difficulty-container');
       difficultyContainer?.addEventListener('click', (e) => {
         this.activateProp(e.target as HTMLElement, '.difficulty-btn');
       });
     }
 
-    this.startGame()
+    this.startGame();
   }
 
   startGame() {
@@ -86,20 +83,22 @@ class SprintController {
         mainContainer.innerHTML = SprintView.renderGameContainer();
         const questionContainer = <HTMLDivElement>document.querySelector('.word-props');
         questionContainer.innerHTML = SprintView.renderQuestion(
-        <IWord>this.data.curWord,
-        <IWord>this.data.curTranslation,
+        <IWord> this.data.curWord,
+        <IWord> this.data.curTranslation,
         'right',
-      );
-      const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
-      scoresContainer.innerHTML = SprintView.renderScores(this.data.totalScore, this.data.pointsPerAnswer);
-      this.checkAnswer();
-      this.buttonPress();
-      this.countdown(1);
-      this.checkGameEndTimer();
+        );
+        const scoresContainer = <HTMLDivElement>document.querySelector('.answers');
+        scoresContainer.innerHTML = SprintView.renderScores(
+          this.data.totalScore,
+          this.data.pointsPerAnswer,
+        );
+        this.checkAnswer();
+        this.buttonPress();
+        this.countdown(1);
+        this.checkGameEndTimer();
       }
-    
-  };
-  } 
+    };
+  }
 
   removeLearnedUserWords(array1: IWord[], array2: IUserWord[]) {
     for (let i = 0; i < array1.length; i += 1) {
@@ -130,42 +129,45 @@ class SprintController {
           this.data.wordsArr = userCustomWords;
         } else {
           const midRes = <IWord[]> await Word.getWords(
-            <number> this.data.curPage,
-            <number> this.data.curGroup,
+            this.data.curPage,
+            this.data.curGroup,
           );
-          
-          this.data.wordsArr = midRes;
-          console.log(this.data.wordsArr);
+          for (let i = 0; i < midRes.length; i += 1) {
+            this.data.wordsArr.push(midRes[i]);
+          }
+
           this.removeLearnedUserWords(this.data.wordsArr, userWords);
         }
       } else {
         const midRes = <IWord[]> await Word.getWords(
-          <number> this.data.curPage,
-          <number> this.data.curGroup,
+          this.data.curPage,
+          this.data.curGroup,
         );
-        this.data.wordsArr = midRes;
+        for (let i = 0; i < midRes.length; i += 1) {
+          this.data.wordsArr.push(midRes[i]);
+        }
         console.log(this.data.wordsArr);
       }
     } else {
       for (let i = 0; i < 30; i += 1) {
-        const midRes = <IWord[]> await Word.getWords(i, <number> this.data.curGroup);
+        const midRes = <IWord[]> await Word.getWords(i, this.data.curGroup);
         temporaryResult.push(midRes.flat());
       }
       this.data.wordsArr = temporaryResult.flat();
     }
   }
-  
+
   wordsRandomizer() {
     this.data.curWord = this.data.wordsArr[Math.floor(Math.random() * this.data.wordsArr.length)];
     const random = this.data.wordsArr.sort(() => 0.5 - Math.random()).slice(0, 2);
-    if (random.includes(<IWord> this.data.curWord) && random.length > 2) {
+    if (random.includes(this.data.curWord) && random.length > 2) {
       this.wordsRandomizer();
     } else {
       this.data.curAnswers = random;
       <IWords> this.data.curAnswers.splice(
         Math.floor(Math.random() * 2),
         1,
-        <IWord> this.data.curWord,
+        this.data.curWord,
       );
       this.data.curTranslation = this.data.curAnswers[Math.round(Math.random())];
     }
@@ -176,6 +178,7 @@ class SprintController {
     const mins = minutes;
     function tick() {
       const counter = document.getElementById('timer-container');
+      if (!counter) { return };
       const currentMinutes = mins - 1;
       seconds -= 1;
       (<HTMLDivElement>counter).innerHTML = `${currentMinutes.toString()}:${(seconds < 10 ? '0' : '')}${String(seconds)}`;
@@ -192,7 +195,7 @@ class SprintController {
 
   decreaseMultiplier() {
     this.data.curStreak = 0;
-    (<HTMLImageElement>document.querySelector('.answer-icon-image')).style.visibility = 'visible';
+    //! (<HTMLImageElement>document.querySelector('.answer-icon-image')).style.visibility = 'visible';
     this.changeStreakColor('var(--color)');
     this.data.answerMap.set(<IWord>this.data.curWord, 'incorrect');
     this.data.pointsPerAnswer > 10 ? this.data.pointsPerAnswer /= 2 : this.data.pointsPerAnswer = 10;
@@ -232,7 +235,7 @@ class SprintController {
     if (counter?.innerHTML !== '0:50') {
       if(this.data.wordsArr.length <= 2) {
         if (this.data.curPage - 1 === -1) {
-          // clearInterval(this.timer);
+          if (this.timer) clearInterval(this.timer);
           this.finishGame();
           console.log('3333333');
 
@@ -245,15 +248,15 @@ class SprintController {
         }
       }
   } else {
-    // clearInterval(timerId);
+    if (this.timer) clearInterval(this.timer);
     console.log('55555555');
     this.finishGame()
   }
   }
 
   checkGameEndTimer() {
-    let timerId = setInterval(() => this.checkGameEndHandler(), 1000);
-    // this.timer = timerId
+    let timerId: number = window.setInterval(() => this.checkGameEndHandler(), 1000);
+    this.timer = timerId
   }
   
 
@@ -362,7 +365,7 @@ class SprintController {
 
   async deleteUserWords() {
     const userWords = <IUserWord[]> await User.getUserWords();
-    userWords.forEach((el: IUserWord) => User.deleteUserWord(<string>el.wordId));
+    if(userWords) userWords.forEach((el: IUserWord) => User.deleteUserWord(<string>el.wordId));
   }
 
   async updateUserWords() {
