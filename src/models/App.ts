@@ -49,7 +49,7 @@ class App {
       textbook: TextbookController,
       sprint: SprintController,
       audiocall: AudiocallController,
-      statistics: StatisticsController,
+      statistics: new StatisticsController(this),
       error: ErrorController,
     };
     this.urlObserver = new EventObserver<string>();
@@ -59,7 +59,7 @@ class App {
       authIcon: findHtmlElement(document, '.authorization-icon'),
       tooltipText: findHtmlElement(document, '.tooltiptext'),
     };
-    this._isAuth = false;
+    this._isAuth = !!localStorage.getItem('token');
 
     // add content into main according to link
     this.getContent();
@@ -120,6 +120,9 @@ class App {
     const menuLinks: NodeListOf<HTMLElement> = document.querySelectorAll(selector);
     menuLinks.forEach((link: HTMLElement) => {
       let { path } = link.dataset;
+      if (path === '/statistics' && !this.isAuth) {
+        link.style.display = 'none';
+      }
       if (path) path = `${config.sitePath}${path}`;
       link.addEventListener('click', () => {
         if (path) {
