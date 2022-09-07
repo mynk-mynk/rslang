@@ -1,6 +1,7 @@
 import './sprint.css';
 // import { IObject } from '../../common/interfaces/IObject';
 import { IWord } from '../../../common/interfaces/IWord';
+import config from '../../../config';
 
 class SprintView {
   static renderStartBtn() {
@@ -134,7 +135,7 @@ class SprintView {
   static renderCorrectResults(word: IWord) {
     return `
     <div class="word-list-item">
-      <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
+      <audio id="audio-word-${word.word}" src="${config.api.url}${word.audio}"></audio>
       <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
       <span class="word-original word-sprint">${word.word}</span>-<span class="word-sprint">${word.wordTranslate}</span>
     </div>`;
@@ -142,7 +143,7 @@ class SprintView {
 
   static renderIncorrectResults(word: IWord) {
     return `<div class="word-list-item">
-      <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
+      <audio id="audio-word-${word.word}" src="${config.api.url}${word.audio}"></audio>
       <img id="audio-btn-${word.word}" class = "sprint-audio-icon" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audio-icon" width="20">
       <span class="word-original word-sprint">${word.word}</span>-<span class="word-sprint">${word.wordTranslate}</span>
   </div>`;

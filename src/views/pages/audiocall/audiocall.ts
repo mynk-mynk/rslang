@@ -1,6 +1,7 @@
 import './audiocall.css';
 // import { IObject } from '../../../common/interfaces/IObject';
 import { IWord } from '../../../common/interfaces/IWord';
+import config from '../../../config';
 
 class AudiocallView {
   static renderStartBtn() {
@@ -58,7 +59,7 @@ class AudiocallView {
             alt="Sound"
           />
           </div>
-          <audio id="audio-word-${(<IWord>word).word}" src="http://localhost:4000/${(<IWord>word).audio}"></audio>
+          <audio id="audio-word-${(<IWord>word).word}" src="${config.api.url}${(<IWord>word).audio}"></audio>
 
           <div class="audiocall-word-description">
             <img
@@ -120,7 +121,7 @@ class AudiocallView {
   static renderCorrectResults(word: IWord) {
     return `
     <div class="word-list-item">
-      <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
+      <audio id="audio-word-${word.word}" src="${config.api.url}${word.audio}"></audio>
       <img id="audio-btn-${word.word}" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audiocall-audio-icon" width="20">
       <span class="word-original word-audiocall">${word.word}</span> - <span class="word-audiocall">${word.wordTranslate}</span>
     </div>`;
@@ -128,7 +129,7 @@ class AudiocallView {
 
   static renderIncorrectResults(word: IWord) {
     return `<div class="word-list-item">
-      <audio id="audio-word-${word.word}" src="http://localhost:4000/${word.audio}"></audio>
+      <audio id="audio-word-${word.word}" src="${config.api.url}${word.audio}"></audio>
       <img id="audio-btn-${word.word}" src="./assets/svg/audio-speaker.svg" alt="Audio" class="audiocall-audio-icon" width="20">
       <span class="word-original word-audiocall">${word.word}</span> - <span class="word-audiocall">${word.wordTranslate}</span>
   </div>`;
